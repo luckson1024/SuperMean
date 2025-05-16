@@ -151,3 +151,5 @@ global_memory/
 # Logs
 logs/
 *.log
+# Ignore node_modules directory
+node_modules/
