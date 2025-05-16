@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperMean Documentation</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>SuperMean Documentation</h1>
+            <p>A self-improving AI agent system for domain-specific problem solving</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#overview">System Overview</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#implementation">Implementation Status</a></li>
+                <li><a href="#roadmap">Development Roadmap</a></li>
+                <li><a href="#installation">Installation Guide</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="overview">
+            <h2>System Overview</h2>
+            <p>SuperMean is a self-improving AI agent system designed for domain-specific problem solving. The system leverages multiple AI models and agents to provide comprehensive solutions across various domains.</p>
+            
+            <div class="card">
+                <h3>Core Components</h3>
+                <ul>
+                    <li><strong>SuperAgent:</strong> The main orchestrator of the system</li>
+                    <li><strong>Planner:</strong> Responsible for task decomposition and execution planning</li>
+                    <li><strong>Medical Agent:</strong> Specialized agent for healthcare domain tasks</li>
+                    <li><strong>Model Router:</strong> Directs queries to appropriate AI models</li>
+                    <li><strong>Skill Library:</strong> Collection of reusable capabilities</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>Architecture</h2>
+            <div class="mermaid-container">
+                <div class="mermaid">
+                    graph TD
+                      A[SuperAgent] --> B[Planner]
+                      A --> C[Evaluator]
+                      A --> D[Tool Creator]
+                      B --> E[Medical Agent]
+                      B --> F[Research Agent]
+                      C --> G[Skill Library]
+                      D --> H[Model Router]
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Dependency Map</h3>
+                <pre>
+model_router.py
+  ├── gemini_connector.py
+  ├── deepseek_connector.py
+  └── routerapi_connector.py
+
+medical_agent.py
+  ├── base_agent.py
+  └── model_router.py
+                </pre>
+            </div>
+
+            <div class="card">
+                <h3>Active Integration Points</h3>
+                <ol>
+                    <li>Model Router → Gemini API</li>
+                    <li>Medical Agent → Web Search Skill</li>
+                    <li>Planner → Agent Memory System</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="implementation">
+            <h2>Implementation Status</h2>
+            
+            <div class="card">
+                <h3>Current Phase Implementation</h3>
+                <div class="phase-list">
+                    <div class="phase completed">
+                        <span class="checkbox">✓</span> Phase 1: Core Bootstrapping
+                    </div>
+                    <div class="phase">
+                        <span class="checkbox">□</span> Phase 2: SuperAgent Engine (Timeline: Q3 2024 | Dependencies: Phase 1)
+                    </div>
+                    <div class="phase">
+                        <span class="checkbox">□</span> Phase 3: Agent Framework (Timeline: Q4 2024 | Dependencies: Phase 2)
+                    </div>
+                    <div class="phase">
+                        <span class="checkbox">□</span> Phase 4: Skill Library (Timeline: Q1 2025 | Dependencies: Phase 3)
+                    </div>
+                    <div class="phase">
+                        <span class="checkbox">□</span> Phase 5: Task Orchestration (Timeline: Q2 2025 | Dependencies: Phase 4)
+                    </div>
+                    <div class="phase">
+                        <span class="checkbox">□</span> Phase 6: Healthcare Field Test (Timeline: Q3 2025 | Dependencies: Phase 5)
+                    </div>
+                    <div class="phase">
+                        <span class="checkbox">□</span> Phase 7: Interfaces (Timeline: Q4 2025 | Dependencies: Phase 6)
+                    </div>
+                    <div class="phase">
+                        <span class="checkbox">□</span> Phase 8: Optimization (Timeline: Q1 2026 | Dependencies: All Phases)
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Operational Components</h3>
+                <ul>
+                    <li><strong>Active Modules:</strong> MedicalAgent, ModelRouter, Planner</li>
+                    <li><strong>Verified Skills:</strong> Web Search, Text Summarization</li>
+                    <li><strong>Memory Systems:</strong> VectorMemory (Faiss-based)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Feature Implementation Tracker</h3>
+                <table class="feature-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Version</th>
+                            <th>Status</th>
+                            <th>Owner</th>
+                            <th>Target Release</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Multi-agent orchestration</td>
+                            <td>1.3.0</td>
+                            <td><div class="progress-bar"><div class="progress" style="width: 15%;">15%</div></div></td>
+                            <td>Core Team</td>
+                            <td>Q4 2024</td>
+                        </tr>
+                        <tr>
+                            <td>Dynamic skill loading</td>
+                            <td>1.2.1</td>
+                            <td><div class="progress-bar"><div class="progress" style="width: 40%;">40%</div></div></td>
+                            <td>DevOps</td>
+                            <td>Q3 2024</td>
+                        </tr>
+                        <tr>
+                            <td>Automated evaluation loops</td>
+                            <td>1.4.0</td>
+                            <td><div class="progress-bar"><div class="progress" style="width: 5%;">5%</div></div></td>
+                            <td>Research Team</td>
+                            <td>Q1 2025</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>Known Limitations</h3>
+                <ol>
+                    <li><del>Concurrent agent execution limited to 5 parallel processes</del> (Scheduled: Q4 2024)</li>
+                    <li>Model routing lacks fallback mechanisms (In Progress)</li>
+                    <li>Memory system only supports English content (Planned: Q2 2025)</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h3>Testing Coverage</h3>
+                <div class="chart-container">
+                    <canvas id="testCoverageChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap">
+            <h2>Development Roadmap</h2>
+            
+            <div class="card">
+                <h3>Development Phases</h3>
+                <table class="roadmap-table">
+                    <thead>
+                        <tr>
+                            <th>Phase</th>
+                            <th>Name</th>
+                            <th>Timeline</th>
+                            <th>Owner</th>
+                            <th>Dependencies</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2</td>
+                            <td>SuperAgent Engine</td>
+                            <td>Q3 2024</td>
+                            <td>Core Team</td>
+                            <td>Phase 1 completion</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Agent Framework</td>
+                            <td>Q4 2024</td>
+                            <td>Framework Team</td>
+                            <td>Phase 2 outcomes</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Skill Library</td>
+                            <td>Q1 2025</td>
+                            <td>DevOps</td>
+                            <td>Phase 3 API stability</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>Recommended Features</h3>
+                <table class="feature-table">
+                    <thead>
+                        <tr>
+                            <th>Priority</th>
+                            <th>Feature</th>
+                            <th>Complexity</th>
+                            <th>Estimated Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>P0</td>
+                            <td>Fault-tolerant model routing</td>
+                            <td>High</td>
+                            <td>Critical</td>
+                        </tr>
+                        <tr>
+                            <td>P1</td>
+                            <td>Multilingual memory support</td>
+                            <td>Medium</td>
+                            <td>High</td>
+                        </tr>
+                        <tr>
+                            <td>P2</td>
+                            <td>Agent performance dashboard</td>
+                            <td>Low</td>
+                            <td>Medium</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="installation">
+            <h2>Installation Guide</h2>
+            
+            <div class="card">
+                <h3>System Requirements</h3>
+                <ul>
+                    <li><strong>Operating System:</strong> Linux (Ubuntu 20.04+), macOS (10.15+), Windows 10/11</li>
+                    <li><strong>Python:</strong> 3.9 or higher</li>
+                    <li><strong>RAM:</strong> 16GB minimum, 32GB recommended</li>
+                    <li><strong>Storage:</strong> 10GB minimum for installation, 50GB+ recommended for operation</li>
+                    <li><strong>GPU:</strong> NVIDIA GPU with CUDA support (optional, for local model inference)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Installation Steps</h3>
+                <ol class="installation-steps">
+                    <li>
+                        <h4>Clone the Repository</h4>
+                        <pre><code>git clone https://github.com/yourusername/supermean.git
+cd supermean</code></pre>
+                    </li>
+                    <li>
+                        <h4>Set Up Virtual Environment</h4>
+                        <pre><code>python -m venv venv
+# On Windows
+venv\Scripts\activate
+# On macOS/Linux
+source venv/bin/activate</code></pre>
+                    </li>
+                    <li>
+                        <h4>Install Dependencies</h4>
+                        <pre><code>pip install -r requirements.txt</code></pre>
+                    </li>
+                    <li>
+                        <h4>Configure Environment Variables</h4>
+                        <pre><code># Create a .env file in the root directory
+touch .env
+
+# Add the following variables to the .env file
+API_KEY=your_api_key
+MODEL_ENDPOINT=https://api.example.com/v1
+MEMORY_STORAGE=local  # or 'cloud'</code></pre>
+                    </li>
+                    <li>
+                        <h4>Initialize the System</h4>
+                        <pre><code>python SuperMean/backend/run.py --init</code></pre>
+                    </li>
+                    <li>
+                        <h4>Start the Backend Server</h4>
+                        <pre><code>python SuperMean/backend/run.py</code></pre>
+                    </li>
+                    <li>
+                        <h4>Start the Frontend (in a new terminal)</h4>
+                        <pre><code>cd SuperMean/frontend
+npm install
+npm run dev</code></pre>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            
+            <div class="card">
+                <h3>Common Issues</h3>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header">Model Router Connection Failures</div>
+                        <div class="accordion-content">
+                            <p>If you experience connection issues with the Model Router:</p>
+                            <ol>
+                                <li>Verify your API keys are correctly set in the .env file</li>
+                                <li>Check network connectivity to the model endpoints</li>
+                                <li>Ensure the model service is available and not experiencing downtime</li>
+                                <li>Check the logs at <code>logs/model_router.log</code> for specific error messages</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">Memory System Errors</div>
+                        <div class="accordion-content">
+                            <p>If the memory system fails to initialize or store data:</p>
+                            <ol>
+                                <li>Verify that FAISS is properly installed</li>
+                                <li>Check disk space availability for vector storage</li>
+                                <li>Ensure the memory directory has proper write permissions</li>
+                                <li>Try clearing the cache: <code>python tools/clear_memory_cache.py</code></li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">Agent Initialization Failures</div>
+                        <div class="accordion-content">
+                            <p>If agents fail to initialize properly:</p>
+                            <ol>
+                                <li>Check that all required dependencies are installed</li>
+                                <li>Verify that the Model Router is running and accessible</li>
+                                <li>Ensure the agent configuration files are properly formatted</li>
+                                <li>Look for specific error messages in <code>logs/agent_init.log</code></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Support Resources</h3>
+                <ul>
+                    <li><a href="#">GitHub Issues</a> - Report bugs or request features</li>
+                    <li><a href="#">Documentation Wiki</a> - Detailed system documentation</li>
+                    <li><a href="#">Community Forum</a> - Get help from other users</li>
+                    <li><a href="#">Developer Chat</a> - Real-time support from the development team</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 SuperMean Project. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

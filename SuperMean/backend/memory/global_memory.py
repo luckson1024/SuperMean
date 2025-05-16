@@ -256,20 +256,25 @@ class GlobalMemory(BaseMemory):
             else: # Empty filter dictionary
                 pass # No filter
 
-        # If no filter was provided, we cannot efficiently query all items without vectors/ids.
-        if not where_clause:
-             log.warning("GlobalMemory search called without filter_metadata. Returning empty list as metadata filtering is the primary supported mode.")
-             return []
-
-        log.debug(f"Searching ChromaDB with where clause: {where_clause}, limit: {top_k}. Query text '{query}' is ignored.")
+        log.debug(f"Searching ChromaDB with where clause: {where_clause if where_clause else 'None'}, limit: {top_k}. Query text '{query}' is ignored.")
 
         try:
             # Note: ChromaDB client operations are synchronous internally
-            results = collection.get(
-                where=where_clause, # Pass the constructed filter
-                limit=top_k,
-                include=['metadatas', 'documents']
-            )
+            # If no where_clause, fetch all entries up to limit
+            if not where_clause:
+                log.warning("GlobalMemory search called without filter_metadata. Fetching all entries up to limit.")
+                results = collection.get(
+                    limit=top_k,
+                    include=['metadatas', 'documents']
+                )
+            else:
+                # Otherwise, use the constructed where clause
+                results = collection.get(
+                    where=where_clause, # Pass the constructed filter
+                    limit=top_k,
+                    include=['metadatas', 'documents']
+                )
+
             await asyncio.sleep(0) # Yield control
 
             output_results = []
@@ -287,7 +292,7 @@ class GlobalMemory(BaseMemory):
                          "metadata": metadata,
                          "score": 1.0 # No relevance score without vector search
                      })
-            log.debug(f"ChromaDB metadata search found {len(output_results)} results.")
+            log.debug(f"ChromaDB search found {len(output_results)} results.")
             return output_results
 
         except ValueError as ve:

@@ -2,9 +2,9 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import {
-  UserIcon, CogIcon, LogoutIcon, SunIcon, MoonIcon, BellIcon,
-  BellSlashIcon, ClockIcon, LanguageIcon, SaveIcon
-} from '@heroicons/react/outline';
+  UserIcon, CogIcon, ArrowRightOnRectangleIcon, SunIcon, MoonIcon, BellIcon,
+  BellSlashIcon, ClockIcon, LanguageIcon, ArrowDownOnSquareIcon
+} from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 
 interface UserSettingsPanelProps {
@@ -59,11 +59,32 @@ const UserSettingsPanel: React.FC<UserSettingsPanelProps> = ({ isOpen, onClose }
     }
   };
 
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+
+  const validateSettings = () => {
+    const errors: Record<string, string> = {};
+    
+    // Validate session timeout
+    if (settings.session_timeout_minutes <= 0) {
+      errors.session_timeout_minutes = 'Session timeout must be greater than 0';
+    } else if (settings.session_timeout_minutes > 1440) { // 24 hours max
+      errors.session_timeout_minutes = 'Session timeout cannot exceed 24 hours (1440 minutes)';
+    }
+    
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const saveSettings = async () => {
+    if (!validateSettings()) {
+      return;
+    }
+    
     setIsSaving(true);
     try {
-      // TODO: Replace with actual API call to update user settings
-      // const response = await fetch('/api/settings', {
+      // Use apiService to save settings
+      // TODO: Replace with actual API call
+      // await fetch('/api/settings', {
       //   method: 'PUT',
       //   headers: {
       //     'Content-Type': 'application/json',
@@ -71,20 +92,18 @@ const UserSettingsPanel: React.FC<UserSettingsPanelProps> = ({ isOpen, onClose }
       //   },
       //   body: JSON.stringify(settings)
       // });
-      // if (response.ok) {
-      //   // Apply theme changes immediately
-      //   document.documentElement.classList.toggle('dark', settings.theme === 'dark');
-      //   localStorage.setItem('theme', settings.theme);
-      //   onClose();
-      // } else {
-      //   console.error('Failed to save settings');
-      // }
-      // Mock save
+      
+      // Apply theme changes immediately
       document.documentElement.classList.toggle('dark', settings.theme === 'dark');
       localStorage.setItem('theme', settings.theme);
+      localStorage.setItem('userSettings', JSON.stringify(settings));
+      
+      // Show success message
+      alert('Settings saved successfully');
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving settings:', error);
+      alert(`Failed to save settings: ${error.message || 'Unknown error'}`); 
     } finally {
       setIsSaving(false);
     }
@@ -118,7 +137,17 @@ const UserSettingsPanel: React.FC<UserSettingsPanelProps> = ({ isOpen, onClose }
         onClose={onClose}
       >
         <div className="min-h-screen px-4 text-center">
-          <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black opacity-30" />
+          </Transition.Child>
 
           {/* This element is to trick the browser into centering the modal contents. */}
           <span className="inline-block h-screen align-middle" aria-hidden="true">
@@ -196,7 +225,7 @@ const UserSettingsPanel: React.FC<UserSettingsPanelProps> = ({ isOpen, onClose }
                     <input
                       type="number"
                       min="5"
-                      max="240"
+                      max="1440"
                       value={settings.session_timeout_minutes}
                       onChange={(e) => setSettings({...settings, session_timeout_minutes: parseInt(e.target.value, 10)})}
                       className="ml-2 p-2 border rounded w-16 dark:bg-gray-700 dark:text-white"
@@ -208,7 +237,7 @@ const UserSettingsPanel: React.FC<UserSettingsPanelProps> = ({ isOpen, onClose }
                 <div>
                   <label className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <SaveIcon className="w-5 h-5 mr-2 text-indigo-500" />
+                      <ArrowDownOnSquareIcon className="w-5 h-5 mr-2 text-indigo-500" />
                       <span>Auto Save</span>
                     </div>
                     <label className="inline-flex items-center">
@@ -251,7 +280,7 @@ const UserSettingsPanel: React.FC<UserSettingsPanelProps> = ({ isOpen, onClose }
                   className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
                   onClick={handleLogout}
                 >
-                  <LogoutIcon className="w-5 h-5 mr-2" />
+                  <ArrowRightOnRectangleIcon className="w-5 h-5 mr-2" />
                   Logout
                 </button>
 

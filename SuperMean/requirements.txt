@@ -1,0 +1,12 @@
+# SuperMean Requirements
+
+# Core dependencies
+flask>=2.3.3
+pytest>=8.3.5
+pyyaml>=6.0.1
+
+# Memory system dependencies
+faiss-cpu>=1.7.4  # For vector storage and similarity search
+numpy>=1.24.0    # Required by faiss
+chromadb>=0.4.18  # For GlobalMemory implementation
+pysqlite3-binary  # For ChromaDB compatibility

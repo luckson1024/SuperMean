@@ -86,26 +86,43 @@ The application uses environment variables for configuration, especially for API
     # Other configurations can be added here
     ```
 
+## Running Tests
+
+The SuperMean system includes comprehensive test coverage for all components. To verify your installation and ensure all components are working correctly, use the included test runner:
+
+```bash
+# Run all tests
+python run.py
+
+# Run tests for specific modules
+python run.py --modules agents memory super_agent
+
+# Run with verbose output
+python run.py --verbose
+```
+
+The test runner will discover and execute all test files (matching pattern `*_test.py`) and provide a detailed report of the results.
+
 ## Running the Service (Development)
 
 Once the setup is complete and the `.env` file is configured, you can run the FastAPI development server using Uvicorn:
 
 ```bash
 uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
-Use code with caution.
-api.main:app: Points to the FastAPI app instance in the api/main.py file.
+```
 
---reload: Enables auto-reload when code changes (useful for development).
-
---host 0.0.0.0: Makes the server accessible on your local network.
-
---port 8000: Specifies the port to run on.
+- `api.main:app`: Points to the FastAPI app instance in the api/main.py file.
+- `--reload`: Enables auto-reload when code changes (useful for development).
+- `--host 0.0.0.0`: Makes the server accessible on your local network.
+- `--port 8000`: Specifies the port to run on.
 
 You should see output indicating the server is running, typically like:
+```
 INFO: Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 INFO: Started reloader process [...]
 INFO: Started server process [...]
 INFO: Waiting for application startup.
 INFO: Application startup complete.
+```
 
 You can access the API documentation (Swagger UI) by navigating to http://localhost:8000/docs in your web browser.

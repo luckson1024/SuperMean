@@ -1,0 +1,5104 @@
+kindly do a deep analysis and system improvement. provide plan, vision and goal for the system as simply aims to develop AI Agents that can do research and create AI Agents and Automation through this system. the goal is to create AI Agents that can solve problems for specific field or industrys. the AI Agents has memory with specific logic and allowing them not to repeat certain tasks that was worked on hence the tasks can only be researched for improvement and advancing but we aim to solve no-redundant. Perfect. I’ve fully got your vision locked in now — you want an advanced, future-proof, modular AI agent system that can build domain-specific solutions (like healthcare or logistics) autonomously via SuperAgents and specialized sub-agents, using a skill library, dynamic model connectors (e.g., Gemini, DeepSeek, RouterAPI), and a full orchestration and evaluation loop.
+
+We’ll approach this in clear, testable, daily phases, where each task is finalized before moving on — no rewrites, just forward motion.
+
+
+---
+
+Advanced Folder Structure: Version 2
+
+Here’s an evolved structure optimized for your self-improving agent system:
+
+aij_system/
+├── agents/                            # Specialized agents
+│   ├── super_agent/                   # Meta-agent managing creation/eval
+│   │   ├── __init__.py
+│   │   ├── agent.py
+│   │   ├── builder.py
+│   │   ├── tool_creator.py
+│   │   ├── evaluator.py
+│   │   └── planner.py
+│   ├── dev_agent/
+│   ├── research_agent/
+│   ├── design_agent/
+│   └── medical_agent/                 # Example: domain-specific agent
+│
+├── memory/                            # Persistent memory handling
+│   ├── agent_memory.py
+│   ├── global_memory.py
+│   └── vector_memory.py
+│
+├── models/                            # Model connectors & fallback logic
+│   ├── base_model.py
+│   ├── gemini_connector.py
+│   ├── deepseek_connector.py
+│   ├── routerapi_connector.py
+│   ├── placeholder_connector.py       # Stub for future APIs
+│   └── model_router.py
+│
+├── skills/                            # AIJ Library of Skills
+│   ├── __init__.py
+│   ├── code_analysis/
+│   ├── data_scraper/
+│   ├── ui_generator/
+│   └── diagnosis_module/
+│
+├── orchestrator/                      # Agent comms & coordination
+│   ├── event_bus.py
+│   ├── mission_control.py            # High-level task initiator
+│   └── task_dispatcher.py
+│
+├── interfaces/
+│   ├── api/                           # Optional REST or gRPC API
+│   │   └── main.py
+│   └── cli/                           # Terminal CLI for interactions
+│       └── interface.py
+│
+├── shared/
+│   ├── tools/
+│   ├── prompts/
+│   └── utils/
+│
+├── config/
+│   ├── agents.yaml
+│   ├── model_config.yaml
+│   └── environment.py
+│
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   └── end_to_end/
+│
+├── examples/
+│   ├── run_healthcare_agent.py
+│   ├── run_logistics_agent.py
+│   └── debug_super_agent.py
+│
+├── docs/
+│   ├── architecture.md
+│   ├── vision.md
+│   └── setup_guide.md
+│
+├── scripts/
+│   └── bootstrap.py                   # Bootstrap agents or skills
+│
+├── .env
+├── LICENSE
+├── README.md
+└── requirements.txt
+
+
+---
+
+Phase Plan (Time-boxed Daily Delivery)
+
+Each phase includes:
+
+Clear deliverables
+
+Fully tested code
+
+Use of Gemini + DeepSeek + RouterAPI (with stubs for others)
+
+
+Phase 1 (Today): Core Bootstrapping
+
+[ ] Folder structure scaffolding
+
+[ ] Base model_router.py, with Gemini + DeepSeek + RouterAPI working
+
+[ ] Placeholder for other models
+
+[ ] requirements.txt, .env, configs
+
+[ ] Test Gemini connector with a mock call
+
+
+Phase 2: SuperAgent Engine
+
+[ ] super_agent/ setup with planner, builder, evaluator, tool_creator
+
+[ ] Spawn sub-agents (dev, design, research)
+
+[ ] Run planning + feedback loop
+
+[ ] Unit test: Can SuperAgent create a medical_agent?
+
+
+Phase 3: Agent Framework
+
+[ ] Create reusable BaseAgent class
+
+[ ] Implement dev_agent, research_agent, design_agent
+
+[ ] Add agent memory system (local + vector)
+
+[ ] Integration test: agents communicate via event bus
+
+
+Phase 4: Skill Library (AIJ)
+
+[ ] Dynamic skill loading (code_analysis, ui_generator, etc.)
+
+[ ] Use YAML config to select agent skills
+
+[ ] Add tests to verify skill compatibility
+
+
+Phase 5: Task Orchestration
+
+[ ] mission_control.py to accept a user prompt (e.g. "Build healthcare system")
+
+[ ] Automatically plan, spawn agents, and assign tasks
+
+[ ] End-to-end test simulating a full build task
+
+
+Phase 6: Healthcare Field Test
+
+[ ] Use prompt: “Develop a patient management and diagnosis web system”
+
+[ ] Generate system design + frontend + API stubs
+
+[ ] Deploy outputs to file and summarize result
+
+
+Phase 7: Interfaces
+
+[ ] Add CLI interface for prompting and triggering runs
+
+[ ] Add optional API (FastAPI) to trigger missions remotely
+
+
+Phase 8: Optimization + Final Review
+
+[ ] Add usage limit management
+
+[ ] Improve retry/fallback logic
+
+[ ] Final end-to-end tests for multiple fields (logistics, finance)
+
+(Your proposal will be used by my team to develop this system and other ai system eg using other chat. so create a document to make sure developing this agent won't be hard)
+I'll help you create a comprehensive analysis and system improvement plan for developing AI Agents that can conduct research and create other AI Agents and automation solutions. This document will provide a clear roadmap for implementing your vision of specialized AI Agents that can solve problems for specific fields or industries while avoiding redundancy through memory and logic.
+
+AI Agent System: Analysis and Implementation Plan
+Executive Summary
+The proposed system aims to develop a self-improving AI Agent framework capable of:
+
+Creating specialized AI Agents for specific industries and domains
+Conducting research to improve existing solutions
+Maintaining memory to prevent redundant work
+Building automation systems through a modular architecture
+The system architecture follows a hierarchical approach with SuperAgents overseeing specialized sub-agents, all supported by a comprehensive skill library, model connectors, and orchestration components.
+
+Using Tool
+|
+Create Web Page
+View
+ai_agent_system_plan
+Click to open
+System Vision and Goals
+Vision
+To create an advanced, modular AI Agent ecosystem that autonomously builds domain-specific solutions through SuperAgents and specialized sub-agents, leveraging a comprehensive skill library and dynamic model connections.
+
+Primary Goals
+Self-Improvement: Create agents that can analyze their own performance and implement improvements
+Domain Specialization: Build agents capable of solving problems specific to industries like healthcare, logistics, and finance
+Memory Integration: Implement persistent memory to prevent redundant tasks and enable continuous learning
+Modularity: Develop a flexible architecture where components can be added, modified, or replaced without disrupting the entire system
+Model Agnosticism: Support multiple AI models (Gemini, DeepSeek, RouterAPI) with fallback mechanisms
+System Architecture
+Core Components
+SuperAgent
+
+Acts as the system's control center
+Manages creation and evaluation of specialized agents
+Implements planning, building, and evaluation loops
+Allocates resources based on task requirements
+Specialized Agents
+
+Research Agent: Gathers information from various sources
+Development Agent: Writes code and implements solutions
+Design Agent: Creates UI/UX designs and system architectures
+Domain-Specific Agents: (e.g., Medical, Logistics) that handle industry-specific problems
+Memory System
+
+Agent Memory: Personal knowledge and experience of individual agents
+Global Memory: Shared knowledge accessible by all agents
+Vector Memory: Efficient storage and retrieval of complex information
+Model Connectors
+
+Interfaces with various AI models (Gemini, DeepSeek, RouterAPI)
+Implements fallback logic to ensure service continuity
+Provides model-agnostic abstractions for agent operations
+Skill Library (AIJ Library)
+
+Reusable modules that agents can access
+Domain-specific capabilities (diagnosis, code analysis, etc.)
+Common utilities shared across agents
+Orchestration Layer
+
+Manages communication between agents
+Controls task dispatch and completion tracking
+Implements event-driven architecture for agent coordination
+Implementation Strategy
+Phase 1: Core Bootstrapping
+Objective: Establish the foundation of the system with basic model connections
+
+Key Deliverables:
+
+Complete folder structure setup
+Functional model router with Gemini, DeepSeek, and RouterAPI connections
+Configuration files and environment setup
+Basic testing framework
+Technical Approach:
+
+Create the proposed folder structure
+Implement a model_router.py that can switch between different AI models
+Set up placeholder connectors for future model integrations
+Establish configuration management using .env and YAML files
+Test Gemini connector with sample prompts
+Phase 2: SuperAgent Engine
+Objective: Build the meta-agent responsible for creating and managing other agents
+
+Key Deliverables:
+
+Functional SuperAgent with planning capabilities
+Agent creation mechanisms
+Evaluation framework for agent performance
+Tool creation capabilities
+Technical Approach:
+
+Develop the SuperAgent's core components (planner, builder, evaluator)
+Implement logic to spawn sub-agents with specific roles
+Create feedback loops for continuous improvement
+Test by generating a sample medical_agent
+Phase 3: Agent Framework
+Objective: Create a robust framework for all specialized agents
+
+Key Deliverables:
+
+BaseAgent class with common functionality
+Specialized agent implementations (dev, research, design)
+Memory system integration
+Inter-agent communication framework
+Technical Approach:
+
+Design a BaseAgent class with core capabilities
+Extend BaseAgent for specialized roles
+Implement the memory system with local and vector storage
+Set up the event bus for agent communication
+Test agent interactions through integration tests
+Phase 4: Skill Library
+Objective: Build a comprehensive library of reusable skills
+
+Key Deliverables:
+
+Dynamic skill loading mechanism
+Core skill implementations (code analysis, UI generation)
+Configuration-driven skill assignment
+Testing framework for skills
+Technical Approach:
+
+Design skill module structure with clear interfaces
+Implement core skills like code_analysis and ui_generator
+Create a dynamic loading system based on YAML configuration
+Develop tests to verify skill compatibility
+Phase 5: Task Orchestration
+Objective: Establish the system that coordinates agent activities
+
+Key Deliverables:
+
+Mission control system to accept user prompts
+Task planning and allocation framework
+Progress tracking and reporting
+End-to-end testing system
+Technical Approach:
+
+Develop mission_control.py to accept and parse user instructions
+Implement task planning algorithms to break down complex requests
+Create agent assignment logic based on task requirements
+Build comprehensive testing for full workflow validation
+Phase 6: Domain-Specific Testing
+Objective: Test the system with a real-world domain challenge
+
+Key Deliverables:
+
+Healthcare agent implementation
+Patient management and diagnosis system design
+API and frontend implementation
+Performance evaluation metrics
+Technical Approach:
+
+Use the system to generate a healthcare-focused agent
+Task it with creating a patient management system
+Generate system design, frontend mock-ups, and API specifications
+Evaluate output quality and system performance
+Phase 7: Interface Development
+Objective: Create user-friendly interfaces for system interaction
+
+Key Deliverables:
+
+Command-line interface for direct interaction
+API for remote system access
+Documentation of available commands and endpoints
+Technical Approach:
+
+Develop a CLI using a framework like Click or Typer
+Implement a FastAPI-based REST API
+Create comprehensive documentation for both interfaces
+Test usability with sample scenarios
+Phase 8: Optimization and Finalization
+Objective: Refine the system for production readiness
+
+Key Deliverables:
+
+Resource usage management
+Improved error handling and fallback mechanisms
+Performance optimization
+Comprehensive testing across multiple domains
+Technical Approach:
+
+Implement usage limits and tracking
+Enhance error handling with sophisticated retry and fallback logic
+Profile and optimize performance bottlenecks
+Run end-to-end tests across multiple domains (logistics, finance)
+Technical Specifications
+Memory System Design
+Agent Memory:
+
+SQLite database for structured data
+Vector database (Pinecone or Faiss) for semantic search
+JSON file storage for configuration preferences
+Global Memory:
+
+Shared vector database for cross-agent knowledge
+Document store for completed artifacts
+Task history and results
+Implementation Strategy:
+
+Copy# Example vector_memory.py implementation
+import faiss
+import numpy as np
+
+class VectorMemory:
+    def __init__(self, dimension=768):
+        self.index = faiss.IndexFlatL2(dimension)
+        self.data = []
+        
+    def add(self, vector, metadata):
+        self.index.add(np.array([vector], dtype=np.float32))
+        self.data.append(metadata)
+        
+    def search(self, query_vector, k=5):
+        distances, indices = self.index.search(np.array([query_vector], dtype=np.float32), k)
+        return [self.data[i] for i in indices[0]]
+Model Router Design
+Core Functionality:
+
+Abstraction layer for model-agnostic agent operations
+Load balancing between available models
+Fallback chains for service continuity
+Context management for efficient prompt utilization
+Implementation Strategy:
+
+Copy# Example model_router.py implementation
+class ModelRouter:
+    def __init__(self, config):
+        self.models = {}
+        self.fallback_chain = config.get('fallback_chain', [])
+        self._initialize_models(config.get('models', {}))
+        
+    def _initialize_models(self, model_configs):
+        for model_name, model_config in model_configs.items():
+            connector_class = self._get_connector_class(model_config['type'])
+            self.models[model_name] = connector_class(**model_config)
+    
+    def _get_connector_class(self, model_type):
+        if model_type == "gemini":
+            from .gemini_connector import GeminiConnector
+            return GeminiConnector
+        elif model_type == "deepseek":
+            from .deepseek_connector import DeepSeekConnector
+            return DeepSeekConnector
+        # Add other model types as needed
+            
+    def generate(self, prompt, model_preference=None, **kwargs):
+        if model_preference and model_preference in self.models:
+            try:
+                return self.models[model_preference].generate(prompt, **kwargs)
+            except Exception as e:
+                # Log error and fall back
+                pass
+                
+        # Try fallback chain
+        for model_name in self.fallback_chain:
+            try:
+                return self.models[model_name].generate(prompt, **kwargs)
+            except Exception as e:
+                # Log error and continue to next fallback
+                continue
+                
+        raise Exception("All models failed to generate a response")
+SuperAgent Architecture
+Key Components:
+
+Planner: Breaks down complex tasks into smaller, manageable steps
+Builder: Creates specialized agents with required capabilities
+Evaluator: Assesses agent performance and suggests improvements
+Tool Creator: Develops custom tools for specific tasks
+Implementation Strategy:
+
+Copy# Example super_agent/planner.py implementation
+class Planner:
+    def __init__(self, model_router):
+        self.model_router = model_router
+        
+    def create_plan(self, mission):
+        """Generate a structured plan from a high-level mission"""
+        prompt = f"""
+        Given the following mission: {mission}
+        
+        Create a detailed plan with the following components:
+        1. Breakdown of the mission into sequential tasks
+        2. Required agent types for each task
+        3. Dependencies between tasks
+        4. Success criteria for each task
+        
+        Format the output as a JSON object.
+        """
+        
+        plan_json = self.model_router.generate(
+            prompt, 
+            model_preference="gemini",
+            temperature=0.2,
+            max_tokens=2000
+        )
+        
+        # Parse and validate the plan
+        return self._parse_and_validate(plan_json)
+        
+    def _parse_and_validate(self, plan_json):
+        # Implementation for parsing and validating the plan
+        pass
+Orchestration System
+Key Components:
+
+Event Bus: Handles communication between agents
+Mission Control: Accepts and processes user requests
+Task Dispatcher: Assigns tasks to appropriate agents
+Implementation Strategy:
+
+Copy# Example orchestrator/event_bus.py implementation
+import asyncio
+from typing import Dict, List, Callable, Awaitable
+
+class EventBus:
+    def __init__(self):
+        self.subscribers: Dict[str, List[Callable]] = {}
+        
+    def subscribe(self, event_type: str, callback: Callable[[dict], Awaitable[None]]):
+        """Subscribe to an event type with a callback"""
+        if event_type not in self.subscribers:
+            self.subscribers[event_type] = []
+        self.subscribers[event_type].append(callback)
+        
+    async def publish(self, event_type: str, data: dict):
+        """Publish an event to all subscribers"""
+        if event_type in self.subscribers:
+            await asyncio.gather(
+                *[callback(data) for callback in self.subscribers[event_type]]
+            )
+Best Practices for Implementation
+Code Structure and Style
+Use Python 3.9+ for compatibility with modern features
+Implement type hints for better code readability
+Follow PEP 8 conventions for consistent style
+Use docstrings for all functions and classes
+Implement comprehensive logging
+Testing Strategy
+Write unit tests for individual components
+Create integration tests for component interactions
+Implement end-to-end tests for full workflows
+Use pytest as the testing framework
+Set up continuous integration for automated testing
+Error Handling
+Implement graceful degradation for model failures
+Use detailed error messages for easier debugging
+Create retry mechanisms with exponential backoff
+Implement circuit breakers for external dependencies
+Log all errors with contextual information
+Security Considerations
+Use environment variables for sensitive information
+Implement rate limiting to prevent abuse
+Sanitize all inputs from external sources
+Apply principle of least privilege for all components
+Regularly review and update dependencies
+Conclusion and Next Steps
+The proposed AI Agent system presents a sophisticated approach to building self-improving, domain-specific AI solutions. By following the phased implementation strategy, you can create a modular, extensible system capable of solving complex problems across various industries.
+
+Next Steps:
+
+Begin with Phase 1 by setting up the foundational structure and model connections
+Develop a working prototype of the SuperAgent to validate the core concept
+Incrementally add specialized agents and test their interactions
+Continuously refine the system based on performance evaluations
+Explore additional model integ
+Copy
+/rations to enhance capabilities
+
+By following this plan, your development team can create a future-proof AI Agent system capable of continuous learning and improvement while maintaining focus on specific domains and avoiding redundancy.
+
+Would you like more details on any particular aspect of this plan or should we proceed with implementing Phase 1?
+
+Copy
+Let's combined with our documentation below 👇.    # Proposal for a Plug-and-Play Skills Library
+
+This proposal outlines the design and implementation of a **plug-and-play skills library** that enables various AI agents to access and utilize a diverse set of functionalities (skills) with minimal setup. The library is structured to be modular, flexible, and well-documented, ensuring simple access and extensibility for different agents.
+
+---
+
+## Overview
+
+The skills library is a Python-based package designed to provide AI agents with reusable, categorized skills—such as data retrieval, communication, or analysis—that can be easily integrated into their workflows. The library emphasizes simplicity, allowing agents to call skills by name, discover available skills programmatically, and even extend the library with custom skills. It is agent-agnostic, meaning it does not depend on any specific agent framework, making it versatile for a wide range of applications.
+
+---
+
+## Structure
+
+The library is organized into a clear, modular structure:
+
+```
+skills_library/
+├── __init__.py                # Core registry and access functions
+├── data_retrieval/            # Category for data-fetching skills
+│   ├── __init__.py
+│   ├── weather.py
+│   └── stock_prices.py
+├── communication/             # Category for messaging skills
+│   ├── __init__.py
+│   ├── email.py
+│   └── sms.py
+├── analysis/                  # Category for data processing skills
+│   ├── __init__.py
+│   ├── sentiment_analysis.py
+│   └── data_visualization.py
+├── docs/                      # Documentation files
+│   ├── index.md
+│   ├── data_retrieval.md
+│   ├── communication.md
+│   └── analysis.md
+├── tests/                     # Unit tests for reliability
+│   ├── test_data_retrieval.py
+│   ├── test_communication.py
+│   └── test_analysis.py
+├── setup.py                   # Installation script
+├── README.md                  # Usage and setup guide
+└── requirements.txt           # Dependencies
+```
+
+- **Categories**: Skills are grouped into modules (e.g., `data_retrieval`, `communication`) for easy navigation.
+- **Skills**: Each skill is implemented as a Python function within its category module.
+- **Documentation**: Markdown files provide detailed guides for each skill and category.
+- **Tests**: Unit tests ensure the reliability of each skill.
+
+---
+
+## Key Features
+
+The library offers the following features to ensure it is plug-and-play and accessible:
+
+1. **Skill Registration**
+   - Skills are registered using a decorator `@register_skill("category.skill_name")`, which adds them to a central registry.
+
+2. **Central Registry**
+   - A dictionary `skills_registry` stores all registered skills, enabling dynamic access by name.
+
+3. **Skill Execution**
+   - Agents can execute skills using the `call_skill(full_name, *args, **kwargs)` function, providing a uniform interface.
+
+4. **Skill Discovery**
+   - The `list_skills(category=None)` function allows agents to list all available skills or filter by category.
+
+5. **Custom Skills**
+   - Agents can extend the library by registering their own skills using `register_custom_skill(full_name, func)`.
+
+6. **Documentation**
+   - Each skill is documented with its description, inputs, outputs, dependencies, and a usage example.
+
+7. **Error Handling**
+   - Skills handle errors internally where possible, and exceptions propagate to the agent for custom handling.
+
+8. **Dependencies**
+   - Required libraries are listed in `requirements.txt` for easy installation.
+
+---
+
+## Implementation
+
+### Core Code (`__init__.py`)
+The main module defines the registry and access functions:
+
+```python
+skills_registry = {}
+
+def register_skill(full_name):
+    """Decorator to register a skill in the library."""
+    def decorator(func):
+        skills_registry[full_name] = func
+        return func
+    return decorator
+
+def call_skill(full_name, *args, **kwargs):
+    """Execute a skill by its full name."""
+    if full_name in skills_registry:
+        return skills_registry[full_name](*args, **kwargs)
+    else:
+        raise ValueError(f"Skill '{full_name}' not found")
+
+def list_skills(category=None):
+    """List all skills, optionally filtered by category."""
+    if category:
+        return [name for name in skills_registry if name.startswith(category + ".")]
+    return list(skills_registry.keys())
+
+def register_custom_skill(full_name, func):
+    """Register a custom skill at runtime."""
+    skills_registry[full_name] = func
+
+# Import all skill modules to register them
+from .data_retrieval import weather, stock_prices
+from .communication import email, sms
+from .analysis import sentiment_analysis, data_visualization
+```
+
+### Example Skill (`data_retrieval/weather.py`)
+A sample skill implementation:
+
+```python
+from skills_library import register_skill
+
+@register_skill("data_retrieval.get_weather")
+def get_weather(location, api_key=None):
+    """Get weather data for a given location.
+    
+    Args:
+        location (str): The location to get weather for.
+        api_key (str, optional): API key for the weather service.
+    
+    Returns:
+        dict: Weather data.
+    
+    Raises:
+        ImportError: If required 'requests' library is missing.
+    """
+    try:
+        import requests
+    except ImportError:
+        raise ImportError("The 'requests' library is required for this skill. Install it with 'pip install requests'.")
+    
+    # Simulated implementation
+    return {"location": location, "temp": "25°C"}
+```
+
+### Installation (`setup.py`)
+The library can be installed as a Python package:
+
+```python
+from setuptools import setup, find_packages
+
+setup(
+    name="skills_library",
+    version="0.1.0",
+    packages=find_packages(),
+    install_requires=["requests"],  # Example dependency
+    description="A plug-and-play skills library for AI agents",
+)
+```
+
+---
+
+## Usage
+
+### 1. Installation
+Install the library via pip:
+
+```bash
+pip install skills_library
+```
+
+### 2. Calling a Skill
+Agents can call skills with a simple function call:
+
+```python
+from skills_library import call_skill
+
+# Get weather data
+weather = call_skill("data_retrieval.get_weather", location="New York", api_key="my_key")
+print(weather)  # {'location': 'New York', 'temp': '25°C'}
+```
+
+### 3. Listing Skills
+Agents can discover available skills programmatically:
+
+```python
+from skills_library import list_skills
+
+# List all skills
+all_skills = list_skills()
+print(all_skills)  # ['data_retrieval.get_weather', 'communication.send_email', ...]
+
+# List data retrieval skills
+data_skills = list_skills("data_retrieval")
+print(data_skills)  # ['data_retrieval.get_weather', 'data_retrieval.get_stock_prices']
+```
+
+### 4. Adding a Custom Skill
+Agents can extend the library with custom skills:
+
+```python
+from skills_library import register_custom_skill, call_skill
+
+# Define and register a custom skill
+def my_custom_skill(message):
+    return f"Echo: {message}"
+
+register_custom_skill("custom.echo", my_custom_skill)
+
+# Call the custom skill
+result = call_skill("custom.echo", message="Hello")
+print(result)  # "Echo: Hello"
+```
+
+---
+
+## Documentation
+
+### Main Index (`docs/index.md`)
+```
+# Skills Library Documentation
+
+A plug-and-play library for AI agents.
+
+## Categories
+- [Data Retrieval](data_retrieval.md)
+- [Communication](communication.md)
+- [Analysis](analysis.md)
+
+## Usage
+See the README for installation and examples.
+```
+
+### Skill Documentation (`docs/data_retrieval.md`)
+```
+# Data Retrieval Skills
+
+## get_weather
+**Full Name:** `data_retrieval.get_weather`
+
+**Description:** Retrieves weather data for a specified location.
+
+**Inputs:**
+- `location` (str): The location to get weather for.
+- `api_key` (str, optional): API key for the weather service.
+
+**Outputs:**
+- `dict`: Weather information (e.g., {"location": "New York", "temp": "25°C"}).
+
+**Dependencies:**
+- `requests`: Install with `pip install requests`.
+
+**Example:**
+```python
+from skills_library import call_skill
+weather = call_skill("data_retrieval.get_weather", location="New York", api_key="my_key")
+print(weather)
+```
+```
+
+---
+
+## Development Guidelines
+
+### Adding a New Skill
+1. Create a new Python file in the appropriate category (e.g., `data_retrieval/new_skill.py`).
+2. Define the skill function and decorate it with `@register_skill("category.skill_name")`.
+3. Import the skill in `skills_library/__init__.py` to register it.
+4. Add documentation in the corresponding `docs/` file.
+5. Add a unit test in the `tests/` directory.
+
+### Error Handling
+- Skills should handle expected errors (e.g., missing dependencies) and raise meaningful exceptions.
+- Agents can wrap `call_skill` in try-except blocks for custom error handling.
+
+### Testing
+- Unit tests are provided in the `tests/` directory using a framework like `pytest`.
+- Example test for `get_weather`:
+  ```python
+  def test_get_weather():
+      from skills_library import call_skill
+      result = call_skill("data_retrieval.get_weather", location="Test")
+      assert isinstance(result, dict)
+      assert result["location"] == "Test"
+  ```
+
+---
+
+## Conclusion
+
+This plug-and-play skills library provides a robust, flexible solution for AI agents to access and utilize a wide range of skills. With its simple interface (`call_skill`), dynamic discovery (`list_skills`), and extensibility (`register_custom_skill`), it meets the goal of enabling different agents to integrate skills with minimal effort. The comprehensive documentation and testing ensure usability and reliability, making it an ideal foundation for enhancing agent capabilities across various domains.
+I'll integrate the provided Skills Library documentation with our previous AI Agent System plan to create a comprehensive approach that leverages both architectures.
+
+Comprehensive AI Agent System with Plug-and-Play Skills Library
+Executive Summary
+This document outlines a complete implementation plan for building an advanced AI Agent system that:
+
+Creates specialized AI Agents for specific industries/domains
+Features a modular Skills Library for plug-and-play functionality
+Maintains persistent memory to prevent redundant work
+Enables continuous learning and self-improvement
+Supports multiple model backends (Gemini, DeepSeek, RouterAPI)
+The implementation combines our previous AI Agent architecture with the plug-and-play Skills Library to create a powerful, flexible system capable of solving domain-specific problems while maintaining code reusability and extensibility.
+
+Using Tool
+|
+Create Web Page
+View
+ai_agent_system_with_skills_library
+Click to open
+System Vision and Architecture
+Enhanced System Overview
+The revised system architecture integrates the modular Skills Library directly into the agent framework, providing a standardized way for all agents to access, discover, and utilize capabilities:
+
+aij_system/
+├── agents/                            # Specialized agents
+│   ├── super_agent/                   # Meta-agent managing creation/eval
+│   │   ├── __init__.py
+│   │   ├── agent.py
+│   │   ├── builder.py
+│   │   ├── tool_creator.py
+│   │   ├── evaluator.py
+│   │   └── planner.py
+│   ├── dev_agent/
+│   ├── research_agent/
+│   ├── design_agent/
+│   └── medical_agent/                 # Example: domain-specific agent
+│
+├── memory/                            # Persistent memory handling
+│   ├── agent_memory.py
+│   ├── global_memory.py
+│   └── vector_memory.py
+│
+├── models/                            # Model connectors & fallback logic
+│   ├── base_model.py
+│   ├── gemini_connector.py
+│   ├── deepseek_connector.py
+│   ├── routerapi_connector.py
+│   ├── placeholder_connector.py       # Stub for future APIs
+│   └── model_router.py
+│
+├── skills_library/                    # Plug-and-play Skills Library
+│   ├── __init__.py                    # Core registry and access functions
+│   ├── data_retrieval/                # Category for data-fetching skills
+│   │   ├── __init__.py
+│   │   ├── weather.py
+│   │   └── stock_prices.py
+│   ├── communication/                 # Category for messaging skills
+│   │   ├── __init__.py
+│   │   ├── email.py
+│   │   └── sms.py
+│   ├── analysis/                      # Category for data processing skills
+│   │   ├── __init__.py
+│   │   ├── sentiment_analysis.py
+│   │   └── data_visualization.py
+│   ├── domain/                        # Domain-specific skills
+│   │   ├── __init__.py
+│   │   ├── medical/
+│   │   └── finance/
+│   └── utils/                         # Utility skills
+│       ├── __init__.py
+│       └── formatting.py
+│
+├── orchestrator/                      # Agent comms & coordination
+│   ├── event_bus.py
+│   ├── mission_control.py            # High-level task initiator
+│   └── task_dispatcher.py
+│
+├── interfaces/
+│   ├── api/                           # Optional REST or gRPC API
+│   │   └── main.py
+│   └── cli/                           # Terminal CLI for interactions
+│       └── interface.py
+│
+├── shared/
+│   ├── tools/
+│   ├── prompts/
+│   └── utils/
+│
+├── config/
+│   ├── agents.yaml
+│   ├── skills.yaml                   # Skills configuration file
+│   ├── model_config.yaml
+│   └── environment.py
+│
+├── tests/
+│   ├── unit/
+│   │   ├── test_agents/
+│   │   └── test_skills/
+│   ├── integration/
+│   └── end_to_end/
+│
+├── examples/
+│   ├── run_healthcare_agent.py
+│   ├── run_logistics_agent.py
+│   └── use_skills_library.py
+│
+├── docs/
+│   ├── architecture.md
+│   ├── vision.md
+│   ├── skills_library.md
+│   └── setup_guide.md
+│
+├── scripts/
+│   ├── bootstrap.py                   # Bootstrap agents or skills
+│   └── register_skill.py              # Helper for creating new skills
+│
+├── .env
+├── LICENSE
+├── README.md
+└── requirements.txt
+Integration Strategy
+The Skills Library will be integrated with the agent system through:
+
+BaseAgent Skills Access: Every agent inherits methods to access skills via the Skills Library
+Skill Discovery: Agents can dynamically discover available skills during runtime
+Memory-Skill Interaction: Agent memory records which skills have been used and their effectiveness
+SuperAgent Management: SuperAgent can recommend and assign skills to specialized agents
+Configuration-Driven Skills: Skill assignments can be configured via skills.yaml
+Implementation Plan
+Phase 1: Core Foundation & Skills Library Setup
+Objective: Establish the foundation of both the agent system and Skills Library
+
+Key Deliverables:
+
+Complete folder structure setup
+Functional model router with Gemini, DeepSeek, and RouterAPI connections
+Base Skills Library implementation with registry and access functions
+Initial set of core skills in key categories
+Technical Approach:
+
+Create Initial System Structure:
+
+Copymkdir -p aij_system/{agents,models,memory,skills_library,orchestrator,interfaces,shared,config,tests,examples,docs,scripts}
+touch aij_system/{__init__.py,README.md,requirements.txt,.env}
+Implement Core Skills Library:
+
+Copy# aij_system/skills_library/__init__.py
+
+skills_registry = {}
+
+def register_skill(full_name):
+    """Decorator to register a skill in the library."""
+    def decorator(func):
+        skills_registry[full_name] = func
+        return func
+    return decorator
+
+def call_skill(full_name, *args, **kwargs):
+    """Execute a skill by its full name."""
+    if full_name in skills_registry:
+        return skills_registry[full_name](*args, **kwargs)
+    else:
+        raise ValueError(f"Skill '{full_name}' not found")
+
+def list_skills(category=None):
+    """List all skills, optionally filtered by category."""
+    if category:
+        return [name for name in skills_registry if name.startswith(category + ".")]
+    return list(skills_registry.keys())
+
+def register_custom_skill(full_name, func):
+    """Register a custom skill at runtime."""
+    skills_registry[full_name] = func
+Implement Model Router:
+
+Copy# aij_system/models/model_router.py
+
+class ModelRouter:
+    def __init__(self, config):
+        self.models = {}
+        self.fallback_chain = config.get('fallback_chain', [])
+        self._initialize_models(config.get('models', {}))
+        
+    def _initialize_models(self, model_configs):
+        for model_name, model_config in model_configs.items():
+            connector_class = self._get_connector_class(model_config['type'])
+            self.models[model_name] = connector_class(**model_config)
+    
+    def _get_connector_class(self, model_type):
+        if model_type == "gemini":
+            from .gemini_connector import GeminiConnector
+            return GeminiConnector
+        elif model_type == "deepseek":
+            from .deepseek_connector import DeepSeekConnector
+            return DeepSeekConnector
+        # Add other model types
+             
+    def generate(self, prompt, model_preference=None, **kwargs):
+        if model_preference and model_preference in self.models:
+            try:
+                return self.models[model_preference].generate(prompt, **kwargs)
+            except Exception as e:
+                # Log error and fall back
+                pass
+                
+        # Try fallback chain
+        for model_name in self.fallback_chain:
+            try:
+                return self.models[model_name].generate(prompt, **kwargs)
+            except Exception as e:
+                # Log error and continue
+                continue
+                
+        raise Exception("All models failed to generate a response")
+Create Sample Skills:
+
+Copy# aij_system/skills_library/data_retrieval/weather.py
+
+from aij_system.skills_library import register_skill
+
+@register_skill("data_retrieval.get_weather")
+def get_weather(location, api_key=None):
+    """Get weather data for a given location."""
+    try:
+        import requests
+    except ImportError:
+        raise ImportError("The 'requests' library is required.")
+    
+    # Implementation code here
+    return {"location": location, "temp": "25°C"}
+Create Configuration Files:
+
+Copy# aij_system/config/model_config.yaml
+
+models:
+  gemini:
+    type: gemini
+    api_key: ${GEMINI_API_KEY}
+    timeout: 30
+  deepseek:
+    type: deepseek
+    api_key: ${DEEPSEEK_API_KEY}
+    timeout: 30
+  routerapi:
+    type: routerapi
+    api_key: ${ROUTERAPI_KEY}
+    timeout: 30
+
+fallback_chain:
+  - gemini
+  - deepseek
+  - routerapi
+Copy# aij_system/config/skills.yaml
+
+skill_categories:
+  - data_retrieval
+  - communication
+  - analysis
+  - domain
+  - utils
+
+default_skills:
+  - data_retrieval.get_weather
+  - analysis.sentiment_analysis
+  - utils.formatting
+Phase 2: Base Agent and SuperAgent Integration
+Objective: Create the BaseAgent class with Skills Library integration and implement the SuperAgent
+
+Key Deliverables:
+
+BaseAgent class with skills library access
+SuperAgent implementation
+Agent creation and management framework
+Initial agent memory system
+Technical Approach:
+
+Implement BaseAgent with Skills Integration:
+
+Copy# aij_system/agents/base_agent.py
+
+from aij_system.skills_library import call_skill, list_skills, register_custom_skill
+from aij_system.memory.agent_memory import AgentMemory
+
+class BaseAgent:
+    def __init__(self, name, model_router, config=None):
+        self.name = name
+        self.model_router = model_router
+        self.config = config or {}
+        self.memory = AgentMemory(agent_name=name)
+        self._available_skills = set()
+        self._load_default_skills()
+    
+    def _load_default_skills(self):
+        """Load skills specified in config."""
+        if "skills" in self.config:
+            for skill_name in self.config["skills"]:
+                self._available_skills.add(skill_name)
+        
+    def use_skill(self, skill_name, *args, **kwargs):
+        """Use a skill from the skills library."""
+        # Check if skill is explicitly allowed for this agent
+        if skill_name not in self._available_skills and not skill_name.startswith("utils."):
+            raise ValueError(f"Skill {skill_name} is not available to {self.name}")
+        
+        # Record skill usage in memory
+        self.memory.record_skill_usage(skill_name, args, kwargs)
+        
+        # Call the skill
+        try:
+            result = call_skill(skill_name, *args, **kwargs)
+            self.memory.record_skill_result(skill_name, result, success=True)
+            return result
+        except Exception as e:
+            self.memory.record_skill_result(skill_name, str(e), success=False)
+            raise
+    
+    def discover_skills(self, category=None):
+        """Discover available skills."""
+        return [skill for skill in list_skills(category) 
+               if skill in self._available_skills or skill.startswith("utils.")]
+    
+    def add_custom_skill(self, name, function):
+        """Add a custom skill to the agent."""
+        register_custom_skill(name, function)
+        self._available_skills.add(name)
+        return True
+Implement SuperAgent:
+
+Copy# aij_system/agents/super_agent/agent.py
+
+from aij_system.agents.base_agent import BaseAgent
+
+class SuperAgent(BaseAgent):
+    def __init__(self, name, model_router, config=None):
+        super().__init__(name, model_router, config)
+        
+        from .planner import Planner
+        from .builder import AgentBuilder
+        from .evaluator import AgentEvaluator
+        
+        self.planner = Planner(model_router)
+        self.builder = AgentBuilder(model_router)
+        self.evaluator = AgentEvaluator(model_router)
+        
+        # Add super agent specific skills
+        self._available_skills.add("super_agent.create_agent")
+        self._available_skills.add("super_agent.evaluate_agent")
+    
+    def create_specialized_agent(self, agent_type, requirements):
+        """Create a specialized agent based on requirements."""
+        # Generate configuration for the agent
+        agent_config = self.planner.generate_agent_config(agent_type, requirements)
+        
+        # Build the agent
+        new_agent = self.builder.build_agent(agent_type, agent_config)
+        
+        # Register the agent
+        self.register_agent(new_agent)
+        
+        return new_agent
+    
+    def register_agent(self, agent):
+        """Register an agent with the system."""
+        # Implementation to register agent with orchestrator
+        pass
+Implement Planner Component:
+
+Copy# aij_system/agents/super_agent/planner.py
+
+class Planner:
+    def __init__(self, model_router):
+        self.model_router = model_router
+    
+    def generate_agent_config(self, agent_type, requirements):
+        """Generate configuration for a specialized agent."""
+        prompt = f"""
+        Given the agent type: {agent_type}
+        And the requirements: {requirements}
+        
+        Create a configuration for this agent including:
+        1. Required skills from the skills library
+        2. Memory configuration
+        3. Model preferences
+        
+        Format the output as a JSON object.
+        """
+        
+        config_json = self.model_router.generate(
+            prompt,
+            model_preference="gemini",
+            temperature=0.2,
+            max_tokens=2000
+        )
+        
+        # Parse and validate the configuration
+        return self._parse_and_validate(config_json)
+    
+    def _parse_and_validate(self, config_json):
+        """Parse and validate the configuration."""
+        # Implementation for parsing and validation
+        import json
+        try:
+            config = json.loads(config_json)
+            # Validation logic here
+            return config
+        except json.JSONDecodeError:
+            raise ValueError("Invalid configuration format")
+Phase 3: Memory System Implementation
+Objective: Implement a comprehensive memory system for agents
+
+Key Deliverables:
+
+Agent-specific memory implementation
+Global memory for cross-agent knowledge sharing
+Vector memory for semantic search capabilities
+Memory integration with Skills Library
+Technical Approach:
+
+Implement Agent Memory:
+
+Copy# aij_system/memory/agent_memory.py
+
+import json
+import os
+import sqlite3
+from datetime import datetime
+
+class AgentMemory:
+    def __init__(self, agent_name, memory_dir="./agent_memories"):
+        self.agent_name = agent_name
+        self.memory_dir = memory_dir
+        
+        # Create memory directory if it doesn't exist
+        os.makedirs(memory_dir, exist_ok=True)
+        
+        # Initialize SQLite database
+        self.db_path = os.path.join(memory_dir, f"{agent_name}_memory.db")
+        self._initialize_db()
+    
+    def _initialize_db(self):
+        """Initialize the SQLite database."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        # Create tables
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS skills_usage (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            skill_name TEXT,
+            args TEXT,
+            kwargs TEXT,
+            timestamp DATETIME
+        )
+        ''')
+        
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS skills_results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            skill_name TEXT,
+            result TEXT,
+            success BOOLEAN,
+            timestamp DATETIME
+        )
+        ''')
+        
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS knowledge (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            key TEXT UNIQUE,
+            value TEXT,
+            timestamp DATETIME
+        )
+        ''')
+        
+        conn.commit()
+        conn.close()
+    
+    def record_skill_usage(self, skill_name, args, kwargs):
+        """Record skill usage in memory."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+        INSERT INTO skills_usage (skill_name, args, kwargs, timestamp)
+        VALUES (?, ?, ?, ?)
+        ''', (skill_name, json.dumps(args), json.dumps(kwargs), datetime.now()))
+        
+        conn.commit()
+        conn.close()
+    
+    def record_skill_result(self, skill_name, result, success):
+        """Record skill result in memory."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+        INSERT INTO skills_results (skill_name, result, success, timestamp)
+        VALUES (?, ?, ?, ?)
+        ''', (skill_name, json.dumps(result) if isinstance(result, (dict, list)) else str(result), 
+             success, datetime.now()))
+        
+        conn.commit()
+        conn.close()
+    
+    def store_knowledge(self, key, value):
+        """Store a piece of knowledge."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+        INSERT OR REPLACE INTO knowledge (key, value, timestamp)
+        VALUES (?, ?, ?)
+        ''', (key, json.dumps(value) if isinstance(value, (dict, list)) else str(value), datetime.now()))
+        
+        conn.commit()
+        conn.close()
+    
+    def retrieve_knowledge(self, key):
+        """Retrieve a piece of knowledge."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('SELECT value FROM knowledge WHERE key = ?', (key,))
+        result = cursor.fetchone()
+        
+        conn.close()
+        
+        if result:
+            try:
+                return json.loads(result[0])
+            except json.JSONDecodeError:
+                return result[0]
+        return None
+    
+    def get_skill_history(self, skill_name=None):
+        """Get the history of skill usage."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        if skill_name:
+            cursor.execute('''
+            SELECT u.skill_name, u.args, u.kwargs, r.result, r.success, u.timestamp
+            FROM skills_usage u
+            JOIN skills_results r ON u.skill_name = r.skill_name
+            WHERE u.skill_name = ?
+            ORDER BY u.timestamp DESC
+            ''', (skill_name,))
+        else:
+            cursor.execute('''
+            SELECT u.skill_name, u.args, u.kwargs, r.result, r.success, u.timestamp
+            FROM skills_usage u
+            JOIN skills_results r ON u.skill_name = r.skill_name
+            ORDER BY u.timestamp DESC
+            ''')
+        
+        results = cursor.fetchall()
+        conn.close()
+        
+        return results
+Implement Vector Memory:
+
+Copy# aij_system/memory/vector_memory.py
+
+import faiss
+import numpy as np
+import json
+import os
+
+class VectorMemory:
+    def __init__(self, dimension=768, index_path=None, metadata_path=None):
+        self.dimension = dimension
+        self.index_path = index_path
+        self.metadata_path = metadata_path
+        
+        # Initialize FAISS index
+        if index_path and os.path.exists(index_path):
+            self.index = faiss.read_index(index_path)
+            with open(metadata_path, 'r') as f:
+                self.metadata = json.load(f)
+        else:
+            self.index = faiss.IndexFlatL2(dimension)
+            self.metadata = []
+    
+    def add(self, vector, metadata_dict):
+        """Add a vector with metadata to the index."""
+        # Convert vector to numpy array
+        vector_np = np.array([vector], dtype=np.float32)
+        
+        # Add to index
+        self.index.add(vector_np)
+        
+        # Store metadata
+        self.metadata.append(metadata_dict)
+        
+        # Save to disk if paths are provided
+        self._save_if_paths_exist()
+    
+    def search(self, query_vector, k=5):
+        """Search for similar vectors."""
+        # Convert query to numpy array
+        query_np = np.array([query_vector], dtype=np.float32)
+        
+        # Search index
+        distances, indices = self.index.search(query_np, k)
+        
+        # Return metadata for results
+        results = []
+        for i, idx in enumerate(indices[0]):
+            if idx < len(self.metadata) and idx != -1:
+                result = self.metadata[idx].copy()
+                result['distance'] = float(distances[0][i])
+                results.append(result)
+        
+        return results
+    
+    def _save_if_paths_exist(self):
+        """Save index and metadata if paths are provided."""
+        if self.index_path:
+            faiss.write_index(self.index, self.index_path)
+        
+        if self.metadata_path:
+            with open(self.metadata_path, 'w') as f:
+                json.dump(self.metadata, f)
+Implement Global Memory:
+
+Copy# aij_system/memory/global_memory.py
+
+from .vector_memory import VectorMemory
+import sqlite3
+import os
+import json
+from datetime import datetime
+
+class GlobalMemory:
+    def __init__(self, memory_dir="./global_memory"):
+        os.makedirs(memory_dir, exist_ok=True)
+        
+        # Initialize SQLite database
+        self.db_path = os.path.join(memory_dir, "global_memory.db")
+        self._initialize_db()
+        
+        # Initialize vector memory
+        self.vector_memory = VectorMemory(
+            dimension=768,
+            index_path=os.path.join(memory_dir, "vector_index"),
+            metadata_path=os.path.join(memory_dir, "vector_metadata.json")
+        )
+    
+    def _initialize_db(self):
+        """Initialize the SQLite database."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS shared_knowledge (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            key TEXT UNIQUE,
+            value TEXT,
+            source TEXT,
+            timestamp DATETIME
+        )
+        ''')
+        
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            task_id TEXT UNIQUE,
+            description TEXT,
+            status TEXT,
+            assigned_to TEXT,
+            created_by TEXT,
+            created_at DATETIME,
+            completed_at DATETIME
+        )
+        ''')
+        
+        conn.commit()
+        conn.close()
+    
+    def share_knowledge(self, key, value, source):
+        """Share knowledge globally."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+        INSERT OR REPLACE INTO shared_knowledge (key, value, source, timestamp)
+        VALUES (?, ?, ?, ?)
+        ''', (key, json.dumps(value) if isinstance(value, (dict, list)) else str(value), 
+             source, datetime.now()))
+        
+        conn.commit()
+        conn.close()
+    
+    def get_shared_knowledge(self, key):
+        """Get shared knowledge."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('SELECT value FROM shared_knowledge WHERE key = ?', (key,))
+        result = cursor.fetchone()
+        
+        conn.close()
+        
+        if result:
+            try:
+                return json.loads(result[0])
+            except json.JSONDecodeError:
+                return result[0]
+        return None
+    
+    def create_task(self, task_id, description, created_by, assigned_to=None):
+        """Create a new task."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+        INSERT INTO tasks (task_id, description, status, created_by, assigned_to, created_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+        ''', (task_id, description, 'pending', created_by, assigned_to, datetime.now()))
+        
+        conn.commit()
+        conn.close()
+    
+    def update_task_status(self, task_id, status, completed_at=None):
+        """Update task status."""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        if status == 'completed' and not completed_at:
+            completed_at = datetime.now()
+        
+        cursor.execute('''
+        UPDATE tasks 
+        SET status = ?, completed_at = ?
+        WHERE task_id = ?
+        ''', (status, completed_at, task_id))
+        
+        conn.commit()
+        conn.close()
+Phase 4: Orchestration Layer
+Objective: Create the orchestration layer for agent communication and task management
+
+Key Deliverables:
+
+Event bus for agent communication
+Task dispatcher for assigning tasks to agents
+Mission control for handling user requests
+Integration of Skills Library with orchestration
+Technical Approach:
+
+Implement Event Bus:
+
+Copy# aij_system/orchestrator/event_bus.py
+
+import asyncio
+from typing import Dict, List, Callable, Awaitable
+
+class EventBus:
+    def __init__(self):
+        self.subscribers: Dict[str, List[Callable]] = {}
+        
+    def subscribe(self, event_type: str, callback: Callable[[dict], Awaitable[None]]):
+        """Subscribe to an event type with a callback."""
+        if event_type not in self.subscribers:
+            self.subscribers[event_type] = []
+        self.subscribers[event_type].append(callback)
+        
+    def unsubscribe(self, event_type: str, callback: Callable[[dict], Awaitable[None]]):
+        """Unsubscribe from an event type."""
+        if event_type in self.subscribers and callback in self.subscribers[event_type]:
+            self.subscribers[event_type].remove(callback)
+        
+    async def publish(self, event_type: str, data: dict):
+        """Publish an event to all subscribers."""
+        if event_type in self.subscribers:
+            await asyncio.gather(
+                *[callback(data) for callback in self.subscribers[event_type]]
+            )
+        
+    def list_events(self):
+        """List all event types."""
+        return list(self.subscribers.keys())
+Implement Task Dispatcher:
+
+Copy# aij_system/orchestrator/task_dispatcher.py
+
+from aij_system.memory.global_memory import GlobalMemory
+import uuid
+
+class TaskDispatcher:
+    def __init__(self, event_bus):
+        self.event_bus = event_bus
+        self.global_memory = GlobalMemory()
+        self.agents = {}
+    
+    def register_agent(self, agent):
+        """Register an agent with the dispatcher."""
+        self.agents[agent.name] = agent
+    
+    def unregister_agent(self, agent_name):
+        """Unregister an agent."""
+        if agent_name in self.agents:
+            del self.agents[agent_name]
+    
+    async def create_task(self, description, created_by, task_type=None):
+        """Create a new task."""
+        # Generate a unique task ID
+        task_id = str(uuid.uuid4())
+        
+        # Determine which agent should handle the task
+        assigned_agent = self._select_agent_for_task(task_type)
+        
+        # Create task in global memory
+        self.global_memory.create_task(
+            task_id, 
+            description, 
+            created_by, 
+            assigned_to=assigned_agent.name if assigned_agent else None
+        )
+        
+        # Notify the assigned agent
+        if assigned_agent:
+            await self.event_bus.publish("task_assigned", {
+                "task_id": task_id,
+                "description": description,
+                "assigned_to": assigned_agent.name
+            })
+        
+        return task_id
+    
+    def _select_agent_for_task(self, task_type):
+        """Select an appropriate agent for a task."""
+        if not task_type or not self.agents:
+            return None
+            
+        # Simple matching by agent name/type for now
+        for name, agent in self.agents.items():
+            if task_type.lower() in name.lower():
+                return agent
+        
+        # If no specific match, return first agent as default
+        return next(iter(self.agents.values()))
+    
+    async def complete_task(self, task_id, result):
+        """Mark a task as completed."""
+        self.global_memory.update_task_status(task_id, 'completed')
+        
+        # Notify about task completion
+        await self.event_bus.publish("task_completed", {
+            "task_id": task_id,
+            "result": result
+        })
+Implement Mission Control:
+
+Copy# aij_system/orchestrator/mission_control.py
+
+from .task_dispatcher import TaskDispatcher
+from .event_bus import EventBus
+from aij_system.agents.super_agent.agent import SuperAgent
+from aij_system.models.model_router import ModelRouter
+import yaml
+import asyncio
+
+class MissionControl:
+    def __init__(self, config_path="./config/config.yaml"):
+        # Load configuration
+        with open(config_path, 'r') as f:
+            self.config = yaml.safe_load(f)
+        
+        # Initialize components
+        self.event_bus = EventBus()
+        self.task_dispatcher = TaskDispatcher(self.event_bus)
+        
+        # Initialize model router
+        self.model_router = ModelRouter(self.config.get('models', {}))
+        
+        # Initialize SuperAgent
+        self.super_agent = SuperAgent("super_agent", self.model_router, self.config.get('super_agent', {}))
+        
+        # Register SuperAgent
+        self.task_dispatcher.register_agent(self.super_agent)
+        
+        # Register event handlers
+        self._register_events()
+    
+    def _register_events(self):
+        """Register event handlers."""
+        # Implementation depends on specific events needed
+        pass
+    
+    async def process_user_request(self, prompt):
+        """Process a user request."""
+        # Analyze the prompt to determine task type
+        task_type = self._analyze_prompt(prompt)
+        
+        # Create a task
+        task_id = await self.task_dispatcher.create_task(
+            description=prompt,
+            created_by="user",
+            task_type=task_type
+        )
+        
+        return {
+            "task_id": task_id,
+            "message": f"Your request has been assigned task ID: {task_id}. Processing has begun."
+        }
+    
+    def _analyze_prompt(self, prompt):
+        """Analyze the prompt to determine task type."""
+        # Use model to analyze prompt and determine task type
+        analysis = self.model_router.generate(
+            f"""
+Copy
+Continue 
+Here's the continuation of the implementation for Mission Control's _analyze_prompt method and the remaining components of our AI Agent System with Plug-and-Play Skills Library:
+
+Copy# aij_system/orchestrator/mission_control.py (continued)
+
+def _analyze_prompt(self, prompt):
+    """Analyze the prompt to determine task type."""
+    # Use model to analyze prompt and determine task type
+    analysis = self.model_router.generate(
+        f"""
+        Analyze the following user request and classify it into one of these categories:
+        - research: Information gathering and analysis
+        - development: Coding, implementation, or software development
+        - design: UI/UX design, system architecture, or visual content creation
+        - medical: Healthcare-related tasks or diagnostics
+        - finance: Financial analysis or planning
+        - general: General tasks that don't fit the above categories
+        
+        User request: {prompt}
+        
+        Respond with only the category name.
+        """,
+        model_preference="gemini",
+        temperature=0.1
+    )
+    
+    # Clean up response and return
+    return analysis.strip().lower()
+
+async def get_task_status(self, task_id):
+    """Get the status of a task."""
+    # Query global memory for task status
+    task = self.global_memory.get_task(task_id)
+    if not task:
+        return {"error": "Task not found"}
+    
+    return task
+
+async def list_available_agents(self):
+    """List all available agents."""
+    return list(self.task_dispatcher.agents.keys())
+
+async def create_specialized_agent(self, agent_type, requirements):
+    """Create a specialized agent."""
+    new_agent = await self.super_agent.create_specialized_agent(agent_type, requirements)
+    self.task_dispatcher.register_agent(new_agent)
+    return {"message": f"Created new {agent_type} agent: {new_agent.name}"}
+Phase 5: Domain-Specific Agents and Skills
+Objective: Implement domain-specific agents and related skills
+
+Key Deliverables:
+
+Medical agent specialization
+Healthcare-related skills
+Domain-specific memory patterns
+Integration with the Skills Library
+Technical Approach:
+
+Create Medical Agent:
+
+Copy# aij_system/agents/medical_agent/__init__.py
+
+from aij_system.agents.base_agent import BaseAgent
+
+class MedicalAgent(BaseAgent):
+    def __init__(self, name, model_router, config=None):
+        super().__init__(name, model_router, config)
+        
+        # Load medical-specific skills
+        self._load_medical_skills()
+    
+    def _load_medical_skills(self):
+        """Load medical-specific skills."""
+        medical_skills = [skill for skill in self.discover_skills() 
+                        if skill.startswith("domain.medical.")]
+        
+        for skill in medical_skills:
+            self._available_skills.add(skill)
+    
+    def diagnose(self, symptoms):
+        """Diagnose based on symptoms."""
+        # Use combination of skills and model to diagnose
+        medical_knowledge = self.use_skill("domain.medical.get_knowledge")
+        
+        diagnosis_prompt = f"""
+        Based on the following symptoms: {symptoms}
+        
+        And the following medical knowledge:
+        {medical_knowledge}
+        
+        Provide a preliminary diagnosis with:
+        1. Potential conditions
+        2. Confidence level for each
+        3. Recommended next steps
+        
+        Format as JSON.
+        """
+        
+        diagnosis = self.model_router.generate(
+            diagnosis_prompt,
+            model_preference="gemini",
+            temperature=0.2
+        )
+        
+        # Store in memory
+        self.memory.store_knowledge(f"diagnosis_{hash(symptoms)}", diagnosis)
+        
+        return diagnosis
+    
+    def create_treatment_plan(self, diagnosis, patient_info):
+        """Create treatment plan based on diagnosis."""
+        # Implementation for treatment plan
+        treatment_plan = self.use_skill(
+            "domain.medical.generate_treatment_plan", 
+            diagnosis=diagnosis, 
+            patient_info=patient_info
+        )
+        
+        return treatment_plan
+Create Medical Skills:
+
+Copy# aij_system/skills_library/domain/medical/__init__.py
+
+from aij_system.skills_library import register_skill
+
+@register_skill("domain.medical.get_knowledge")
+def get_medical_knowledge():
+    """Get general medical knowledge."""
+    # In a real implementation, this would query a medical database
+    # or knowledge base specialized for healthcare
+    
+    return {
+        "common_conditions": {
+            "cold": {
+                "symptoms": ["cough", "runny nose", "sore throat"],
+                "treatments": ["rest", "fluids", "over-the-counter medicine"]
+            },
+            "flu": {
+                "symptoms": ["fever", "body aches", "fatigue"],
+                "treatments": ["rest", "fluids", "antiviral medication"]
+            }
+            # More conditions would be included in a real implementation
+        }
+    }
+
+@register_skill("domain.medical.generate_treatment_plan")
+def generate_treatment_plan(diagnosis, patient_info):
+    """Generate a treatment plan based on diagnosis."""
+    # This would be a much more sophisticated implementation in reality
+    
+    # Extract the most likely condition from the diagnosis
+    try:
+        import json
+        diagnosis_data = json.loads(diagnosis) if isinstance(diagnosis, str) else diagnosis
+        condition = diagnosis_data.get("conditions", [])[0]["name"]
+        
+        # Basic treatment lookup
+        treatments = {
+            "cold": ["Rest for 3-5 days", "Drink plenty of fluids", "Take acetaminophen for pain"],
+            "flu": ["Rest for 5-7 days", "Drink fluids", "Take antiviral medication if prescribed"],
+            "allergies": ["Avoid allergens", "Take antihistamines", "Consider allergy shots"],
+        }
+        
+        # Generate plan based on condition and patient info
+        plan = {
+            "condition": condition,
+            "treatments": treatments.get(condition.lower(), ["Consult with a doctor"]),
+            "duration": "7-10 days",
+            "special_instructions": f"Patient age {patient_info.get('age', 'unknown')} - adjust medication accordingly"
+        }
+        
+        return plan
+    except Exception as e:
+        return {"error": str(e), "fallback": "Please consult with a healthcare professional"}
+Phase 6: Interface Development
+Objective: Create user interfaces for interacting with the system
+
+Key Deliverables:
+
+Command-line interface
+API for remote access
+Documentation of available endpoints
+Skills discovery interface
+Technical Approach:
+
+Create Command-Line Interface:
+
+Copy# aij_system/interfaces/cli/interface.py
+
+import argparse
+import asyncio
+import json
+from aij_system.orchestrator.mission_control import MissionControl
+
+class CLI:
+    def __init__(self):
+        self.mission_control = MissionControl()
+        self.parser = self._create_parser()
+    
+    def _create_parser(self):
+        """Create command-line argument parser."""
+        parser = argparse.ArgumentParser(description="AI Agent System CLI")
+        
+        subparsers = parser.add_subparsers(dest="command", help="Command to run")
+        
+        # Process request command
+        process_parser = subparsers.add_parser("process", help="Process a user request")
+        process_parser.add_argument("prompt", help="User request to process")
+        
+        # Get task status command
+        status_parser = subparsers.add_parser("status", help="Get task status")
+        status_parser.add_argument("task_id", help="ID of the task to check")
+        
+        # List agents command
+        subparsers.add_parser("list-agents", help="List available agents")
+        
+        # Create agent command
+        create_parser = subparsers.add_parser("create-agent", help="Create a specialized agent")
+        create_parser.add_argument("agent_type", help="Type of agent to create")
+        create_parser.add_argument("requirements", help="Requirements for the agent")
+        
+        # List skills command
+        skills_parser = subparsers.add_parser("list-skills", help="List available skills")
+        skills_parser.add_argument("--category", help="Filter by category", default=None)
+        
+        return parser
+    
+    async def run(self, args=None):
+        """Run the CLI."""
+        parsed_args = self.parser.parse_args(args)
+        
+        if parsed_args.command == "process":
+            response = await self.mission_control.process_user_request(parsed_args.prompt)
+            print(json.dumps(response, indent=2))
+        
+        elif parsed_args.command == "status":
+            response = await self.mission_control.get_task_status(parsed_args.task_id)
+            print(json.dumps(response, indent=2))
+        
+        elif parsed_args.command == "list-agents":
+            agents = await self.mission_control.list_available_agents()
+            print("Available agents:")
+            for agent in agents:
+                print(f"- {agent}")
+        
+        elif parsed_args.command == "create-agent":
+            response = await self.mission_control.create_specialized_agent(
+                parsed_args.agent_type, parsed_args.requirements
+            )
+            print(json.dumps(response, indent=2))
+        
+        elif parsed_args.command == "list-skills":
+            from aij_system.skills_library import list_skills
+            skills = list_skills(parsed_args.category)
+            
+            print(f"Available skills{' in ' + parsed_args.category if parsed_args.category else ''}:")
+            for skill in skills:
+                print(f"- {skill}")
+        
+        else:
+            self.parser.print_help()
+
+def main():
+    """Main entry point for the CLI."""
+    cli = CLI()
+    asyncio.run(cli.run())
+
+if __name__ == "__main__":
+    main()
+Create API Interface:
+
+Copy# aij_system/interfaces/api/main.py
+
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from aij_system.orchestrator.mission_control import MissionControl
+import asyncio
+
+app = FastAPI(title="AI Agent System API")
+mission_control = MissionControl()
+
+class RequestModel(BaseModel):
+    prompt: str
+
+class AgentModel(BaseModel):
+    agent_type: str
+    requirements: str
+
+@app.post("/process")
+async def process_request(request: RequestModel):
+    """Process a user request."""
+    response = await mission_control.process_user_request(request.prompt)
+    return response
+
+@app.get("/task/{task_id}")
+async def get_task_status(task_id: str):
+    """Get the status of a task."""
+    response = await mission_control.get_task_status(task_id)
+    if "error" in response:
+        raise HTTPException(status_code=404, detail=response["error"])
+    return response
+
+@app.get("/agents")
+async def list_agents():
+    """List all available agents."""
+    agents = await mission_control.list_available_agents()
+    return {"agents": agents}
+
+@app.post("/agents")
+async def create_agent(agent: AgentModel):
+    """Create a specialized agent."""
+    response = await mission_control.create_specialized_agent(agent.agent_type, agent.requirements)
+    return response
+
+@app.get("/skills")
+async def list_skills(category: str = None):
+    """List all available skills."""
+    from aij_system.skills_library import list_skills
+    skills = list_skills(category)
+    return {"skills": skills, "category": category}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+Phase 7: Testing and Documentation
+Objective: Create comprehensive tests and documentation
+
+Key Deliverables:
+
+Unit tests for core components
+Integration tests for agent interactions
+End-to-end tests for full workflows
+Documentation for system architecture and usage
+Technical Approach:
+
+Create Unit Tests:
+
+Copy# aij_system/tests/unit/test_skills/test_skills_registry.py
+
+import unittest
+from aij_system.skills_library import register_skill, call_skill, list_skills, register_custom_skill
+
+class TestSkillsRegistry(unittest.TestCase):
+    def setUp(self):
+        # Clear any existing skills for testing
+        from aij_system.skills_library import skills_registry
+        self._original_registry = skills_registry.copy()
+        skills_registry.clear()
+        
+        # Register test skills
+        @register_skill("test.add")
+        def add(a, b):
+            return a + b
+        
+        @register_skill("test.multiply")
+        def multiply(a, b):
+            return a * b
+    
+    def tearDown(self):
+        # Restore original registry
+        from aij_system.skills_library import skills_registry
+        skills_registry.clear()
+        skills_registry.update(self._original_registry)
+    
+    def test_register_skill(self):
+        """Test skill registration."""
+        from aij_system.skills_library import skills_registry
+        self.assertIn("test.add", skills_registry)
+        self.assertIn("test.multiply", skills_registry)
+    
+    def test_call_skill(self):
+        """Test calling a skill."""
+        result = call_skill("test.add", 2, 3)
+        self.assertEqual(result, 5)
+        
+        result = call_skill("test.multiply", 2, 3)
+        self.assertEqual(result, 6)
+    
+    def test_list_skills(self):
+        """Test listing skills."""
+        all_skills = list_skills()
+        self.assertIn("test.add", all_skills)
+        self.assertIn("test.multiply", all_skills)
+        
+        test_skills = list_skills("test")
+        self.assertIn("test.add", test_skills)
+        self.assertIn("test.multiply", test_skills)
+        
+        # Should be empty for non-existent category
+        empty_skills = list_skills("nonexistent")
+        self.assertEqual(len(empty_skills), 0)
+    
+    def test_register_custom_skill(self):
+        """Test registering a custom skill."""
+        def custom_skill(x):
+            return x * 2
+            
+        register_custom_skill("test.custom", custom_skill)
+        
+        result = call_skill("test.custom", 5)
+        self.assertEqual(result, 10)
+Create Integration Tests:
+
+Copy# aij_system/tests/integration/test_agent_skills.py
+
+import unittest
+import asyncio
+from aij_system.agents.base_agent import BaseAgent
+from aij_system.models.model_router import ModelRouter
+
+class MockModelRouter:
+    def generate(self, prompt, model_preference=None, **kwargs):
+        return "Mock response"
+
+class TestAgentSkills(unittest.TestCase):
+    def setUp(self):
+        # Create a mock model router
+        self.model_router = MockModelRouter()
+        
+        # Create a test agent
+        self.agent = BaseAgent("test_agent", self.model_router, {"skills": ["test.add", "test.multiply"]})
+        
+        # Register test skills
+        from aij_system.skills_library import register_skill
+        
+        @register_skill("test.add")
+        def add(a, b):
+            return a + b
+        
+        @register_skill("test.multiply")
+        def multiply(a, b):
+            return a * b
+    
+    def test_agent_skills_access(self):
+        """Test that agent can access allowed skills."""
+        # Agent should be able to use the skills it has access to
+        result = self.agent.use_skill("test.add", 2, 3)
+        self.assertEqual(result, 5)
+        
+        result = self.agent.use_skill("test.multiply", 2, 3)
+        self.assertEqual(result, 6)
+    
+    def test_agent_skills_restriction(self):
+        """Test that agent cannot access disallowed skills."""
+        # Register a skill the agent doesn't have access to
+        from aij_system.skills_library import register_skill
+        
+        @register_skill("test.divide")
+        def divide(a, b):
+            return a / b
+        
+        # Agent should not be able to use skills it doesn't have access to
+        with self.assertRaises(ValueError):
+            self.agent.use_skill("test.divide", 6, 2)
+    
+    def test_agent_skills_discovery(self):
+        """Test skill discovery."""
+        skills = self.agent.discover_skills()
+        self.assertIn("test.add", skills)
+        self.assertIn("test.multiply", skills)
+        self.assertNotIn("test.divide", skills)
+    
+    def test_agent_custom_skill(self):
+        """Test adding a custom skill to agent."""
+        def custom_skill(x):
+            return x * 2
+            
+        self.agent.add_custom_skill("test.custom", custom_skill)
+        
+        result = self.agent.use_skill("test.custom", 5)
+        self.assertEqual(result, 10)
+Create Documentation:
+
+Copy# aij_system/docs/architecture.md
+
+# AI Agent System Architecture
+
+This document outlines the architecture of the AI Agent System with integrated Skills Library.
+
+## Overview
+
+The system consists of several key components:
+
+1. **Agents**: Specialized entities that perform tasks using skills and AI models
+2. **Skills Library**: A modular collection of reusable functions
+3. **Memory System**: Persistent storage for agent knowledge
+4. **Model Connections**: Interfaces to various AI models
+5. **Orchestration**: Communication and task management
+
+## Agents Architecture
+
+### BaseAgent
+
+All agents inherit from the `BaseAgent` class, which provides:
+
+- Access to the Skills Library
+- Memory integration
+- Model routing
+- Configuration management
+
+### SuperAgent
+
+The SuperAgent is responsible for:
+
+- Creating specialized agents
+- Evaluating agent performance
+- Managing system-wide tasks
+
+### Specialized Agents
+
+Domain-specific agents like `MedicalAgent` extend the BaseAgent with:
+
+- Domain-specific skills access
+- Specialized methods
+- Custom memory patterns
+
+## Skills Library
+
+The Skills Library provides a plug-and-play mechanism for agents to access functionality:
+
+- **Registration**: Skills are registered using decorators
+- **Discovery**: Agents can discover available skills
+- **Execution**: Skills are executed via a unified interface
+- **Extension**: New skills can be added dynamically
+
+## Memory System
+
+The memory system provides:
+
+- **Agent Memory**: Personal knowledge for each agent
+- **Global Memory**: Shared knowledge across agents
+- **Vector Memory**: Semantic search capabilities
+
+## Model Connections
+
+The system supports multiple AI models:
+
+- Gemini
+- DeepSeek
+- RouterAPI
+- Others (via extensible connectors)
+
+## Orchestration
+
+The orchestration layer provides:
+
+- **Event Bus**: Communication between agents
+- **Task Dispatcher**: Assignment of tasks to agents
+- **Mission Control**: High-level system management
+
+## Interfaces
+
+The system offers two interfaces:
+
+- **CLI**: Command-line interface for direct interaction
+- **API**: REST API for remote access
+Phase 8: Deployment and Workflow Example
+Objective: Demonstrate the system with a complete workflow
+
+Key Deliverables:
+
+Example healthcare workflow
+Deployment script
+End-to-end demonstration
+Performance evaluation
+Technical Approach:
+
+Create Healthcare Example:
+
+Copy# aij_system/examples/run_healthcare_agent.py
+
+import asyncio
+from aij_system.orchestrator.mission_control import MissionControl
+
+async def main():
+    # Initialize the system
+    mission_control = MissionControl()
+    
+    print("Creating healthcare agent...")
+    response = await mission_control.create_specialized_agent(
+        "medical",
+        "Create a medical agent specialized in diagnosis and treatment planning"
+    )
+    print(response)
+    
+    print("\nProcessing healthcare request...")
+    task_response = await mission_control.process_user_request(
+        "I need a patient management system for a small clinic that handles patient " +
+        "records, appointments, and basic diagnosis assistance."
+    )
+    
+    task_id = task_response["task_id"]
+    print(f"Task created with ID: {task_id}")
+    
+    # Wait for task to complete (in a real system, this would use async notifications)
+    print("\nWaiting for task to complete...")
+    for _ in range(10):
+        status = await mission_control.get_task_status(task_id)
+        if status.get("status") == "completed":
+            print("Task completed!")
+            print("\nResults:")
+            print(status.get("result", "No result available"))
+            break
+            
+        print("Task still in progress...")
+        await asyncio.sleep(2)
+    else:
+        print("Task took too long to complete!")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+Create Deployment Script:
+
+Copy# aij_system/scripts/bootstrap.py
+
+import os
+import sys
+import yaml
+import argparse
+
+def create_directory_structure():
+    """Create the directory structure for the system."""
+    directories = [
+        "aij_system/agents/super_agent",
+        "aij_system/agents/dev_agent",
+        "aij_system/agents/research_agent",
+        "aij_system/agents/design_agent",
+        "aij_system/agents/medical_agent",
+        "aij_system/memory",
+        "aij_system/models",
+        "aij_system/skills_library/data_retrieval",
+        "aij_system/skills_library/communication",
+        "aij_system/skills_library/analysis",
+        "aij_system/skills_library/domain/medical",
+        "aij_system/skills_library/domain/finance",
+        "aij_system/skills_library/utils",
+        "aij_system/orchestrator",
+        "aij_system/interfaces/api",
+        "aij_system/interfaces/cli",
+        "aij_system/shared/tools",
+        "aij_system/shared/prompts",
+        "aij_system/shared/utils",
+        "aij_system/config",
+        "aij_system/tests/unit/test_agents",
+        "aij_system/tests/unit/test_skills",
+        "aij_system/tests/integration",
+        "aij_system/tests/end_to_end",
+        "aij_system/examples",
+        "aij_system/docs",
+        "aij_system/scripts",
+    ]
+    
+    for directory in directories:
+        os.makedirs(directory, exist_ok=True)
+        init_file = os.path.join(directory, "__init__.py")
+        if not os.path.exists(init_file):
+            with open(init_file, "w") as f:
+                f.write("# Auto-generated __init__.py\n")
+    
+    print("Directory structure created successfully.")
+
+def create_config_files():
+    """Create default configuration files."""
+    # Model configuration
+    model_config = {
+        "models": {
+            "gemini": {
+                "type": "gemini",
+                "api_key": "${GEMINI_API_KEY}",
+                "timeout": 30
+            },
+            "deepseek": {
+                "type": "deepseek",
+                "api_key": "${DEEPSEEK_API_KEY}",
+                "timeout": 30
+            },
+            "routerapi": {
+                "type": "routerapi",
+                "api_key": "${ROUTERAPI_KEY}",
+                "timeout": 30
+            }
+        },
+        "fallback_chain": ["gemini", "deepseek", "routerapi"]
+    }
+    
+    # Skills configuration
+    skills_config = {
+        "skill_categories": [
+            "data_retrieval",
+            "communication",
+            "analysis",
+            "domain",
+            "utils"
+        ],
+        "default_skills": [
+            "data_retrieval.get_weather",
+            "analysis.sentiment_analysis",
+            "utils.formatting"
+        ]
+    }
+    
+    # Agent configuration
+    agent_config = {
+        "super_agent": {
+            "skills": ["super_agent.create_agent", "super_agent.evaluate_agent"]
+        },
+        "dev_agent": {
+            "skills": ["analysis.code_analysis"]
+        },
+        "research_agent": {
+            "skills": ["data_retrieval.web_search"]
+        },
+        "medical_agent": {
+            "skills": ["domain.medical.get_knowledge", "domain.medical.generate_treatment_plan"]
+        }
+    }
+    
+    # Write configurations to files
+    with open("aij_system/config/model_config.yaml", "w") as f:
+        yaml.dump(model_config, f)
+    
+    with open("aij_system/config/skills.yaml", "w") as f:
+        yaml.dump(skills_config, f)
+    
+    with open("aij_system/config/agents.yaml", "w") as f:
+        yaml.dump(agent_config, f)
+    
+    # Create .env template
+    with open("aij_system/.env.template", "w") as f:
+        f.write("GEMINI_API_KEY=your_gemini_api_key_here\n")
+        f.write("DEEPSEEK_API_KEY=your_deepseek_api_key_here\n")
+        f.write("ROUTERAPI_KEY=your_routerapi_key_here\n")
+    
+    print("Configuration files created successfully.")
+
+def create_requirements():
+    """Create requirements file."""
+    with open("aij_system/requirements.txt", "w") as f:
+        f.write("fastapi>=0.95.0\n")
+        f.write("uvicorn>=0.22.0\n")
+        f.write("pyyaml>=6.0\n")
+        f.write("faiss-cpu>=1.7.4\n")  # Use faiss-gpu for GPU support
+        f.write("numpy>=1.24.3\n")
+        f.write("python-dotenv>=1.0.0\n")
+        f.write("SQLAlchemy>=2.0.0\n")
+        f.write("pytest>=7.3.1\n")
+        f.write("requests>=2.28.2\n")
+    
+    print("Requirements file created successfully.")
+
+def create_readme():
+    """Create README file."""
+    with open("aij_system/README.md", "w") as f:
+        f.write("# AI Agent System with Skills Library\n\n")
+        f.write("This system provides a framework for creating AI agents with a plug-and-play skills library.\n\n")
+        f.write("## Setup\n\n")
+        f.write("1. Create a virtual environment:\n")
+        f.write("   ```bash\n")
+        f.write("   python -m venv venv\n")
+        f.write("   source venv/bin/activate  # On Windows: venv\\Scripts\\activate\n")
+        f.write("   ```\n\n")
+        f.write("2. Install dependencies:\n")
+        f.write("   ```bash\n")
+        f.write("   pip install -r requirements.txt\n")
+        f.write("   ```\n\n")
+        f.write("3. Set up environment variables:\n")
+        f.write("   ```bash\n")
+        f.write("   cp .env.template .env\n")
+        f.write("   # Edit .env with your API keys\n")
+        f.write("   ```\n\n")
+        f.write("4. Run the CLI:\n")
+        f.write("   ```bash\n")
+        f.write("   python -m aij_system.interfaces.cli.interface\n")
+        f.write("   ```\n\n")
+        f.write("5. Or run the API server:\n")
+        f.write("   ```bash\n")
+        f.write("   python -m aij_system.interfaces.api.main\n")
+        f.write("   ```\n")
+    
+    print("README file created successfully.")
+
+def main():
+    parser = argparse.ArgumentParser(description="Bootstrap the AI Agent System")
+    parser.add_argument("--all", action="store_true", help="Run all steps")
+    parser.add_argument("--structure", action="store_true", help="Create directory structure")
+    parser.add_argument("--config", action="store_true", help="Create config files")
+    parser.add_argument("--requirements", action="store_true", help="Create requirements file")
+    parser.add_argument("--readme", action="store_true", help="Create README file")
+    
+    args = parser.parse_args()
+    
+    # If no args or --all, run everything
+    run_all = args.all or not (args.structure or args.config or args.requirements or args.readme)
+    
+    if run_all or args.structure:
+        create_directory_structure()
+    
+    if run_all or args.config:
+        create_config_files()
+    
+    if run_all or args.requirements:
+        create_requirements()
+    
+    if run_all or args.readme:
+        create_readme()
+    
+    print("Bootstrap completed successfully.")
+
+if __name__ == "__main__":
+    main()
+Conclusion and Development Guidelines
+Implementation Best Practices
+Modular Development
+
+Develop each component in isolation with clear interfaces
+Use dependency injection for better testability
+Create abstract base classes for key components
+Configuration Management
+
+Use YAML files for configuration
+Support environment variable overrides
+Implement configuration validation
+Testing Strategy
+
+Write unit tests for individual components
+Create integration tests for component interactions
+Implement end-to-end tests for workflows
+Security Considerations
+
+Store API keys securely using environment variables
+Implement rate limiting for model API calls
+Validate all inputs from external sources
+Error Handling
+
+Implement comprehensive logging
+Create graceful fallback mechanisms
+Use structured error reporting
+Skills Development Guidelines
+Skill Creation
+
+Each skill should have a single responsibility
+Use docstrings to document inputs, outputs, and behavior
+Handle expected errors gracefully
+Return structured data (dictionaries, objects)
+Skill Categories
+
+Group related skills into logical categories
+Maintain consistent naming conventions
+Consider domain-specific versus general-purpose skills
+Skill Testing
+
+Write unit tests for each skill
+Test with both valid and invalid inputs
+Mock external dependencies
+Skill Documentation
+
+Document expected inputs and outputs
+Include examples of usage
+List dependencies and requirements
+Explain any side effects
+Development Roadmap
+Phase 1 (Days 1-2): Core Foundation
+
+Create directory structure
+Implement Skills Library core
+Set up model router
+Phase 2 (Days 3-4): Agent Framework
+
+Implement BaseAgent
+Create SuperAgent
+Set up memory system
+Phase 3 (Days 5-6): Orchestration
+
+Implement event bus
+Create task dispatcher
+Develop mission control
+Phase 4 (Days 7-8): Domain Specialization
+
+Create medical agent
+Implement healthcare skills
+Test specialized workflows
+**
+
+Copy
+Continue 
+Let me continue with the Development Roadmap and remaining sections of the comprehensive implementation plan:
+
+Phase 5 (Days 9-10): Interfaces
+
+Build CLI interface
+Implement API endpoints
+Create documentation
+Phase 6 (Days 11-12): Testing & Quality Assurance
+
+Write unit tests
+Create integration tests
+Set up CI/CD pipeline
+Phase 7 (Days 13-14): Optimization & Refinement
+
+Performance profiling
+Memory usage optimization
+Error handling improvements
+Phase 8 (Days 15-16): Final Deployment
+
+Create deployment script
+Complete documentation
+Build example workflows
+Implementation Challenges and Solutions
+Using Tool
+|
+Create Web Page
+View
+ai_agent_system_challenges
+Click to open
+Implementation Challenges and Solutions
+During the development of the AI Agent System with Skills Library, several challenges may arise. This section outlines common obstacles and their recommended solutions.
+
+1. Model Integration Complexity
+Challenge: Integrating multiple AI models (Gemini, DeepSeek, RouterAPI) with varying APIs, response formats, and capabilities.
+
+Solutions:
+
+Abstraction Layer: Implement a comprehensive model router with standardized interfaces
+Response Normalization: Create parsers that convert various model outputs to a consistent format
+Capability Detection: Build runtime detection of model capabilities to route requests appropriately
+Graceful Fallbacks: Implement cascading fallback mechanisms when preferred models are unavailable
+Copy# Example of Response Normalization
+class ResponseNormalizer:
+    def normalize(self, model_name, raw_response):
+        """Convert model-specific response to standard format."""
+        if model_name == "gemini":
+            return self._normalize_gemini(raw_response)
+        elif model_name == "deepseek":
+            return self._normalize_deepseek(raw_response)
+        # Add others as needed
+            
+    def _normalize_gemini(self, response):
+        # Implementation for Gemini-specific normalization
+        pass
+        
+    def _normalize_deepseek(self, response):
+        # Implementation for DeepSeek-specific normalization
+        pass
+2. Memory System Scalability
+Challenge: As agents accumulate knowledge, the memory system can become a bottleneck, especially for vector searches and cross-agent sharing.
+
+Solutions:
+
+Tiered Memory: Implement hot/warm/cold storage tiers for different access patterns
+Memory Pruning: Create algorithms to identify and archive less relevant information
+Distributed Storage: Use distributed databases for larger deployments
+Memory Indexing: Build efficient indexing strategies for faster retrieval
+Copy# Example of Memory Pruning
+class MemoryManager:
+    def prune_memories(self, agent_memory, max_entries=1000, min_relevance=0.3):
+        """Prune least relevant memories when limit is reached."""
+        if len(agent_memory.get_all_entries()) > max_entries:
+            entries = agent_memory.get_all_entries_with_relevance()
+            to_remove = [e for e in entries if e['relevance'] < min_relevance]
+            for entry in to_remove:
+                agent_memory.archive_entry(entry['id'])
+3. Skills Library Extensibility
+Challenge: Ensuring the Skills Library remains extensible while maintaining compatibility and avoiding conflicts.
+
+Solutions:
+
+Versioning System: Implement skill versioning to allow multiple versions to coexist
+Dependency Management: Track and manage dependencies between skills
+Validation Framework: Create validators to ensure new skills meet requirements
+Documentation Generation: Automatically generate documentation from skill code
+Copy# Example of Skill Versioning
+def register_skill(full_name, version="1.0.0"):
+    """Decorator to register a versioned skill in the library."""
+    def decorator(func):
+        versioned_name = f"{full_name}@{version}"
+        skills_registry[versioned_name] = func
+        # Also register as latest version
+        skills_registry[full_name] = func
+        return func
+    return decorator
+4. Agent Coordination
+Challenge: Managing communication and coordination between multiple specialized agents.
+
+Solutions:
+
+Event-Driven Architecture: Implement a robust event bus for asynchronous communication
+State Machine: Define clear agent states and transitions
+Transaction Management: Ensure atomic operations across multiple agents
+Deadlock Prevention: Implement timeouts and circuit breakers
+Copy# Example of State Machine Implementation
+class AgentStateMachine:
+    STATES = ["idle", "planning", "executing", "waiting", "error"]
+    
+    def __init__(self, agent):
+        self.agent = agent
+        self.current_state = "idle"
+        self.state_handlers = {
+            "idle": self._handle_idle,
+            "planning": self._handle_planning,
+            "executing": self._handle_executing,
+            "waiting": self._handle_waiting,
+            "error": self._handle_error
+        }
+        
+    async def transition(self, new_state, context=None):
+        """Transition agent to a new state."""
+        if new_state in self.STATES:
+            old_state = self.current_state
+            self.current_state = new_state
+            await self.state_handlers[new_state](context, old_state)
+        else:
+            raise ValueError(f"Invalid state: {new_state}")
+5. Error Handling and Recovery
+Challenge: Building resilient error handling across distributed components.
+
+Solutions:
+
+Centralized Error Registry: Track all errors in a central registry
+Retry Mechanisms: Implement exponential backoff and jitter for retries
+Graceful Degradation: Allow system to operate with reduced functionality when components fail
+Self-Healing: Create monitoring and automatic recovery mechanisms
+Copy# Example of Retry Mechanism
+import time
+import random
+
+def retry_with_exponential_backoff(max_retries=3, base_delay=1):
+    """Decorator for retrying functions with exponential backoff."""
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            retries = 0
+            while True:
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    retries += 1
+                    if retries > max_retries:
+                        raise e
+                    
+                    # Calculate delay with jitter
+                    delay = base_delay * (2 ** (retries - 1))
+                    jitter = random.uniform(0, 0.1 * delay)
+                    time.sleep(delay + jitter)
+        return wrapper
+    return decorator
+6. System Performance
+Challenge: Maintaining performance as the system scales with more agents and tasks.
+
+Solutions:
+
+Asynchronous Processing: Use async/await for I/O-bound operations
+Resource Pooling: Implement thread and connection pools
+Lazy Loading: Only load components when needed
+Caching Strategies: Implement multi-level caching for frequently accessed data
+Copy# Example of Lazy Loading
+class LazySkillLoader:
+    def __init__(self):
+        self._loaded_categories = set()
+        self._skills = {}
+    
+    def get_skill(self, skill_name):
+        """Get a skill, loading its category if needed."""
+        category = skill_name.split('.')[0]
+        if category not in self._loaded_categories:
+            self._load_category(category)
+        
+        return self._skills.get(skill_name)
+    
+    def _load_category(self, category):
+        """Load all skills in a category."""
+        # Implementation to dynamically import skills
+        self._loaded_categories.add(category)
+7. Testing Complex Behaviors
+Challenge: Testing systems with many components and complex interactions.
+
+Solutions:
+
+Behavior-Driven Testing: Focus on system behaviors rather than implementation details
+Simulation Environment: Create simplified simulation environments for testing
+Component Mocking: Use mocks to isolate components during testing
+Scenario Testing: Build comprehensive test scenarios that exercise the system
+Copy# Example of Simulation Environment
+class AgentSimulationEnvironment:
+    def __init__(self):
+        self.agents = {}
+        self.global_time = 0
+        self.events = []
+        
+    def add_agent(self, agent):
+        """Add an agent to the simulation."""
+        self.agents[agent.name] = agent
+        
+    def add_event(self, time, event_type, data):
+        """Schedule an event to occur at a specific time."""
+        self.events.append((time, event_type, data))
+        self.events.sort()  # Sort by time
+        
+    def run_until(self, end_time):
+        """Run simulation until specified time."""
+        while self.global_time < end_time and self.events:
+            event_time, event_type, data = self.events.pop(0)
+            self.global_time = event_time
+            self._process_event(event_type, data)
+8. Documentation Maintenance
+Challenge: Keeping documentation synchronized with rapidly evolving code.
+
+Solutions:
+
+Code-Generated Docs: Generate documentation directly from code comments
+Living Documentation: Implement tests that verify documentation examples work
+Visualization Tools: Create tools to visualize system architecture
+Interactive Tutorials: Build interactive tutorials for system components
+Copy# Example of Code-Generated Documentation
+def generate_skill_docs():
+    """Generate markdown documentation for all skills."""
+    from aij_system.skills_library import list_skills, skills_registry
+    
+    doc_path = "aij_system/docs/skills"
+    os.makedirs(doc_path, exist_ok=True)
+    
+    # Generate index
+    with open(f"{doc_path}/index.md", "w") as f:
+        f.write("# Skills Library Documentation\n\n")
+        
+        categories = set()
+        for skill in list_skills():
+            categories.add(skill.split('.')[0])
+        
+        f.write("## Categories\n\n")
+        for category in sorted(categories):
+            f.write(f"- [{category.capitalize()}]({category}.md)\n")
+    
+    # Generate category pages
+    for category in categories:
+        skills = list_skills(category)
+        
+        with open(f"{doc_path}/{category}.md", "w") as f:
+            f.write(f"# {category.capitalize()} Skills\n\n")
+            
+            for skill in sorted(skills):
+                func = skills_registry[skill]
+                f.write(f"## {skill}\n\n")
+                
+                # Extract docstring
+                if func.__doc__:
+                    f.write(f"{func.__doc__.strip()}\n\n")
+                
+                # Function signature
+                import inspect
+                signature = inspect.signature(func)
+                f.write(f"```python\n{skill}{signature}\n```\n\n")
+By anticipating these challenges and implementing the suggested solutions during the development process, teams can build a more robust and maintainable AI Agent System.
+
+API Reference and Integration Guide
+To facilitate integration of the AI Agent System with existing applications or services, we provide a comprehensive API reference and integration guide.
+
+REST API Endpoints
+1. Process User Request
+Endpoint: POST /process
+
+Description: Process a user request and create a task for execution.
+
+Request Body:
+
+Copy{
+  "prompt": "I need a patient management system for a small clinic"
+}
+Response:
+
+Copy{
+  "task_id": "550e8400-e29b-41d4-a716-446655440000",
+  "message": "Your request has been assigned task ID: 550e8400-e29b-41d4-a716-446655440000. Processing has begun."
+}
+2. Get Task Status
+Endpoint: GET /task/{task_id}
+
+Description: Retrieve the status of a task by its ID.
+
+Response:
+
+Copy{
+  "task_id": "550e8400-e29b-41d4-a716-446655440000",
+  "description": "I need a patient management system for a small clinic",
+  "status": "completed",
+  "assigned_to": "dev_agent",
+  "created_by": "user",
+  "created_at": "2025-04-26T14:30:00Z",
+  "completed_at": "2025-04-26T14:35:12Z",
+  "result": {
+    "system_design": "...",
+    "code_samples": "...",
+    "recommendations": "..."
+  }
+}
+3. List Agents
+Endpoint: GET /agents
+
+Description: Get a list of all available agents.
+
+Response:
+
+Copy{
+  "agents": ["super_agent", "dev_agent", "research_agent", "medical_agent"]
+}
+4. Create Agent
+Endpoint: POST /agents
+
+Description: Create a new specialized agent.
+
+Request Body:
+
+Copy{
+  "agent_type": "logistics",
+  "requirements": "Create a logistics agent capable of route optimization and inventory management"
+}
+Response:
+
+Copy{
+  "message": "Created new logistics agent: logistics_agent_1",
+  "agent_id": "logistics_agent_1"
+}
+5. List Skills
+Endpoint: GET /skills
+
+Description: List all available skills, optionally filtered by category.
+
+Query Parameters:
+
+category (optional): Filter skills by category
+Response:
+
+Copy{
+  "skills": ["data_retrieval.get_weather", "analysis.sentiment_analysis", "domain.medical.get_knowledge"],
+  "category": null
+}
+Integration Examples
+Python Client Integration
+Copyimport requests
+import json
+
+class AIJSystemClient:
+    def __init__(self, base_url="http://localhost:8000"):
+        self.base_url = base_url
+    
+    def process_request(self, prompt):
+        """Send a request to the AI Agent System."""
+        response = requests.post(
+            f"{self.base_url}/process",
+            json={"prompt": prompt}
+        )
+        return response.json()
+    
+    def get_task_status(self, task_id):
+        """Get the status of a task."""
+        response = requests.get(f"{self.base_url}/task/{task_id}")
+        return response.json()
+    
+    def create_agent(self, agent_type, requirements):
+        """Create a specialized agent."""
+        response = requests.post(
+            f"{self.base_url}/agents",
+            json={"agent_type": agent_type, "requirements": requirements}
+        )
+        return response.json()
+    
+    def list_skills(self, category=None):
+        """List available skills."""
+        params = {}
+        if category:
+            params["category"] = category
+        
+        response = requests.get(f"{self.base_url}/skills", params=params)
+        return response.json()
+
+# Example usage
+client = AIJSystemClient()
+
+# Process a request
+response = client.process_request("Create a data analysis report for our Q1 sales")
+task_id = response["task_id"]
+print(f"Task initiated with ID: {task_id}")
+
+# Check task status
+import time
+for _ in range(10):
+    status = client.get_task_status(task_id)
+    if status.get("status") == "completed":
+        print("Task completed!")
+        print(json.dumps(status.get("result", {}), indent=2))
+        break
+    print("Task in progress...")
+    time.sleep(5)
+JavaScript/Node.js Integration
+Copyconst axios = require('axios');
+
+class AIJSystemClient {
+  constructor(baseUrl = 'http://localhost:8000') {
+    this.baseUrl = baseUrl;
+  }
+  
+  async processRequest(prompt) {
+    const response = await axios.post(`${this.baseUrl}/process`, { prompt });
+    return response.data;
+  }
+  
+  async getTaskStatus(taskId) {
+    const response = await axios.get(`${this.baseUrl}/task/${taskId}`);
+    return response.data;
+  }
+  
+  async createAgent(agentType, requirements) {
+    const response = await axios.post(`${this.baseUrl}/agents`, {
+      agent_type: agentType,
+      requirements
+    });
+    return response.data;
+  }
+  
+  async listSkills(category = null) {
+    const params = {};
+    if (category) {
+      params.category = category;
+    }
+    
+    const response = await axios.get(`${this.baseUrl}/skills`, { params });
+    return response.data;
+  }
+}
+
+// Example usage
+const client = new AIJSystemClient();
+
+async function runExample() {
+  try {
+    // Process a request
+    const response = await client.processRequest('Design a logo for our tech startup');
+    const taskId = response.task_id;
+    console.log(`Task initiated with ID: ${taskId}`);
+    
+    // Check task status
+    let completed = false;
+    for (let i = 0; i < 10 && !completed; i++) {
+      await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5 seconds
+      
+      const status = await client.getTaskStatus(taskId);
+      if (status.status === 'completed') {
+        console.log('Task completed!');
+        console.log(JSON.stringify(status.result, null, 2));
+        completed = true;
+      } else {
+        console.log('Task in progress...');
+      }
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+}
+
+runExample();
+Sample Skills Development Guide
+To help developers create new skills for the system, here's a step-by-step guide with examples:
+
+1. Creating a Basic Skill
+Step 1: Choose a Category
+First, determine which category your skill belongs to. Common categories include:
+
+data_retrieval: Skills that fetch external data
+analysis: Skills that process or analyze data
+communication: Skills for sending messages or data
+domain.{specific_domain}: Domain-specific skills
+utils: Utility functions usable by any agent
+Step 2: Create the Skill File
+Create a new Python file in the appropriate category directory.
+
+Copy# aij_system/skills_library/data_retrieval/stock_price.py
+
+from aij_system.skills_library import register_skill
+import requests
+
+@register_skill("data_retrieval.get_stock_price")
+def get_stock_price(ticker_symbol):
+    """
+    Get the current stock price for a given ticker symbol.
+    
+    Args:
+        ticker_symbol (str): The stock ticker symbol (e.g., AAPL, MSFT).
+        
+    Returns:
+        dict: Stock information including current price, change, and volume.
+        
+    Raises:
+        ValueError: If the ticker symbol is invalid.
+        ConnectionError: If the data source is unavailable.
+    """
+    try:
+        # This is a mock implementation - in a real scenario, you would use a
+        # financial API like Alpha Vantage, Yahoo Finance, etc.
+        url = f"https://api.example.com/stocks/{ticker_symbol}"
+        response = requests.get(url)
+        
+        if response.status_code == 404:
+            raise ValueError(f"Invalid ticker symbol: {ticker_symbol}")
+        elif response.status_code != 200:
+            raise ConnectionError(f"Failed to fetch data: {response.status_code}")
+            
+        data = response.json()
+        
+        return {
+            "symbol": ticker_symbol,
+            "price": data["current_price"],
+            "change": data["price_change"],
+            "change_percent": data["price_change_percent"],
+            "volume": data["volume"],
+            "updated_at": data["last_update_time"]
+        }
+    except requests.RequestException as e:
+        raise ConnectionError(f"Connection error: {str(e)}")
+Step 3: Register the Skill
+Make sure the skill is registered by importing it in the category's __init__.py file:
+
+Copy# aij_system/skills_library/data_retrieval/__init__.py
+
+from . import weather
+from . import stock_price
+# Import other skills in this category
+Step 4: Create Unit Tests
+Copy# aij_system/tests/unit/test_skills/test_data_retrieval.py
+
+import unittest
+from unittest.mock import patch, MagicMock
+from aij_system.skills_library import call_skill
+
+class TestStockPriceSkill(unittest.TestCase):
+    @patch('aij_system.skills_library.data_retrieval.stock_price.requests.get')
+    def test_get_stock_price_success(self, mock_get):
+        # Mock successful response
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "current_price": 150.25,
+            "price_change": 2.75,
+            "price_change_percent": 1.85,
+            "volume": 28500000,
+            "last_update_time": "2025-04-26T10:30:00Z"
+        }
+        mock_get.return_value = mock_response
+        
+        # Call the skill
+        result = call_skill("data_retrieval.get_stock_price", "AAPL")
+        
+        # Verify results
+        self.assertEqual(result["symbol"], "AAPL")
+        self.assertEqual(result["price"], 150.25)
+        self.assertEqual(result["change"], 2.75)
+        
+    @patch('aij_system.skills_library.data_retrieval.stock_price.requests.get')
+    def test_get_stock_price_invalid_ticker(self, mock_get):
+        # Mock 404 response for invalid ticker
+        mock_response = MagicMock()
+        mock_response.status_code = 404
+        mock_get.return_value = mock_response
+        
+        # Check that ValueError is raised
+        with self.assertRaises(ValueError):
+            call_skill("data_retrieval.get_stock_price", "INVALID")
+2. Creating a Complex Skill with Dependencies
+For more complex skills that depend on external libraries or other skills:
+
+Copy# aij_system/skills_library/analysis/sentiment_analysis.py
+
+from aij_system.skills_library import register_skill
+
+@register_skill("analysis.sentiment_analysis")
+def analyze_sentiment(text):
+    """
+    Analyze the sentiment of provided text.
+    
+    Args:
+        text (str): The text to analyze.
+        
+    Returns:
+        dict: Sentiment analysis result containing:
+            - sentiment: 'positive', 'neutral', or 'negative'
+            - score: Numerical score from -1 (negative) to 1 (positive)
+            - confidence: Confidence level from 0 to 1
+            
+    Raises:
+        ImportError: If required libraries are not installed.
+    """
+    try:
+        # Try to import required libraries
+        import nltk
+        from nltk.sentiment.vader import SentimentIntensityAnalyzer
+    except ImportError:
+        raise ImportError(
+            "This skill requires the 'nltk' library. "
+            "Install it with: pip install nltk"
+        )
+        
+    # Download necessary NLTK data if not already present
+    try:
+        nltk.data.find('vader_lexicon')
+    except LookupError:
+        nltk.download('vader_lexicon')
+    
+    # Create analyzer
+    analyzer = SentimentIntensityAnalyzer()
+    
+    # Get scores
+    scores = analyzer.polarity_scores(text)
+    
+    # Determine overall sentiment
+    if scores['compound'] >= 0.05:
+        sentiment = 'positive'
+    elif scores['compound'] <= -0.05:
+        sentiment = 'negative'
+    else:
+        sentiment = 'neutral'
+    
+    return {
+        'sentiment': sentiment,
+        'score': scores['compound'],
+        'confidence': abs(scores['compound']),
+        'details': {
+            'positive': scores['pos'],
+            'neutral': scores['neu'],
+            'negative': scores['neg']
+        }
+    }
+3. Creating Skills with Agent Memory Integration
+For skills that utilize the agent's memory system:
+
+Copy# aij_system/skills_library/domain/medical/patient_history.py
+
+from aij_system.skills_library import register_skill
+
+@register_skill("domain.medical.retrieve_patient_history")
+def retrieve_patient_history(agent_memory, patient_id):
+    """
+    Retrieve a patient's medical history from agent memory.
+    
+    Args:
+        agent_memory: The agent's memory system.
+        patient_id (str): The patient's unique identifier.
+        
+    Returns:
+        dict: Patient history data.
+    """
+    # Try to retrieve from memory first
+    history_key = f"patient_history_{patient_id}"
+    history = agent_memory.retrieve_knowledge(history_key)
+    
+    if history:
+        return history
+    
+    # If not in memory, could retrieve from external system
+    # (In a real implementation, this might query a database)
+    
+    # For demonstration, we'll create a mock history
+    mock_history = {
+        "patient_id": patient_id,
+        "visits": [
+            {
+                "date": "2025-01-15",
+                "reason": "Annual checkup",
+                "diagnoses": [],
+                "prescriptions": []
+            },
+            {
+                "date": "2024-08-22",
+                "reason": "Flu symptoms",
+                "diagnoses": ["Influenza A"],
+                "prescriptions": ["Oseltamivir"]
+            }
+        ],
+        "allergies": ["Penicillin"],
+        "chronic_conditions": []
+    }
+    
+    # Store in memory for future retrieval
+    agent_memory.store_knowledge(history_key, mock_history)
+    
+    return mock_history
+Final Recommendations and Next Steps
+In conclusion, the AI Agent System with Plug-and-Play Skills Library provides a powerful framework for building domain-specific AI solutions that avoid redundancy and enable continuous improvement. To ensure successful implementation, we recommend:
+
+Phased Approach: Follow the outlined phase plan to build the system incrementally
+Start Small: Begin with a few core skills and specialized agents before expanding
+Continuous Testing: Implement thorough testing from the beginning
+Documentation First: Document components as they are built to ensure maintainability
+User Feedback Loop: Establish a mechanism for collecting feedback on agent performance
+Next Steps for Implementation
+Core Framework Setup:
+
+Create the directory structure
+Implement the Skills Library core
+Set up the basic model router
+Create initial configuration files
+Skill Development:
+
+Build a small set of core skills in each category
+Create comprehensive tests for these skills
+Generate documentation for the skills
+Agent Framework:
+
+Implement the BaseAgent class
+Create the SuperAgent architecture
+Develop the memory system
+Connect agents to the Skills Library
+System Integration:
+
+Build the orchestration layer
+Implement interfaces
+Create deployment scripts
+Develop example applications
+By following this implementation plan and addressing potential challenges proactively, your team will be able to build a robust, flexible AI Agent system that achieves your goal of solving domain-specific problems while avoiding redundancy.
+
+Copy
+
+supermeanImprove.txt
+5.13 KB
+Let's improve the system with the suggestions from the file attached but not breaking our current progress. Add settings on the front end for user logout
+I'll analyze the SuperAgent interface shown in the image and incorporate improvements from the supermeanImprove.txt file while preserving our current progress. I'll focus on enhancing the system and adding user logout settings to the frontend.
+
+Using Tool
+|
+Read
+https://page.genspark.site/get_upload_url/17a8f790802922cc2c16b25a2788b63bd2e2b59ccdee5ec631132958721820f1/default/da893bc4-2730-404d-8e98-d533aa815d80
+View
+Using Tool
+|
+Understand Images
+https://page.genspark.site/v1/base64_upload/145363dcdf08961b52ee02a930d91fe8
+View
+SuperAgent System Enhancement Plan
+Based on the current SuperAgent interface and the enhancement blueprint from the file, I've developed a comprehensive improvement plan that preserves our current progress while implementing key upgrades. This plan focuses on both technical enhancements and frontend improvements, including user logout settings.
+
+1. Frontend Enhancements with User Settings and Logout
+Using Tool
+|
+Create Web Page
+View
+superagent_enhanced_interface
+Click to open
+Frontend Changes
+User Settings & Logout Panel
+
+Add a user profile icon in the top right corner of the sidebar
+Implement a dropdown menu with:
+User profile management
+System preferences
+Appearance settings
+Logout button with confirmation dialog
+Session management (timeout settings)
+Command Center Dashboard
+
+Enhance the current dashboard with:
+Mission status cards showing active/completed tasks
+Agent performance metrics
+Resource usage indicators
+Task progress visualization
+Visual Timeline for Multi-Phase Projects
+
+Add a Gantt-chart style timeline view for complex projects
+Allow drag-and-drop rescheduling of tasks
+Color-coding for priority levels
+2. Core System Enhancements
+2.1 SuperAgent Meta-Planning Module
+Copy# aij_system/agents/super_agent/meta_planner.py
+
+class MetaPlanner:
+    def __init__(self, model_router, memory_manager):
+        self.model_router = model_router
+        self.memory_manager = memory_manager
+        self.multi_phase_plans = {}
+        
+    def decompose_complex_task(self, task_description, time_estimate):
+        """Break down complex tasks into multi-phase plans"""
+        # For tasks requiring more than one session
+        if time_estimate > 60:  # Minutes
+            plan_id = f"plan_{hash(task_description)}"
+            
+            # Generate phases using model
+            phases = self._generate_phases(task_description)
+            
+            # Store the multi-phase plan
+            self.multi_phase_plans[plan_id] = {
+                "description": task_description,
+                "phases": phases,
+                "current_phase": 0,
+                "status": "planned",
+                "created_at": datetime.now(),
+                "priority": self._calculate_priority(task_description)
+            }
+            
+            # Persist to memory
+            self.memory_manager.store_knowledge(
+                f"multi_phase_plan_{plan_id}", 
+                self.multi_phase_plans[plan_id]
+            )
+            
+            return plan_id
+        else:
+            # Handle as regular task
+            return None
+    
+    def _generate_phases(self, task_description):
+        """Generate logical phases for a complex task"""
+        prompt = f"""
+        Break down this complex task into sequential phases:
+        {task_description}
+        
+        For each phase, specify:
+        1. Phase name
+        2. Expected deliverables
+        3. Required skills
+        4. Estimated time (in minutes)
+        5. Dependencies on other phases
+        
+        Format as JSON array of phase objects.
+        """
+        
+        phases_json = self.model_router.generate(
+            prompt, 
+            model_preference="gemini",
+            temperature=0.2
+        )
+        
+        # Parse and validate JSON
+        import json
+        try:
+            phases = json.loads(phases_json)
+            return phases
+        except json.JSONDecodeError:
+            # Fallback to simplified phases
+            return [
+                {
+                    "name": "Phase 1: Research",
+                    "deliverables": ["Information summary"],
+                    "skills": ["research"],
+                    "time_estimate": 20,
+                    "dependencies": []
+                },
+                {
+                    "name": "Phase 2: Implementation",
+                    "deliverables": ["Working prototype"],
+                    "skills": ["development"],
+                    "time_estimate": 30,
+                    "dependencies": [0]
+                }
+            ]
+    
+    def _calculate_priority(self, task_description):
+        """Calculate priority based on task content"""
+        # Implementation for priority scoring
+        # Higher score = higher priority
+        keywords = {
+            "urgent": 10,
+            "critical": 10,
+            "important": 7,
+            "soon": 5,
+            "deadline": 8
+        }
+        
+        score = 3  # Default priority
+        for keyword, value in keywords.items():
+            if keyword in task_description.lower():
+                score += value
+                
+        return min(score, 10)  # Cap at 10
+    
+    def get_next_phase(self, plan_id):
+        """Get the next phase of a plan to execute"""
+        if plan_id in self.multi_phase_plans:
+            plan = self.multi_phase_plans[plan_id]
+            if plan["current_phase"] < len(plan["phases"]):
+                next_phase = plan["phases"][plan["current_phase"]]
+                return next_phase
+        return None
+    
+    def update_phase_status(self, plan_id, phase_index, status, results=None):
+        """Update the status of a phase"""
+        if plan_id in self.multi_phase_plans:
+            if phase_index < len(self.multi_phase_plans[plan_id]["phases"]):
+                self.multi_phase_plans[plan_id]["phases"][phase_index]["status"] = status
+                
+                if results:
+                    self.multi_phase_plans[plan_id]["phases"][phase_index]["results"] = results
+                
+                # If phase completed, move to next phase
+                if status == "completed":
+                    self.multi_phase_plans[plan_id]["current_phase"] += 1
+                    
+                    # If all phases completed, mark plan as completed
+                    if self.multi_phase_plans[plan_id]["current_phase"] >= len(self.multi_phase_plans[plan_id]["phases"]):
+                        self.multi_phase_plans[plan_id]["status"] = "completed"
+                
+                # Update in memory
+                self.memory_manager.store_knowledge(
+                    f"multi_phase_plan_{plan_id}", 
+                    self.multi_phase_plans[plan_id]
+                )
+                
+                return True
+        return False
+    
+    def get_prioritized_plans(self, limit=5):
+        """Get prioritized list of plans"""
+        # Sort by priority and return top N
+        sorted_plans = sorted(
+            self.multi_phase_plans.items(),
+            key=lambda x: x[1]["priority"],
+            reverse=True
+        )
+        
+        return sorted_plans[:limit]
+2.2 Skill Evolution Engine
+Copy# aij_system/skills_library/skill_evaluator.py
+
+class SkillEvaluator:
+    def __init__(self, memory_manager):
+        self.memory_manager = memory_manager
+        self.evaluation_threshold = 0.7  # Min acceptable score
+        self.improvement_threshold = 3    # Number of failures to trigger improvement
+        
+    def record_skill_usage(self, agent_id, skill_name, success, metrics=None):
+        """Record a skill usage instance with success/failure"""
+        # Get current skill metrics for this agent
+        skill_metrics = self._get_agent_skill_metrics(agent_id)
+        
+        # Initialize if first time using this skill
+        if skill_name not in skill_metrics:
+            skill_metrics[skill_name] = {
+                "usage_count": 0,
+                "success_count": 0,
+                "failure_count": 0,
+                "average_score": 0.0,
+                "last_used": None,
+                "improvement_flag": False,
+                "usage_history": []
+            }
+        
+        # Update metrics
+        skill_metrics[skill_name]["usage_count"] += 1
+        skill_metrics[skill_name]["last_used"] = datetime.now().isoformat()
+        
+        if success:
+            skill_metrics[skill_name]["success_count"] += 1
+        else:
+            skill_metrics[skill_name]["failure_count"] += 1
+            
+        # Calculate new average score (0-1)
+        success_rate = skill_metrics[skill_name]["success_count"] / skill_metrics[skill_name]["usage_count"]
+        skill_metrics[skill_name]["average_score"] = success_rate
+        
+        # Add specific metrics if provided
+        if metrics:
+            usage_record = {
+                "timestamp": datetime.now().isoformat(),
+                "success": success,
+                "metrics": metrics
+            }
+            skill_metrics[skill_name]["usage_history"].append(usage_record)
+        
+        # Check if skill needs improvement
+        self._check_skill_performance(skill_metrics[skill_name])
+        
+        # Save updated metrics
+        self._save_agent_skill_metrics(agent_id, skill_metrics)
+        
+        return success_rate
+    
+    def _get_agent_skill_metrics(self, agent_id):
+        """Get skill metrics for an agent from memory"""
+        metrics_key = f"agent_{agent_id}_skill_metrics"
+        metrics = self.memory_manager.retrieve_knowledge(metrics_key)
+        return metrics if metrics else {}
+    
+    def _save_agent_skill_metrics(self, agent_id, metrics):
+        """Save skill metrics for an agent to memory"""
+        metrics_key = f"agent_{agent_id}_skill_metrics"
+        self.memory_manager.store_knowledge(metrics_key, metrics)
+    
+    def _check_skill_performance(self, skill_data):
+        """Check if a skill needs improvement"""
+        # Flag if success rate below threshold and used enough times
+        min_usage = 5  # Require some usage before evaluation
+        
+        if skill_data["usage_count"] >= min_usage:
+            if skill_data["average_score"] < self.evaluation_threshold:
+                if skill_data["failure_count"] >= self.improvement_threshold:
+                    skill_data["improvement_flag"] = True
+                    return True
+        
+        return False
+    
+    def get_skills_needing_improvement(self, agent_id=None):
+        """Get list of skills flagged for improvement"""
+        if agent_id:
+            # For specific agent
+            metrics = self._get_agent_skill_metrics(agent_id)
+            return [
+                skill_name for skill_name, data in metrics.items() 
+                if data.get("improvement_flag", False)
+            ]
+        else:
+            # Across all agents
+            from os import listdir
+            from os.path import isfile, join
+            
+            # Implementation would depend on how memory is actually stored
+            # This is a simplified example
+            all_skills_needing_improvement = []
+            all_agents = ["agent_1", "agent_2"]  # Would be dynamically retrieved
+            
+            for agent_id in all_agents:
+                agent_skills = self.get_skills_needing_improvement(agent_id)
+                all_skills_needing_improvement.extend(agent_skills)
+            
+            return list(set(all_skills_needing_improvement))  # Unique list
+    
+    def get_skill_performance_report(self):
+        """Generate performance report for all skills"""
+        # Implementation for aggregating performance data
+        # This would create a comprehensive report on skill performance
+        report = {
+            "top_performing": [],
+            "underperforming": [],
+            "unused": [],
+            "overall_success_rate": 0.0
+        }
+        
+        # Logic to populate the report
+        
+        return report
+2.3 Agent Collaboration Intelligence
+Copy# aij_system/orchestrator/collaboration_bus.py
+
+import asyncio
+from typing import Dict, List, Callable, Awaitable, Any
+
+class CollaborationBus:
+    def __init__(self, event_bus):
+        self.event_bus = event_bus
+        self.collaboration_sessions = {}
+        self.agent_skills_cache = {}
+        
+    async def initialize(self):
+        """Initialize collaboration bus and register event handlers"""
+        # Register for agent events
+        self.event_bus.subscribe("agent_registered", self._handle_agent_registered)
+        self.event_bus.subscribe("agent_unregistered", self._handle_agent_unregistered)
+        
+        # Register collaboration events
+        self.event_bus.subscribe("request_info", self._handle_request_info)
+        self.event_bus.subscribe("share_context", self._handle_share_context)
+        self.event_bus.subscribe("suggest_next_task", self._handle_suggest_next_task)
+        
+    async def _handle_agent_registered(self, data):
+        """Handle new agent registration"""
+        agent_id = data.get("agent_id")
+        agent_type = data.get("agent_type")
+        skills = data.get("skills", [])
+        
+        if agent_id:
+            self.agent_skills_cache[agent_id] = {
+                "type": agent_type,
+                "skills": skills
+            }
+    
+    async def _handle_agent_unregistered(self, data):
+        """Handle agent unregistration"""
+        agent_id = data.get("agent_id")
+        if agent_id in self.agent_skills_cache:
+            del self.agent_skills_cache[agent_id]
+    
+    async def request_information(self, from_agent_id, query, target_agent_id=None):
+        """Request information from another agent"""
+        request_id = f"req_{hash(f'{from_agent_id}_{query}_{datetime.now().isoformat()}')}"
+        
+        # If target not specified, find best agent based on skills
+        if not target_agent_id:
+            target_agent_id = self._find_best_agent_for_query(query)
+        
+        # If still no target, broadcast to all agents
+        if not target_agent_id:
+            await self.event_bus.publish("request_info", {
+                "request_id": request_id,
+                "from_agent_id": from_agent_id,
+                "query": query,
+                "broadcast": True
+            })
+        else:
+            # Direct request to specific agent
+            await self.event_bus.publish("request_info", {
+                "request_id": request_id,
+                "from_agent_id": from_agent_id,
+                "to_agent_id": target_agent_id,
+                "query": query,
+                "broadcast": False
+            })
+        
+        return request_id
+    
+    async def _handle_request_info(self, data):
+        """Handle information request"""
+        if data.get("broadcast", False):
+            # Logic for broadcast handling
+            pass
+        else:
+            to_agent_id = data.get("to_agent_id")
+            # Logic for direct request handling
+            pass
+    
+    async def share_context(self, from_agent_id, context_data, target_agent_ids=None):
+        """Share context with other agents"""
+        context_id = f"ctx_{hash(f'{from_agent_id}_{datetime.now().isoformat()}')}"
+        
+        await self.event_bus.publish("share_context", {
+            "context_id": context_id,
+            "from_agent_id": from_agent_id,
+            "to_agent_ids": target_agent_ids,
+            "context_data": context_data,
+            "broadcast": target_agent_ids is None
+        })
+        
+        return context_id
+    
+    async def _handle_share_context(self, data):
+        """Handle shared context"""
+        # Implementation for receiving shared context
+        pass
+    
+    async def suggest_next_task(self, from_agent_id, suggestion, to_agent_id):
+        """Suggest next task to another agent"""
+        suggestion_id = f"sug_{hash(f'{from_agent_id}_{to_agent_id}_{datetime.now().isoformat()}')}"
+        
+        await self.event_bus.publish("suggest_next_task", {
+            "suggestion_id": suggestion_id,
+            "from_agent_id": from_agent_id,
+            "to_agent_id": to_agent_id,
+            "suggestion": suggestion
+        })
+        
+        return suggestion_id
+    
+    async def _handle_suggest_next_task(self, data):
+        """Handle task suggestion"""
+        # Implementation for receiving task suggestion
+        pass
+    
+    def _find_best_agent_for_query(self, query):
+        """Find the best agent to handle a query based on skills"""
+        # Simple keyword matching for now
+        query = query.lower()
+        best_match = None
+        best_score = 0
+        
+        for agent_id, info in self.agent_skills_cache.items():
+            score = 0
+            
+            # Check agent type match
+            agent_type = info["type"].lower()
+            if agent_type in query:
+                score += 5
+            
+            # Check skills match
+            for skill in info["skills"]:
+                skill_name = skill.lower()
+                if skill_name in query:
+                    score += 2
+            
+            if score > best_score:
+                best_score = score
+                best_match = agent_id
+        
+        return best_match if best_score > 0 else None
+    
+    def start_collaboration_session(self, agents):
+        """Start a collaboration session between agents"""
+        session_id = f"session_{hash(str(agents) + datetime.now().isoformat())}"
+        self.collaboration_sessions[session_id] = {
+            "agents": agents,
+            "created_at": datetime.now(),
+            "messages": []
+        }
+        return session_id
+    
+    def add_collaboration_message(self, session_id, from_agent, message):
+        """Add a message to a collaboration session"""
+        if session_id in self.collaboration_sessions:
+            self.collaboration_sessions[session_id]["messages"].append({
+                "timestamp": datetime.now(),
+                "from_agent": from_agent,
+                "message": message
+            })
+            return True
+        return False
+    
+    def get_collaboration_history(self, session_id):
+        """Get the history of a collaboration session"""
+        if session_id in self.collaboration_sessions:
+            return self.collaboration_sessions[session_id]
+        return None
+3. User Settings & Logout Implementation
+Copy# aij_system/interfaces/api/user_management.py
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from pydantic import BaseModel
+from datetime import datetime, timedelta
+import jwt
+from typing import Optional
+
+# Models
+class UserSettings(BaseModel):
+    theme: str = "light"
+    notifications_enabled: bool = True
+    session_timeout_minutes: int = 60
+    auto_save: bool = True
+    agent_view_mode: str = "card"
+    language: str = "en"
+
+class User(BaseModel):
+    username: str
+    email: str
+    settings: UserSettings = UserSettings()
+    last_login: Optional[datetime] = None
+
+# Router
+router = APIRouter()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+# Secret key for JWT
+SECRET_KEY = "your-secret-key"  # Would be in environment variables in production
+ALGORITHM = "HS256"
+
+# Mock user storage (would be a database in production)
+users_db = {
+    "admin": {
+        "username": "admin",
+        "email": "admin@example.com",
+        "hashed_password": "hashed_password",  # Would be properly hashed
+        "settings": UserSettings().dict(),
+        "last_login": datetime.now()
+    }
+}
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None or username not in users_db:
+            raise credentials_exception
+    except jwt.PyJWTError:
+        raise credentials_exception
+    
+    user = users_db[username]
+    return user
+
+@router.get("/settings")
+async def get_user_settings(current_user: dict = Depends(get_current_user)):
+    """Get current user settings"""
+    return current_user["settings"]
+
+@router.put("/settings")
+async def update_user_settings(settings: UserSettings, current_user: dict = Depends(get_current_user)):
+    """Update user settings"""
+    users_db[current_user["username"]]["settings"] = settings.dict()
+    return {"status": "success", "settings": settings}
+
+@router.post("/logout")
+async def logout(current_user: dict = Depends(get_current_user)):
+    """Log out the current user"""
+    # In a real implementation, you might:
+    # 1. Add the token to a blocklist
+    # 2. Clear any server-side sessions
+    # 3. Update the user's last_logout timestamp
+    
+    return {"status": "success", "message": "Logged out successfully"}
+Copy// frontend/src/components/UserSettingsPanel.js
+import React, { useState, useEffect } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { 
+  UserIcon, CogIcon, LogoutIcon, SunIcon, MoonIcon, BellIcon, 
+  BellSlashIcon, ClockIcon, LanguageIcon, SaveIcon
+} from '@heroicons/react/outline';
+
+const UserSettingsPanel = ({ isOpen, onClose, onLogout }) => {
+  const [settings, setSettings] = useState({
+    theme: 'light',
+    notifications_enabled: true,
+    session_timeout_minutes: 60,
+    auto_save: true,
+    agent_view_mode: 'card',
+    language: 'en'
+  });
+  
+  const [isSaving, setIsSaving] = useState(false);
+  
+  useEffect(() => {
+    // Fetch user settings from API when panel opens
+    if (isOpen) {
+      fetchUserSettings();
+    }
+  }, [isOpen]);
+  
+  const fetchUserSettings = async () => {
+    try {
+      const response = await fetch('/api/settings', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setSettings(data);
+      }
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+    }
+  };
+  
+  const saveSettings = async () => {
+    setIsSaving(true);
+    
+    try {
+      const response = await fetch('/api/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(settings)
+      });
+      
+      if (response.ok) {
+        // Apply theme changes immediately
+        document.documentElement.classList.toggle('dark', settings.theme === 'dark');
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error saving settings:', error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+  
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      
+      // Clear local storage and cookies
+      localStorage.removeItem('token');
+      
+      // Call the onLogout callback to update UI state
+      onLogout();
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+  
+  return (
+    <Transition show={isOpen} as={React.Fragment}>
+      <Dialog 
+        as="div" 
+        className="fixed inset-0 z-50 overflow-y-auto"
+        onClose={onClose}
+      >
+        <div className="min-h-screen px-4 text-center">
+          <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+          
+          <span className="inline-block h-screen align-middle" aria-hidden="true">&#8203;</span>
+          
+          <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-gray-800 shadow-xl rounded-2xl">
+            <Dialog.Title 
+              as="h3" 
+              className="text-lg font-medium leading-6 text-gray-900 dark:text-white flex items-center"
+            >
+              <UserIcon className="w-5 h-5 mr-2" />
+              User Settings
+            </Dialog.Title>
+            
+            <div className="mt-4 space-y-6">
+              {/* Theme Setting */}
+              <div>
+                <label className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    {settings.theme === 'light' ? 
+                      <SunIcon className="w-5 h-5 mr-2" /> : 
+                      <MoonIcon className="w-5 h-5 mr-2" />
+                    }
+                    <span>Theme</span>
+                  </div>
+                  <select 
+                    value={settings.theme} 
+                    onChange={(e) => setSettings({...settings, theme: e.target.value})}
+                    className="ml-2 p-2 border rounded dark:bg-gray-700 dark:text-white"
+                  >
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                    <option value="system">System</option>
+                  </select>
+                </label>
+              </div>
+              
+              {/* Notifications Setting */}
+              <div>
+                <label className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    {settings.notifications_enabled ? 
+                      <BellIcon className="w-5 h-5 mr-2" /> : 
+                      <BellSlashIcon className="w-5 h-5 mr-2" />
+                    }
+                    <span>Notifications</span>
+                  </div>
+                  <label className="inline-flex items-center">
+                    <input 
+                      type="checkbox" 
+                      checked={settings.notifications_enabled}
+                      onChange={(e) => setSettings({...settings, notifications_enabled: e.target.checked})}
+                      className="form-checkbox h-5 w-5"
+                    />
+                  </label>
+                </label>
+              </div>
+              
+              {/* Session Timeout Setting */}
+              <div>
+                <label className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <ClockIcon className="w-5 h-5 mr-2" />
+                    <span>Session Timeout (minutes)</span>
+                  </div>
+                  <input 
+                    type="number" 
+                    min="5"
+                    max="240"
+                    value={settings.session_timeout_minutes}
+                    onChange={(e) => setSettings({...settings, session_timeout_minutes: parseInt(e.target.value)})}
+                    className="ml-2 p-2 border rounded w-16 dark:bg-gray-700 dark:text-white"
+                  />
+                </label>
+              </div>
+              
+              {/* Auto Save Setting */}
+              <div>
+                <label className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <SaveIcon className="w-5 h-5 mr-2" />
+                    <span>Auto Save</span>
+                  </div>
+                  <label className="inline-flex items-center">
+                    <input 
+                      type="checkbox" 
+                      checked={settings.auto_save}
+                      onChange={(e) => setSettings({...settings, auto_save: e.target.checked})}
+                      className="form-checkbox h-5 w-5"
+                    />
+                  </label>
+                </label>
+              </div>
+              
+              {/* Language Setting */}
+              <div>
+                <label className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <LanguageIcon className="w-5 h-5 mr-2" />
+                    <span>Language</span>
+                  </div>
+                  <select 
+                    value={settings.language} 
+                    onChange={(e) => setSettings({...settings, language: e.target.value})}
+                    className="ml-2 p-2 border rounded dark:bg-gray-700 dark:text-white"
+                  >
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="zh">中文</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            
+            <div className="mt-6 flex justify-between">
+              <button
+                type="button"
+                className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
+                onClick={handleLogout}
+              >
+                <LogoutIcon className="w-5 h-5 mr-2" />
+                Logout
+              </button>
+              
+              <div>
+                <button
+                  type="button"
+                  className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-transparent rounded-md hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-500 mr-2"
+                  onClick={onClose}
+                >
+                  Cancel
+                </button>
+                
+                <button
+                  type="button"
+                  className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                  onClick={saveSettings}
+                  disabled={isSaving}
+                >
+                  {isSaving ? 'Saving...' : 'Save Settings'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
+  );
+};
+
+export default UserSettingsPanel;
+4. Web Search Skill Implementation
+Copy# aij_system/skills_library/data_retrieval/web_search.py
+
+from aij_system.skills_library import register_skill
+import requests
+import os
+from typing import List, Dict, Any, Optional
+
+@register_skill("data_retrieval.web_search")
+def web_search(query: str, num_results: int = 5, api_key: Optional[str] = None) -> List[Dict[str, Any]]:
+    """
+    Search the web for information on a given query.
+    
+    Args:
+        query (str): The search query.
+        num_results (int): Number of results to return (default: 5).
+        api_key (str, optional): API key for search service. If not provided, will use environment variable.
+    
+    Returns:
+        List[Dict[str, Any]]: List of search results, each with title, snippet, and url.
+        
+    Raises:
+        ImportError: If required libraries are not installed.
+        ConnectionError: If the search service cannot be reached.
+        ValueError: If the API key is not provided and not in environment variables.
+    """
+    try:
+        # Use SerpAPI for web search
+        from serpapi import GoogleSearch
+    except ImportError:
+        raise ImportError(
+            "This skill requires the 'google-search-results' library. "
+            "Install it with: pip install google-search-results"
+        )
+    
+    # Get API key
+    api_key = api_key or os.environ.get("SERPAPI_KEY")
+    if not api_key:
+        raise ValueError(
+            "No API key provided for web search. "
+            "Either pass api_key parameter or set SERPAPI_KEY environment variable."
+        )
+    
+    try:
+        # Perform search
+        search_params = {
+            "q": query,
+            "api_key": api_key,
+            "num": num_results
+        }
+        
+        search = GoogleSearch(search_params)
+        results
+Copy
+Continue 
+Let me continue with the implementation of the Web Search Skill and the remaining components for our enhanced SuperAgent system.
+
+Copy# aij_system/skills_library/data_retrieval/web_search.py (continued)
+
+        search = GoogleSearch(search_params)
+        results = search.get_dict()
+        
+        # Extract relevant information
+        organic_results = results.get("organic_results", [])
+        processed_results = []
+        
+        for result in organic_results[:num_results]:
+            processed_results.append({
+                "title": result.get("title", ""),
+                "snippet": result.get("snippet", ""),
+                "url": result.get("link", ""),
+                "source": "web_search"
+            })
+        
+        # If no results from organic search, check if there are featured snippets
+        if not processed_results and "answer_box" in results:
+            answer = results["answer_box"]
+            processed_results.append({
+                "title": answer.get("title", "Featured Result"),
+                "snippet": answer.get("snippet", answer.get("answer", "")),
+                "url": answer.get("link", ""),
+                "source": "featured_snippet"
+            })
+        
+        return processed_results
+    
+    except Exception as e:
+        # Fallback to a simpler approach if SerpAPI fails
+        try:
+            fallback_url = f"https://api.duckduckgo.com/?q={query}&format=json"
+            response = requests.get(fallback_url)
+            
+            if response.status_code == 200:
+                data = response.json()
+                results = []
+                
+                # Abstract (main result)
+                if data.get("Abstract"):
+                    results.append({
+                        "title": data.get("Heading", ""),
+                        "snippet": data.get("Abstract", ""),
+                        "url": data.get("AbstractURL", ""),
+                        "source": "fallback_search"
+                    })
+                
+                # Related topics
+                for topic in data.get("RelatedTopics", [])[:num_results]:
+                    if "Text" in topic and "FirstURL" in topic:
+                        results.append({
+                            "title": topic.get("Text", "").split(" - ")[0],
+                            "snippet": topic.get("Text", ""),
+                            "url": topic.get("FirstURL", ""),
+                            "source": "fallback_search"
+                        })
+                
+                return results
+            else:
+                raise ConnectionError(f"Fallback search failed with status code: {response.status_code}")
+        
+        except Exception as fallback_error:
+            # If all else fails, return the
+Copy
+error information return [{ "title": "Search Error", "snippet": f"Error: {str(e)}. Fallback error: {str(fallback_error)}", "url": "", "source": "error" }]
+
+
+## 5. Command Center Dashboard Implementation
+
+Let's implement the frontend for the Command Center Dashboard that was described in the enhancement plan:
+
+```javascript
+// frontend/src/components/CommandCenter.js
+
+import React, { useState, useEffect } from 'react';
+import { 
+  ChartBarIcon, ClockIcon, RefreshIcon, ExclamationCircleIcon,
+  CheckCircleIcon, BriefcaseIcon, DocumentSearchIcon 
+} from '@heroicons/react/outline';
+
+import AgentStatusCard from './AgentStatusCard';
+import MissionsList from './MissionsList';
+import TaskTimeline from './TaskTimeline';
+import PerformanceMetrics from './PerformanceMetrics';
+import ResourceUsagePanel from './ResourceUsagePanel';
+
+const CommandCenter = () => {
+  const [loading, setLoading] = useState(true);
+  const [dashboardData, setDashboardData] = useState({
+    activeAgents: [],
+    activeMissions: [],
+    completedMissions: [],
+    resourceUsage: {},
+    skillPerformance: []
+  });
+  
+  const [refreshInterval, setRefreshInterval] = useState(30); // seconds
+  
+  useEffect(() => {
+    fetchDashboardData();
+    
+    // Set up auto-refresh
+    const interval = setInterval(fetchDashboardData, refreshInterval * 1000);
+    return () => clearInterval(interval);
+  }, [refreshInterval]);
+  
+  const fetchDashboardData = async () => {
+    setLoading(true);
+    try {
+      // In real implementation, we'd fetch from the API
+      const response = await fetch('/api/dashboard', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setDashboardData(data);
+      } else {
+        console.error('Failed to fetch dashboard data');
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  return (
+    <div className="p-6 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          Command Center
+        </h1>
+        
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center text-gray-600 dark:text-gray-300">
+            <ClockIcon className="w-5 h-5 mr-2" />
+            <span>Auto-refresh:</span>
+            <select
+              className="ml-2 p-1 border rounded dark:bg-gray-700"
+              value={refreshInterval}
+              onChange={(e) => setRefreshInterval(Number(e.target.value))}
+            >
+              <option value={10}>10s</option>
+              <option value={30}>30s</option>
+              <option value={60}>1m</option>
+              <option value={300}>5m</option>
+              <option value={0}>Off</option>
+            </select>
+          </div>
+          
+          <button
+            onClick={fetchDashboardData}
+            className="flex items-center px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            <RefreshIcon className="w-4 h-4 mr-2" />
+            Refresh
+          </button>
+        </div>
+      </div>
+      
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Agent Status Cards */}
+          <div className="lg:col-span-2">
+            <h2 className="text-xl font-semibold mb-4 flex items-center">
+              <BriefcaseIcon className="w-5 h-5 mr-2" />
+              Active Agents
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {dashboardData.activeAgents.map(agent => (
+                <AgentStatusCard key={agent.id} agent={agent} />
+              ))}
+            </div>
+          </div>
+          
+          {/* Resource Usage */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4 flex items-center">
+              <ChartBarIcon className="w-5 h-5 mr-2" />
+              Resource Usage
+            </h2>
+            <ResourceUsagePanel data={dashboardData.resourceUsage} />
+          </div>
+          
+          {/* Active Missions */}
+          <div className="lg:col-span-3">
+            <h2 className="text-xl font-semibold mb-4 flex items-center">
+              <DocumentSearchIcon className="w-5 h-5 mr-2" />
+              Active Missions
+            </h2>
+            <MissionsList missions={dashboardData.activeMissions} />
+          </div>
+          
+          {/* Task Timeline */}
+          <div className="lg:col-span-2">
+            <h2 className="text-xl font-semibold mb-4">Task Timeline</h2>
+            <TaskTimeline 
+              activeMissions={dashboardData.activeMissions} 
+              completedMissions={dashboardData.completedMissions.slice(0, 5)} 
+            />
+          </div>
+          
+          {/* Performance Metrics */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Performance Metrics</h2>
+            <PerformanceMetrics data={dashboardData.skillPerformance} />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CommandCenter;
+6. Integration with BaseAgent Class
+Let's update the BaseAgent class to integrate all our new features:
+
+Copy# aij_system/agents/base_agent.py
+
+from aij_system.skills_library import call_skill, list_skills, register_custom_skill
+from aij_system.memory.agent_memory import AgentMemory
+from aij_system.skills_library.skill_evaluator import SkillEvaluator
+
+class BaseAgent:
+    def __init__(self, name, model_router, config=None, memory_manager=None, event_bus=None):
+        self.name = name
+        self.model_router = model_router
+        self.config = config or {}
+        self.memory = memory_manager or AgentMemory(agent_name=name)
+        self.event_bus = event_bus
+        self._available_skills = set()
+        self.skill_evaluator = SkillEvaluator(self.memory)
+        self._load_default_skills()
+        
+        # For agent collaboration
+        self.collaboration_requests = {}
+        
+        # Status tracking
+        self.status = "idle"
+        self.current_task = None
+    
+    def _load_default_skills(self):
+        """Load skills specified in config."""
+        if "skills" in self.config:
+            for skill_name in self.config["skills"]:
+                self._available_skills.add(skill_name)
+        
+        # Always add utility skills
+        for skill in list_skills("utils"):
+            self._available_skills.add(skill)
+    
+    async def use_skill(self, skill_name, *args, **kwargs):
+        """Use a skill from the skills library."""
+        # Check if skill is explicitly allowed for this agent
+        if skill_name not in self._available_skills and not skill_name.startswith("utils."):
+            raise ValueError(f"Skill {skill_name} is not available to {self.name}")
+        
+        # Record skill usage in memory
+        self.memory.record_skill_usage(skill_name, args, kwargs)
+        
+        # Call the skill
+        try:
+            # For skills that need agent memory
+            if "agent_memory" in kwargs:
+                # If agent_memory was explicitly passed, use it
+                pass
+            else:
+                # Otherwise inject this agent's memory
+                kwargs["agent_memory"] = self.memory
+            
+            result = call_skill(skill_name, *args, **kwargs)
+            
+            # Record success
+            self.skill_evaluator.record_skill_usage(
+                self.name, skill_name, success=True, 
+                metrics={"execution_time": 0.5}  # Would be actual measurement in real implementation
+            )
+            
+            # Store result in memory
+            self.memory.record_skill_result(skill_name, result, success=True)
+            return result
+        except Exception as e:
+            # Record failure
+            self.skill_evaluator.record_skill_usage(
+                self.name, skill_name, success=False,
+                metrics={"error_type": str(type(e).__name__)}
+            )
+            
+            self.memory.record_skill_result(skill_name, str(e), success=False)
+            raise
+    
+    def discover_skills(self, category=None):
+        """Discover available skills."""
+        return [skill for skill in list_skills(category) 
+                if skill in self._available_skills or skill.startswith("utils.")]
+    
+    def add_custom_skill(self, name, function):
+        """Add a custom skill to the agent."""
+        register_custom_skill(name, function)
+        self._available_skills.add(name)
+        return True
+    
+    async def execute_task(self, task):
+        """Execute a task assigned to this agent."""
+        self.status = "executing"
+        self.current_task = task
+        
+        # Notify about task start
+        if self.event_bus:
+            await self.event_bus.publish("task_started", {
+                "task_id": task["id"],
+                "agent_id": self.name
+            })
+        
+        try:
+            # Parse the task
+            task_type = task.get("type", "unknown")
+            task_description = task.get("description", "")
+            task_context = task.get("context", {})
+            
+            # Log task execution
+            self.memory.store_knowledge(
+                f"task_{task['id']}_start",
+                {"timestamp": datetime.now().isoformat(), "task": task}
+            )
+            
+            # Execute based on task type
+            result = None
+            
+            if task_type == "research":
+                result = await self._handle_research_task(task_description, task_context)
+            elif task_type == "development":
+                result = await self._handle_development_task(task_description, task_context)
+            else:
+                # General task handling
+                result = await self._handle_general_task(task_description, task_context)
+            
+            # Mark task as completed
+            self.status = "idle"
+            self.current_task = None
+            
+            # Store result in memory
+            self.memory.store_knowledge(
+                f"task_{task['id']}_result",
+                result
+            )
+            
+            # Notify about task completion
+            if self.event_bus:
+                await self.event_bus.publish("task_completed", {
+                    "task_id": task["id"],
+                    "agent_id": self.name,
+                    "result": result
+                })
+            
+            return result
+            
+        except Exception as e:
+            # Handle task failure
+            self.status = "error"
+            
+            # Log error
+            error_details = {
+                "error": str(e),
+                "error_type": str(type(e).__name__),
+                "timestamp": datetime.now().isoformat()
+            }
+            
+            self.memory.store_knowledge(
+                f"task_{task['id']}_error",
+                error_details
+            )
+            
+            # Notify about task failure
+            if self.event_bus:
+                await self.event_bus.publish("task_failed", {
+                    "task_id": task["id"],
+                    "agent_id": self.name,
+                    "error": error_details
+                })
+            
+            raise
+    
+    async def _handle_research_task(self, description, context):
+        """Handle a research task."""
+        # Implementation depends on agent capabilities
+        raise NotImplementedError("Research task handling not implemented by this agent")
+    
+    async def _handle_development_task(self, description, context):
+        """Handle a development task."""
+        # Implementation depends on agent capabilities
+        raise NotImplementedError("Development task handling not implemented by this agent")
+    
+    async def _handle_general_task(self, description, context):
+        """Handle a general task."""
+        # Base implementation that uses the model to generate a response
+        prompt = f"""
+        Task Description: {description}
+        
+        Context: {json.dumps(context)}
+        
+        As {self.name}, complete this task by providing a detailed response.
+        Include any relevant information that would help solve this task.
+        """
+        
+        response = self.model_router.generate(
+            prompt,
+            temperature=0.3,
+            max_tokens=2000
+        )
+        
+        return {
+            "response": response,
+            "agent": self.name,
+            "timestamp": datetime.now().isoformat()
+        }
+    
+    async def request_collaboration(self, target_agent_id, query):
+        """Request collaboration from another agent."""
+        if not self.event_bus:
+            raise ValueError("Event bus not configured for this agent")
+        
+        from aij_system.orchestrator.collaboration_bus import CollaborationBus
+        if not hasattr(self.event_bus, "collaboration_bus"):
+            self.event_bus.collaboration_bus = CollaborationBus(self.event_bus)
+            await self.event_bus.collaboration_bus.initialize()
+        
+        request_id = await self.event_bus.collaboration_bus.request_information(
+            from_agent_id=self.name,
+            query=query,
+            target_agent_id=target_agent_id
+        )
+        
+        self.collaboration_requests[request_id] = {
+            "status": "pending",
+            "query": query,
+            "target": target_agent_id,
+            "created_at": datetime.now()
+        }
+        
+        return request_id
+    
+    async def share_context(self, context_data, target_agent_ids=None):
+        """Share context with other agents."""
+        if not self.event_bus:
+            raise ValueError("Event bus not configured for this agent")
+        
+        from aij_system.orchestrator.collaboration_bus import CollaborationBus
+        if not hasattr(self.event_bus, "collaboration_bus"):
+            self.event_bus.collaboration_bus = CollaborationBus(self.event_bus)
+            await self.event_bus.collaboration_bus.initialize()
+        
+        context_id = await self.event_bus.collaboration_bus.share_context(
+            from_agent_id=self.name,
+            context_data=context_data,
+            target_agent_ids=target_agent_ids
+        )
+        
+        return context_id
+    
+    def get_agent_status(self):
+        """Get the current status of the agent."""
+        skill_performance = self.skill_evaluator.get_agent_skill_performance(self.name)
+        
+        return {
+            "name": self.name,
+            "status": self.status,
+            "current_task": self.current_task,
+            "available_skills": list(self._available_skills),
+            "skill_performance": skill_performance,
+            "memory_stats": {
+                "knowledge_items": len(self.memory.get_all_knowledge_keys()),
+                "skill_usages": len(self.memory.get_skill_history())
+            }
+        }
+7. Update SuperAgent with Meta-Planning
+Let's update the SuperAgent implementation to include the meta-planning capabilities:
+
+Copy# aij_system/agents/super_agent/agent.py
+
+from aij_system.agents.base_agent import BaseAgent
+from .meta_planner import MetaPlanner
+
+class SuperAgent(BaseAgent):
+    def __init__(self, name, model_router, config=None, memory_manager=None, event_bus=None):
+        super().__init__(name, model_router, config, memory_manager, event_bus)
+        
+        # Initialize components
+        from .planner import Planner
+        from .builder import AgentBuilder
+        from .evaluator import AgentEvaluator
+        from .tool_creator import ToolCreator
+        
+        self.planner = Planner(model_router)
+        self.builder = AgentBuilder(model_router)
+        self.evaluator = AgentEvaluator(model_router)
+        self.tool_creator = ToolCreator(model_router)
+        self.meta_planner = MetaPlanner(model_router, memory_manager)
+        
+        # Add super agent specific skills
+        self._available_skills.add("super_agent.create_agent")
+        self._available_skills.add("super_agent.evaluate_agent")
+        self._available_skills.add("super_agent.improve_skill")
+        
+    async def create_specialized_agent(self, agent_type, requirements):
+        """Create a specialized agent based on requirements."""
+        # Generate configuration for the agent
+        agent_config = self.planner.generate_agent_config(agent_type, requirements)
+        
+        # Build the agent
+        new_agent = await self.builder.build_agent(agent_type, agent_config)
+        
+        # Register the agent
+        await self.register_agent(new_agent)
+        
+        return new_agent
+    
+    async def register_agent(self, agent):
+        """Register an agent with the system."""
+        if self.event_bus:
+            await self.event_bus.publish("agent_registered", {
+                "agent_id": agent.name,
+                "agent_type": agent.__class__.__name__,
+                "skills": list(agent._available_skills)
+            })
+        
+        # Additional logic would be implemented here
+    
+    async def plan_complex_mission(self, mission_description, time_estimate=None):
+        """Plan a complex mission that might span multiple sessions."""
+        # Estimate time if not provided
+        if not time_estimate:
+            time_estimate = await self._estimate_mission_time(mission_description)
+        
+        # Check if this is a complex task needing meta-planning
+        if time_estimate > 60:  # Minutes
+            plan_id = self.meta_planner.decompose_complex_task(mission_description, time_estimate)
+            
+            # Get the first phase to start with
+            first_phase = self.meta_planner.get_next_phase(plan_id)
+            
+            return {
+                "plan_id": plan_id,
+                "is_complex": True,
+                "first_phase": first_phase,
+                "estimated_total_time": time_estimate
+            }
+        else:
+            # Simple mission, no meta-planning needed
+            return {
+                "is_complex": False,
+                "mission": mission_description,
+                "estimated_time": time_estimate
+            }
+    
+    async def _estimate_mission_time(self, mission_description):
+        """Estimate the time required for a mission."""
+        prompt = f"""
+        Estimate the time (in minutes) required to complete this mission:
+        {mission_description}
+        
+        Consider the complexity, research needs, and implementation requirements.
+        Return only a number representing minutes required.
+        """
+        
+        response = self.model_router.generate(
+            prompt,
+            model_preference="gemini",
+            temperature=0.1,
+            max_tokens=10
+        )
+        
+        # Extract number from response
+        import re
+        match = re.search(r'\d+', response)
+        if match:
+            return int(match.group())
+        else:
+            # Default estimate if parsing fails
+            return 45  # minutes
+    
+    async def improve_underperforming_skills(self):
+        """Identify and improve underperforming skills."""
+        skills_to_improve = self.skill_evaluator.get_skills_needing_improvement()
+        
+        results = []
+        for skill_name in skills_to_improve:
+            # Get skill usage history
+            skill_history = self.memory.get_skill_history(skill_name)
+            
+            # Use tool creator to improve the skill
+            improved_skill = await self.tool_creator.improve_skill(
+                skill_name, 
+                skill_history
+            )
+            
+            if improved_skill:
+                results.append({
+                    "skill_name": skill_name,
+                    "status": "improved",
+                    "version": improved_skill.get("version", "1.0")
+                })
+            else:
+                results.append({
+                    "skill_name": skill_name,
+                    "status": "failed_to_improve"
+                })
+        
+        return results
+    
+    async def _handle_general_task(self, description, context):
+        """Handle a general task with SuperAgent capabilities."""
+        # Check if this is a request to create an agent
+        if "create agent" in description.lower() or "build agent" in description.lower():
+            # Extract agent type and requirements
+            agent_info = await self._extract_agent_info(description)
+            
+            # Create the agent
+            new_agent = await self.create_specialized_agent(
+                agent_info["type"],
+                agent_info["requirements"]
+            )
+            
+            return {
+                "action": "agent_created",
+                "agent_name": new_agent.name,
+                "agent_type": agent_info["type"],
+                "capabilities": list(new_agent._available_skills)
+            }
+            
+        # Check if this is a complex mission planning request
+        elif "plan" in description.lower() and ("project" in description.lower() or "mission" in description.lower()):
+            plan = await self.plan_complex_mission(description)
+            
+            return {
+                "action": "mission_planned",
+                "plan": plan
+            }
+            
+        # Otherwise, handle as a regular task
+        else:
+            return await super()._handle_general_task(description, context)
+    
+    async def _extract_agent_info(self, description):
+        """Extract agent type and requirements from description."""
+        prompt = f"""
+        Extract agent type and requirements from this description:
+        {description}
+        
+        Format as JSON with:
+        - type: The type of agent (e.g., medical, development, research)
+        - requirements: Detailed requirements for the agent
+        """
+        
+        response = self.model_router.generate(
+            prompt,
+            model_preference="gemini",
+            temperature=0.2,
+            max_tokens=500
+        )
+        
+        # Parse JSON from response
+        import json
+        try:
+            info = json.loads(response)
+            return info
+        except json.JSONDecodeError:
+            # Fallback with basic extraction
+            if "medical" in description.lower():
+                agent_type = "medical"
+            elif "development" in description.lower() or "code" in description.lower():
+                agent_type = "development"
+            elif "research" in description.lower():
+                agent_type = "research"
+            elif "design" in description.lower():
+                agent_type = "design"
+            else:
+                agent_type = "general"
+                
+            return {
+                "type": agent_type,
+                "requirements": description
+            }
+8. Add User Logout Component to the App
+Let's integrate the user logout functionality into the main App component:
+
+Copy// frontend/src/App.js
+
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
+import Dashboard from './components/Dashboard';
+import CommandCenter from './components/CommandCenter';
+import AgentsPage from './components/AgentsPage';
+import ToolsPage from './components/ToolsPage';
+import LoginPage from './components/LoginPage';
+import UserSettingsPanel from './components/UserSettingsPanel';
+import { UserIcon } from '@heroicons/react/outline';
+
+function App() {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [user, setUser] = useState(null);
+  
+  // Check authentication status on load
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // In a real app, verify the token with your backend
+      checkTokenValidity(token);
+    }
+    
+    // Check system preference for dark mode
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setDarkMode(true);
+    }
+  }, []);
+  
+  // Apply dark mode class
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+  
+  const checkTokenValidity = async (token) => {
+    try {
+      const response = await fetch('/api/verify-token', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        const userData = await response.json();
+        setAuthenticated(true);
+        setUser(userData);
+        
+        // Apply user settings
+        if (userData.settings?.theme === 'dark') {
+          setDarkMode(true);
+        } else if (userData.settings?.theme === 'light') {
+          setDarkMode(false);
+        }
+      } else {
+        // Token invalid, clear it
+        localStorage.removeItem('token');
+        setAuthenticated(false);
+      }
+    } catch (error) {
+      console.error('Error verifying token:', error);
+      setAuthenticated(false);
+    }
+  };
+  
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setAuthenticated(false);
+    setUser(null);
+    // Redirect to login page happens via <Navigate> below
+  };
+  
+  const handleLogin = (token, userData) => {
+    localStorage.setItem('token', token);
+    setAuthenticated(true);
+    setUser(userData);
+  };
+  
+  if (!authenticated) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+  
+  return (
+    <Router>
+      <div className="flex h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+        {/* Sidebar */}
+        <Sidebar />
+        
+        {/* Main Content */}
+        <div className="flex-1 overflow-auto">
+          {/* Top bar with user settings button */}
+          <div className="bg-white dark:bg-gray-800 shadow px-6 py-4 flex justify-end">
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              className="flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              <UserIcon className="w-5 h-5 mr-2" />
+              {user?.username || 'User'}
+            </button>
+          </div>
+          
+          {/* Routes */}
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/command-center" element={<CommandCenter />} />
+            <Route path="/agents" element={<AgentsPage />} />
+            <Route path="/tools" element={<ToolsPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+        
+        {/* User settings panel */}
+        <UserSettingsPanel
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+          onLogout={handleLogout}
+        />
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+9. Recommended Implementation Strategy
+Based on the enhancements we've designed, here's a recommended implementation strategy that preserves current progress while integrating the new features:
+
+Frontend Updates First:
+
+Add the user settings and logout functionality to the existing interface
+Implement the Command Center Dashboard as a new view
+Add new visualization components for agent interaction
+Core System Enhancements:
+
+Implement the MetaPlanner within SuperAgent
+Add the SkillEvaluator to track skill performance
+Implement the CollaborationBus for agent-to-agent communication
+New Skills Integration:
+
+Add the web search skill for real-world information retrieval
+Implement other domain-specific skills based on use cases
+Testing & Integration:
+
+Test each component individually
+Integrate components incrementally to ensure stability
+Verify end-to-end workflows with multi-phase projects
+This approach ensures we maintain our current functionality while progressively adding the new capabilities outlined in the enhancement blueprint.
+
+Conclusion
+The enhancements we've designed for the SuperAgent system address the key points from the supermeanImprove.txt file while preserving the current functionality shown in the interface. By adding the Meta-Planning Module, Skill Evolution Engine, Agent Collaboration Intelligence, Command Center Dashboard, and user settings with logout functionality, we've transformed the system into a more robust, future-ready platform.
+
+These improvements make the system more suitable for complex tasks, enable self-improvement through skill evaluation, and provide a more user-friendly interface with better visualization and control capabilities. The implementation strategy ensures a smooth transition from the current state to the enhanced system while minimizing disruption.
