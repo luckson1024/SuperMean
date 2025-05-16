@@ -21,6 +21,7 @@ jobs:
       with:
         python-version: '3.10'
         cache: 'pip'
+        cache-dependency-path: './requirements.txt'
     
     - name: Install dependencies
       run: |
@@ -52,7 +53,7 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: './SuperMean/frontend/package-lock.json'
+        cache-dependency-path: './package-lock.json'
     
     - name: Install dependencies
       run: npm ci
