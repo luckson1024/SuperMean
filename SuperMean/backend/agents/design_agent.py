@@ -78,15 +78,19 @@ class DesignAgent(BaseAgent):
                     self.log.warning(f"Inspiration search failed: {e}. Proceeding without it.")
 
             # Generate Design with Combined Reasoning and Output
+            # Build context part separately to avoid backslash in f-string expression
+            context_part = f"CONTEXT: {kwargs.get('context')}\n" if kwargs.get('context') else ""
+            format_part = f" in {kwargs['target_format']} format" if kwargs.get('target_format') else ""
+            
             prompt = (
                 f"DESIGN TASK: {task_description}\n"
-                f"{f'CONTEXT: {kwargs.get('context')}\n' if kwargs.get('context') else ''}"
+                f"{context_part}"
                 f"{inspiration_context}\n\n"
                 f"Follow this structure for your response:\n"
                 "1. Requirements Analysis:\n"
                 "2. Design Strategy:\n"
                 "3. Detailed Design Output"
-                f"{' in ' + kwargs['target_format'] + ' format' if kwargs.get('target_format') else ''}"
+                f"{format_part}"
             )
 
             design_output = await self._call_llm(
