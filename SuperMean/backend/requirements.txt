@@ -1,6 +1,8 @@
 # Directory: backend/
 # File: requirements.txt
 # Description: Python package requirements for the backend project. (Updated)
+# install dependencies in the backend: cd backend && pip install -r requirements.txt
+
 
 #SQLite
 pysqlite3-binary>=0.4.6
@@ -72,5 +74,6 @@ aiofiles>=23.0.0,<24.0.0 # For async file operations in EventBus
 
 # Testing (install separately)
 # pytest
-# pytest-asyncio
-# httpx
+pytest-cov
+pytest-asyncio
+httpx
