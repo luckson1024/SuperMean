@@ -6,7 +6,8 @@ from unittest.mock import MagicMock, AsyncMock
 from typing import Dict, Any
 
 # Adjust path to run from root directory
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
 try:
     from backend.agents.dev_agent import DevAgent
