@@ -564,3 +564,6 @@ The SuperMean project follows a test-driven development (TDD) approach:
 5. **Refactor**: Improve code quality while maintaining passing tests
 
 This approach ensures high test coverage and helps prevent regressions during development.
+
+
+# Luckson Chanda.
