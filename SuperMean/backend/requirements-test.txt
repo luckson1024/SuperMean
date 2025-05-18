@@ -1,0 +1,6 @@
+# requirements-test.txt for SuperMean backend
+pytest
+pytest-cov
+requests-mock
+httpx
+# Add any other test dependencies here
