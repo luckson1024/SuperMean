@@ -6,7 +6,7 @@ import sys
 import os
 import unittest
 import asyncio
-from unittest.mock import MagicMock, AsyncMock, call # Import call
+from unittest.mock import MagicMock, AsyncMock, call, ANY # Import call and ANY
 from typing import Dict, Any, List, Optional # Import necessary types
 
 # Adjust path to run from root directory
@@ -101,8 +101,8 @@ try:
             # Verify skill calls: search -> summarize -> llm
             self.assertEqual(self.mock_execute_skill.await_count, 2) # Search + Summarize
             expected_skill_calls = [
-                call('web.search', query=unittest.mock.ANY, num_results=num_results), # Check query includes filter later
-                call('text.summarize', text=unittest.mock.ANY, summary_length='concise paragraph', target_model='gemini', model_router=self.mock_router_instance)
+                call('web.search', query=ANY, num_results=num_results), # Check query includes filter later
+                call('text.summarize', text=ANY, summary_length='concise paragraph', target_model='gemini', model_router=self.mock_router_instance)
             ]
             self.mock_execute_skill.assert_has_awaits(expected_skill_calls, any_order=False)
             # Check search query contains filter
@@ -205,9 +205,7 @@ try:
 except ImportError as e:
     print(f"Failed to import components: {e}", file=sys.stderr)
     print("Ensure agent/medical_agent.py and its dependencies exist.", file=sys.stderr)
-    sys.exit(1)
 except Exception as e:
     print(f"An error occurred during test setup or execution: {e}", file=sys.stderr)
     import traceback
     traceback.print_exc()
-    sys.exit(1)

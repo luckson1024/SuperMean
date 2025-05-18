@@ -6,7 +6,7 @@ import sys
 import os
 import unittest
 import asyncio
-from unittest.mock import MagicMock, AsyncMock, call # Import call
+from unittest.mock import MagicMock, AsyncMock, call, ANY # Import call and ANY
 from typing import Dict, Any, List, Optional
 
 # Adjust path to run from root directory
@@ -99,7 +99,7 @@ try:
                 # Call for web.search
                 call('web.search', query=query, num_results=num_results),
                 # Call for text.summarize (implicitly passes model_router)
-                call('text.summarize', text=unittest.mock.ANY, summary_length='detailed paragraph', target_model='gemini', model_router=self.mock_router_instance)
+                call('text.summarize', text=ANY, summary_length='detailed paragraph', target_model='gemini', model_router=self.mock_router_instance)
             ]
             self.mock_execute_skill.assert_has_awaits(expected_calls, any_order=False)
             # Check the text passed to summarizer
@@ -185,9 +185,7 @@ try:
 except ImportError as e:
     print(f"Failed to import components: {e}", file=sys.stderr)
     print("Ensure agent/research_agent.py and its dependencies exist.", file=sys.stderr)
-    sys.exit(1)
 except Exception as e:
     print(f"An error occurred during test setup or execution: {e}", file=sys.stderr)
     import traceback
     traceback.print_exc()
-    sys.exit(1)

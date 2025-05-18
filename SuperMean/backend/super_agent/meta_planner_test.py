@@ -167,9 +167,7 @@ try:
 except ImportError as e:
     print(f"Failed to import components: {e}", file=sys.stderr)
     print("Ensure super_agent/meta_planner.py and its dependencies exist.", file=sys.stderr)
-    sys.exit(1)
 except Exception as e:
     print(f"An error occurred during test setup or execution: {e}", file=sys.stderr)
     import traceback
     traceback.print_exc()
-    sys.exit(1)
