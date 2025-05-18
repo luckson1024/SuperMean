@@ -3,6 +3,7 @@ import ProtectedRoute from '../components/ProtectedRoute';
 import { useMissionStore } from '../store';
 import Link from 'next/link';
 import apiService from '../services/apiService';
+import MissionTracker from '../components/MissionTracker';
 
 const MissionsPage = () => {
   const { missions, isLoading, error, fetchMissions, createMission } = useMissionStore();
@@ -35,93 +36,72 @@ const MissionsPage = () => {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-100">
-        {/* Navigation - Can be extracted to a separate component later */}
-        <nav className="bg-white shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between h-16">
-              <div className="flex">
-                <div className="flex-shrink-0 flex items-center">
-                  <h1 className="text-xl font-bold">SuperMean</h1>
-                </div>
-                <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                  <Link href="/dashboard" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                    Dashboard
-                  </Link>
-                  <Link href="/missions" className="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                    Missions
-                  </Link>
-                  <Link href="/agents" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                    Agents
-                  </Link>
-                </div>
-              </div>
-              {/* User/Logout - Can be extracted later */}
-              {/* Assuming user info is available via useAuthStore if needed here */}
-            </div>
+      <div className="min-h-screen bg-gradient-to-br from-primary-light via-background to-accent dark:from-gray-900 dark:via-gray-800 dark:to-primary-dark transition-colors duration-500">
+        <nav className="bg-white/90 dark:bg-gray-900/90 shadow-sm rounded-b-xl px-4 py-2 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-primary dark:text-primary-light tracking-tight">SuperMean</h1>
+          <div className="flex space-x-4">
+            <Link href="/dashboard" className="btn-primary px-4 py-2">Dashboard</Link>
+            <Link href="/missions" className="btn-primary px-4 py-2">Missions</Link>
+            <Link href="/agents" className="btn-primary px-4 py-2">Agents</Link>
           </div>
         </nav>
-
         <div className="py-10">
           <header>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold leading-tight text-gray-900">Missions</h1>
+              <h1 className="text-3xl font-bold leading-tight text-primary dark:text-primary-light drop-shadow-lg">Missions</h1>
             </div>
           </header>
           <main>
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
               <div className="px-4 py-8 sm:px-0">
-                <div className="bg-white shadow overflow-hidden sm:rounded-md p-4">
+                <div className="card">
                   <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-semibold">All Missions</h2>
+                    <h2 className="text-xl font-semibold text-primary dark:text-primary-light">All Missions</h2>
                     <button
-                      className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                      className="btn-primary px-4 py-2"
                       onClick={() => setShowCreateForm(true)}
                     >
                       Create New Mission
                     </button>
                   </div>
-                  
                   {isLoading && <p>Loading missions...</p>}
                   {error && <p className="text-red-500">Error: {error}</p>}
-
-                  {/* Mission Creation Form/Modal */}
                   {showCreateForm && (
-                    <div className="mt-4 p-4 border rounded-md bg-gray-50">
-                      <h3 className="text-lg font-semibold mb-2">Create New Mission</h3>
+                    <div className="mt-4 p-4 border rounded-xl bg-background dark:bg-gray-800 shadow-soft">
+                      <h3 className="text-lg font-semibold mb-2 text-primary dark:text-primary-light">Create New Mission</h3>
                       {createError && <p className="text-red-500 mb-4">Error: {createError}</p>}
                       <div className="mb-4">
-                        <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
+                        <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Title</label>
                         <input
                           type="text"
                           name="title"
                           id="title"
-                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                          className="input input-bordered w-full"
                           value={newMissionData.title}
                           onChange={(e) => setNewMissionData({ ...newMissionData, title: e.target.value })}
                         />
                       </div>
                       <div className="mb-4">
-                        <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+                        <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-200">Description</label>
                         <textarea
                           name="description"
                           id="description"
                           rows={3}
-                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                          className="input input-bordered w-full"
                           value={newMissionData.description}
                           onChange={(e) => setNewMissionData({ ...newMissionData, description: e.target.value })}
                         ></textarea>
                       </div>
                       <div className="flex justify-end">
                         <button
-                          className="mr-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                          className="btn-primary px-4 py-2 mr-2 bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
                           onClick={() => setShowCreateForm(false)}
                           disabled={isCreating}
                         >
                           Cancel
                         </button>
                         <button
-                          className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                          className="btn-primary px-4 py-2"
                           onClick={handleCreateMission}
                           disabled={isCreating}
                         >
@@ -130,45 +110,22 @@ const MissionsPage = () => {
                       </div>
                     </div>
                   )}
-
                   {!isLoading && !error && missions.length === 0 && !showCreateForm && (
                     <p>No missions found.</p>
                   )}
-
                   {!isLoading && !error && missions.length > 0 && (
-                    <ul role="list" className="divide-y divide-gray-200">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {missions.map((mission) => (
-                        <li key={mission.id} className="px-4 py-4 sm:px-6">
-                          <div className="flex items-center justify-between">
-                            <div className="text-sm font-medium text-indigo-600 truncate">
-                              <Link href={`/missions/${mission.id}`}>
-                                {mission.title}
-                              </Link>
-                            </div>
-                            <div className="ml-2 flex-shrink-0 flex">
-                              <p className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                mission.status === 'completed' ? 'bg-green-100 text-green-800' :
-                                mission.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
-                                mission.status === 'failed' ? 'bg-red-100 text-red-800' :
-                                'bg-gray-100 text-gray-800'
-                              }`}>
-                                {mission.status}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="mt-2 sm:flex sm:justify-between">
-                            <div className="sm:flex">
-                              <p className="flex items-center text-sm text-gray-500">
-                                {mission.description}
-                              </p>
-                            </div>
-                            <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                              Created: {new Date(mission.created_at).toLocaleDateString()}
-                            </div>
-                          </div>
-                        </li>
+                        <MissionTracker
+                          key={mission.id}
+                          title={mission.title}
+                          status={mission.status}
+                          assignedAgents={mission.assigned_agents}
+                          progress={mission.status === 'completed' ? 100 : mission.status === 'in_progress' ? 60 : mission.status === 'pending' ? 10 : 0}
+                          description={mission.description}
+                        />
                       ))}
-                    </ul>
+                    </div>
                   )}
                 </div>
               </div>

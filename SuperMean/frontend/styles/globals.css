@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom global styles for a modern, production-ready look */
+body {
+  @apply bg-background text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold;
+}
+
+.btn-primary {
+  @apply bg-primary text-white rounded-xl px-4 py-2 shadow-soft hover:bg-primary-dark transition;
+}
+
+.card {
+  @apply bg-surface rounded-xl shadow-soft p-6;
+}
+
+input, textarea, select {
+  @apply border-gray-300 rounded-md focus:ring-primary focus:border-primary dark:bg-gray-800 dark:text-white;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: #f3f4f6;
+}
+::-webkit-scrollbar-thumb {
+  background: #c7d2fe;
+  border-radius: 8px;
+}

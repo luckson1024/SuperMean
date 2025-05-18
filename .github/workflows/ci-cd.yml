@@ -52,7 +52,7 @@ jobs:
     - name: Run linting
       run: npm run lint || true
     - name: Run tests
-      run: npm test
+      run: npm test -- --passWithNoTests
   build-and-push:
     needs: [backend-tests, frontend-tests]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'

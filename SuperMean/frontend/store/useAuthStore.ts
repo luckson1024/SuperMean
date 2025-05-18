@@ -75,12 +75,22 @@ export const useAuthStore = create<AuthState>(
       register: async (username: string, email: string, password: string) => {
         set({ isLoading: true, error: null });
         try {
-          await axios.post(`${API_URL}/auth/register`, { username, email, password });
-          set({ isLoading: false });
+          const response = await axios.post(`${API_URL}/auth/register`, { username, email, password });
+          // Auto-login after successful registration
+          const loginResponse = await axios.post(`${API_URL}/auth/login`, { email, password });
+          const { access_token, user } = loginResponse.data;
+          axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+          set({
+            token: access_token,
+            user,
+            isAuthenticated: true,
+            isLoading: false,
+            error: null
+          });
         } catch (error: any) {
-          set({ 
-            error: error.response?.data?.detail || 'Registration failed', 
-            isLoading: false 
+          set({
+            error: error.response?.data?.detail || 'Registration failed',
+            isLoading: false
           });
         }
       },

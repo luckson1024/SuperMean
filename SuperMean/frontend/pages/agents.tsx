@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import ProtectedRoute from '../components/ProtectedRoute';
 import { useAgentStore } from '../store';
 import Link from 'next/link';
+import AgentCard from '../components/AgentCard';
 
 const AgentsPage = () => {
   const { agents, isLoading, error, fetchAgents } = useAgentStore();
@@ -12,44 +13,26 @@ const AgentsPage = () => {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-100">
-        {/* Navigation - Can be extracted to a separate component later */}
-        <nav className="bg-white shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between h-16">
-              <div className="flex">
-                <div className="flex-shrink-0 flex items-center">
-                  <h1 className="text-xl font-bold">SuperMean</h1>
-                </div>
-                <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                  <Link href="/dashboard" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                    Dashboard
-                  </Link>
-                  <Link href="/missions" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                    Missions
-                  </Link>
-                  <Link href="/agents" className="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                    Agents
-                  </Link>
-                </div>
-              </div>
-              {/* User/Logout - Can be extracted later */}
-              {/* Assuming user info is available via useAuthStore if needed here */}
-            </div>
+      <div className="min-h-screen bg-gradient-to-br from-primary-light via-background to-accent dark:from-gray-900 dark:via-gray-800 dark:to-primary-dark transition-colors duration-500">
+        <nav className="bg-white/90 dark:bg-gray-900/90 shadow-sm rounded-b-xl px-4 py-2 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-primary dark:text-primary-light tracking-tight">SuperMean</h1>
+          <div className="flex space-x-4">
+            <Link href="/dashboard" className="btn-primary px-4 py-2">Dashboard</Link>
+            <Link href="/missions" className="btn-primary px-4 py-2">Missions</Link>
+            <Link href="/agents" className="btn-primary px-4 py-2">Agents</Link>
           </div>
         </nav>
-
         <div className="py-10">
           <header>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold leading-tight text-gray-900">Agents</h1>
+              <h1 className="text-3xl font-bold leading-tight text-primary dark:text-primary-light drop-shadow-lg">Agents</h1>
             </div>
           </header>
           <main>
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
               <div className="px-4 py-8 sm:px-0">
-                <div className="bg-white shadow overflow-hidden sm:rounded-md p-4">
-                  <h2 className="text-xl font-semibold mb-4">All Agents</h2>
+                <div className="card">
+                  <h2 className="text-xl font-semibold mb-4 text-primary dark:text-primary-light">All Agents</h2>
                   
                   {isLoading && <p>Loading agents...</p>}
                   {error && <p className="text-red-500">Error: {error}</p>}
@@ -59,39 +42,18 @@ const AgentsPage = () => {
                   )}
 
                   {!isLoading && !error && agents.length > 0 && (
-                    <ul role="list" className="divide-y divide-gray-200">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {agents.map((agent) => (
-                        <li key={agent.id} className="px-4 py-4 sm:px-6">
-                          <div className="flex items-center justify-between">
-                            <div className="text-sm font-medium text-indigo-600 truncate">
-                              <Link href={`/agents/${agent.id}`}>
-                                {agent.name} ({agent.type})
-                              </Link>
-                            </div>
-                            <div className="ml-2 flex-shrink-0 flex">
-                              <p className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                agent.status === 'idle' ? 'bg-green-100 text-green-800' :
-                                agent.status === 'busy' ? 'bg-blue-100 text-blue-800' :
-                                agent.status === 'error' ? 'bg-red-100 text-red-800' :
-                                'bg-gray-100 text-gray-800'
-                              }`}>
-                                {agent.status}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="mt-2 sm:flex sm:justify-between">
-                            <div className="sm:flex">
-                              <p className="flex items-center text-sm text-gray-500">
-                                {agent.description}
-                              </p>
-                            </div>
-                            <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                              Skills: {agent.skills.join(', ')}
-                            </div>
-                          </div>
-                        </li>
+                        <AgentCard
+                          key={agent.id}
+                          name={agent.name}
+                          type={agent.type}
+                          status={agent.status}
+                          skills={agent.skills}
+                          description={agent.description}
+                        />
                       ))}
-                    </ul>
+                    </div>
                   )}
                 </div>
               </div>
