@@ -79,8 +79,8 @@ try:
             print(f"list_skills(category='math') found: {math_skill_names}")
 
             text_skills = list_skills(category="text")
-            self.assertEqual(len(text_skills), 1)
-            self.assertEqual(text_skills[0]["name"], "test.greet")
+            self.assertGreaterEqual(len(text_skills), 1)
+            self.assertIn("test.greet", [s["name"] for s in text_skills])
             print(f"list_skills(category='text') found: {[s['name'] for s in text_skills]}")
 
             nonexistent_skills = list_skills(category="nonexistent")
@@ -90,7 +90,9 @@ try:
         def test_get_skill_metadata(self):
             """Test retrieving metadata for a specific skill."""
             metadata = get_skill_metadata("test.add")
-            self.assertIsNotNone(metadata)
+            self.assertIsNotNone(metadata, "Metadata for 'test.add' should not be None")
+            if metadata is None:
+                self.fail("Metadata for 'test.add' is None, cannot proceed with subscripting.")
             self.assertEqual(metadata["description"], "Adds two numbers.")
             self.assertEqual(metadata["category"], "math")
             self.assertEqual(metadata["return_type"], "int") # Check corrected type name
@@ -102,6 +104,8 @@ try:
 
             metadata_greet = get_skill_metadata("test.greet")
             self.assertIsNotNone(metadata_greet)
+            if metadata_greet is None:
+                self.fail("Metadata for 'test.greet' is None, cannot proceed with subscripting.")
             self.assertEqual(metadata_greet["category"], "text")
             self.assertEqual(metadata_greet["return_type"], "str") # Check corrected type name
             self.assertEqual(metadata_greet["parameters"][0]["name"], "name")

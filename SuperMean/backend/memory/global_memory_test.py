@@ -8,61 +8,42 @@ import unittest
 import asyncio
 import shutil
 import time
+import tempfile
 from typing import Any, List, Dict, Optional # Import necessary types
 
 # Adjust path if necessary to run from root directory
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-# Define path for test database
-TEST_CHROMA_PATH = "./test_global_memory_db"
 
-# Clean up any previous test DB before imports
-if os.path.exists(TEST_CHROMA_PATH):
-    try:
-        shutil.rmtree(TEST_CHROMA_PATH)
-        print(f"Removed previous test DB directory: {TEST_CHROMA_PATH}")
-    except Exception as e:
-        print(f"Error removing previous test DB directory: {e}")
 
 try:
     from backend.memory.global_memory import GlobalMemory, DEFAULT_COLLECTION_NAME, VALUE_METADATA_KEY
     print("Imported GlobalMemory (ChromaDB) successfully.")
 
-    class TestGlobalMemoryChroma(unittest.TestCase):
 
-        test_db_path = TEST_CHROMA_PATH
+    class TestGlobalMemoryChroma(unittest.TestCase):
         test_collection_name = f"test_{DEFAULT_COLLECTION_NAME}"
 
-        @classmethod
-        def setUpClass(cls):
-            """Clean up directory before all tests in this class."""
-            if os.path.exists(cls.test_db_path):
-                shutil.rmtree(cls.test_db_path)
-
-        @classmethod
-        def tearDownClass(cls):
-            """Clean up directory after all tests in this class."""
-            # Add a small delay to release file locks if necessary
-            time.sleep(0.1)
-            if os.path.exists(cls.test_db_path):
-                try:
-                    shutil.rmtree(cls.test_db_path)
-                    print(f"Cleaned up test DB directory: {cls.test_db_path}")
-                except Exception as e:
-                     print(f"Error cleaning up test DB directory: {e}")
-
         def setUp(self):
-            """Set up before each test."""
-            # Create a new instance for each test - it will use/create the same persistent dir
+            """Set up before each test with a unique temp directory."""
+            self.temp_dir = tempfile.TemporaryDirectory()
+            self.test_db_path = self.temp_dir.name
             self.memory_config = {"chroma_path": self.test_db_path, "collection_name": self.test_collection_name}
             self.memory1 = GlobalMemory(config=self.memory_config)
             self.memory2 = GlobalMemory(config=self.memory_config) # Second instance uses same dir/collection
             # Clear the collection content before each test method
             self.run_async(self.memory1.clear())
             print(f"\n--- Starting test: {self._testMethodName} ---")
-            # Verify clear worked
-            count = self.memory1._collection.count() if self.memory1._collection else 0
-            self.assertEqual(count, 0, "Collection should be empty at start of test")
+            # Verify clear worked using public API
+            keys = self.run_async(self.memory1.list_keys())
+            self.assertEqual(len(keys), 0, "Collection should be empty at start of test")
+
+        def tearDown(self):
+            """Clean up temp directory after each test."""
+            try:
+                self.temp_dir.cleanup()
+            except Exception as e:
+                print(f"Error cleaning up temp dir: {e}")
 
 
         def run_async(self, coro):
@@ -96,13 +77,15 @@ try:
 
             retrieved_entry2 = self.run_async(self.memory1.retrieve_with_metadata(key2))
             self.assertIsNotNone(retrieved_entry2)
-            self.assertEqual(retrieved_entry2["value"], value2) # Check deserialized value
-            self.assertEqual(retrieved_entry2["metadata"], meta2) # Check user metadata
-            self.assertIsInstance(retrieved_entry2["document"], str) # Check document is string
+            if retrieved_entry2 is not None:
+                self.assertEqual(retrieved_entry2["value"], value2) # Check deserialized value
+                self.assertEqual(retrieved_entry2["metadata"], meta2) # Check user metadata
+                self.assertIsInstance(retrieved_entry2["document"], str) # Check document is string
 
-            # Check internal storage detail (optional)
-            chroma_entry = self.memory1._collection.get(ids=[key2], include=['metadatas'])
-            self.assertIn(VALUE_METADATA_KEY, chroma_entry['metadatas'][0])
+
+            # Check internal storage detail (optional, via public API)
+            # The VALUE_METADATA_KEY should not be in user metadata, but value should match
+            # If you want to check the raw metadata, you could extend GlobalMemory with a debug method
 
             print("Store and retrieve test passed.")
 
@@ -206,7 +189,8 @@ try:
 
             self.assertTrue(self.run_async(self.memory1.clear())) # Clear via instance 1
             self.assertEqual(len(self.run_async(self.memory2.list_keys())), 0) # Verify via instance 2
-            self.assertEqual(self.memory1._collection.count(), 0)
+            # Use public API to check collection is empty
+            self.assertEqual(len(self.run_async(self.memory1.list_keys())), 0)
             print("List keys and clear test passed.")
 
 

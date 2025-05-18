@@ -1,0 +1,50 @@
+import os
+import tempfile
+import unittest
+from backend.utils.error_handler import MemoryError
+
+class TestGlobalMemoryChroma(unittest.TestCase):
+    def setUp(self):
+        self.test_db_path = tempfile.mktemp(suffix='.db')
+        # Initialize ChromaDB with the unique path
+        self.chroma_instance = ChromaDB(self.test_db_path)
+
+    def tearDown(self):
+        # Clean up the database file
+        if os.path.exists(self.test_db_path):
+            os.remove(self.test_db_path)
+
+    def test_delete(self):
+        # Your test code here
+        pass
+
+    def test_initialization(self):
+        # Your test code here
+        pass
+
+    def test_list_keys_and_clear(self):
+        # Your test code here
+        pass
+
+    def test_retrieve_nonexistent_key(self):
+        # Your test code here
+        pass
+
+    def test_search_metadata_filter(self):
+        # Your test code here
+        pass
+
+    def test_search_top_k(self):
+        # Your test code here
+        pass
+
+    def test_store_and_retrieve(self):
+        # Your test code here
+        pass
+
+class TestSkillsRegistry(unittest.TestCase):
+    def test_list_skills_by_category(self):
+        self.assertEqual(2, 1)  # Adjust this to match expected output
+
+if __name__ == '__main__':
+    unittest.main()
