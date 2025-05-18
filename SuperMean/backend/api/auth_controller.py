@@ -8,11 +8,11 @@ and token management.
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from datetime import timedelta
 
 from .auth_middleware import create_access_token, get_current_user, User, JWT_EXPIRATION_MINUTES
-from .schemas import ErrorResponse, SuccessResponse
+from .schemas import ErrorResponse
 
 # Create router
 router = APIRouter(
@@ -68,7 +68,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return hashed_password == "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW"  # "password"
 
 
-def get_user(username: str) -> Dict[str, Any]:
+def get_user(username: str) -> Optional[Dict[str, Any]]:
     """
     Get a user from the database
     
@@ -84,7 +84,7 @@ def get_user(username: str) -> Dict[str, Any]:
     return None
 
 
-def authenticate_user(username: str, password: str) -> Dict[str, Any]:
+def authenticate_user(username: str, password: str) -> Optional[Dict[str, Any]]:
     """
     Authenticate a user
     
@@ -93,13 +93,13 @@ def authenticate_user(username: str, password: str) -> Dict[str, Any]:
         password: The password
         
     Returns:
-        The user data if authentication succeeds, False otherwise
+        The user data if authentication succeeds, None otherwise
     """
     user = get_user(username)
     if not user:
-        return False
+        return None
     if not verify_password(password, user["hashed_password"]):
-        return False
+        return None
     return user
 
 

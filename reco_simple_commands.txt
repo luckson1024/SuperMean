@@ -8,3 +8,5 @@ e2e tests: npm run test:e2e
 install webpack: npm install --save-dev webpack @types/webpack  or npm install --save-dev webpack @types/webpack @cypress/webpack-preprocessor or npm install --save-dev webpack @types/webpack @cypress/webpack-preprocessor
 install tailwindcss: npm install @tailwindcss/forms @tailwindcss/typography @tailwindcss/aspect-ratio @tailwindcss/line-clamp
 run build: npm run build
+
+pip install sqlalchemy fastapi

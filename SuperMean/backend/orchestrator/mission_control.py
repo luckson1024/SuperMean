@@ -249,6 +249,95 @@ class MissionControl:
             return await self.mission_memory.delete_state(mission_id)
         return False
 
+    async def get_mission_status(self, mission_id: str) -> Dict[str, Any]:
+        """Get detailed status information about a mission.
+
+        Args:
+            mission_id: The ID of the mission to check.
+
+        Returns:
+            A dictionary containing mission status details.
+        """
+        mission_state = await self.get_mission_state(mission_id)
+        if not mission_state:
+            raise MissionControlError(f"Mission {mission_id} not found", status_code=404)
+
+        # Calculate progress based on history
+        total_iterations = len(mission_state.get("history", []))
+        current_iteration = total_iterations if total_iterations > 0 else 0
+        progress = (current_iteration / self.max_planning_iterations) * 100 if current_iteration < self.max_planning_iterations else 100
+
+        # Get current phase from status
+        current_phase = mission_state.get("status", "unknown")
+        
+        # Extract completed phases from history
+        phases_completed = []
+        for item in mission_state.get("history", []):
+            if item.get("plan"):
+                phases_completed.append("planning")
+            if item.get("execution_result"):
+                phases_completed.append("building")
+            if item.get("evaluation"):
+                phases_completed.append("evaluating")
+            if item.get("decision"):
+                phases_completed.append("deciding")
+        
+        return {
+            "status": mission_state.get("status"),
+            "progress": min(progress, 100),  # Cap at 100%
+            "current_phase": current_phase,
+            "phases_completed": list(dict.fromkeys(phases_completed)),  # Remove duplicates while preserving order
+            "current_iteration": current_iteration,
+            "max_iterations": self.max_planning_iterations,
+            "final_result": mission_state.get("final_result"),
+            "error": mission_state.get("error"),
+            "last_update": mission_state.get("end_time") or time.time()
+        }
+
+    async def stop_mission(self, mission_id: str) -> bool:
+        """Stop a running mission.
+
+        Args:
+            mission_id: The ID of the mission to stop.
+
+        Returns:
+            True if the mission was successfully stopped, False otherwise.
+        """
+        mission_state = await self.get_mission_state(mission_id)
+        if not mission_state:
+            raise MissionControlError(f"Mission {mission_id} not found", status_code=404)
+
+        # Only stop if mission is running
+        if mission_state.get("status") in ["planning", "building", "evaluating", "deciding"]:
+            mission_state["status"] = "stopped"
+            mission_state["end_time"] = time.time()
+            mission_state["error"] = "Mission stopped manually"
+            
+            # Publish mission stopped event
+            await self.event_bus.publish(
+                "mission.stopped",
+                {
+                    "mission_id": mission_id,
+                    "end_time": mission_state["end_time"],
+                    "final_status": mission_state["status"]
+                }
+            )
+            
+            if self.mission_memory:
+                await self.mission_memory.save_state(mission_id, mission_state)
+            return True
+        
+        return False
+
+class Evaluator:
+    # Evaluator interface with async evaluate method
+    async def evaluate(self, goal: str, plan: List[Dict[str, Any]], execution_result: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Evaluate the execution result against the goal and plan.
+        Should be implemented by subclasses.
+        """
+        raise NotImplementedError("Subclasses must implement evaluate()")
+
 # Example Usage (for demonstration/testing)
 # async def main():
 #     # This part would typically be handled by an application entry point

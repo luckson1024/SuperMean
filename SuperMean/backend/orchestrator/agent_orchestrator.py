@@ -403,3 +403,49 @@ class AgentOrchestrator:
         
         log.info(f"Closed collaboration {collaboration_id}")
         return True
+    
+    async def initialize_agent(self, agent_name: str, agent_type: str, config: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """
+        Initialize a new agent of the specified type with the given configuration.
+        
+        Args:
+            agent_name: Name of the agent
+            agent_type: Type of agent to create
+            config: Optional configuration for the agent
+            
+        Returns:
+            Initialization result
+        """
+        # Create task data for initialization
+        task_data = {
+            "action": "initialize",
+            "agent_type": agent_type,
+            "config": config or {}
+        }
+        
+        try:
+            result = await self.execute_agent_task(agent_name, task_data)
+            
+            if result.get("status") == "completed":
+                # Store agent type and config
+                if self.shared_memory:
+                    await self.shared_memory.store(
+                        f"agent:{agent_name}:config",
+                        {
+                            "agent_type": agent_type,
+                            "config": config
+                        }
+                    )
+                
+                log.info(f"Successfully initialized agent {agent_name} of type {agent_type}")
+                return {
+                    "status": "success",
+                    "message": f"Agent {agent_name} initialized successfully",
+                    "agent_type": agent_type
+                }
+            else:
+                raise OrchestrationError(f"Failed to initialize agent {agent_name}: {result.get('error', 'Unknown error')}")
+                
+        except Exception as e:
+            log.error(f"Error initializing agent {agent_name}: {e}")
+            raise OrchestrationError(f"Failed to initialize agent {agent_name}", cause=e)
