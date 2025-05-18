@@ -3,6 +3,7 @@
 # Description: Python package requirements for the backend project. (Updated)
 # install dependencies in the backend: cd backend && pip install -r requirements.txt
 
+radon
 
 #SQLite
 pysqlite3-binary>=0.4.6
