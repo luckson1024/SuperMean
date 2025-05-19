@@ -90,7 +90,8 @@ try:
 
             self.assertEqual(decision, "RETRY_STEP")
             self.assertIsInstance(data, dict)
-            self.assertEqual(data.get("retry_step_id"), 1)
+            if data is not None:
+                self.assertEqual(data.get("retry_step_id"), 1)
             self.mock_model_router.generate.assert_awaited_once() # LLM called for reflection
             # Check prompt includes failure info
             call_args, call_kwargs = self.mock_model_router.generate.await_args
@@ -107,11 +108,13 @@ try:
             ))
 
             self.assertEqual(decision, "CREATE_TOOL")
+            self.assertIsNotNone(data)
             self.assertIsInstance(data, dict)
-            self.assertEqual(data.get("skill_name"), "ui.display_data")
-            self.assertEqual(data.get("description"), "Displays data in UI")
-            self.assertEqual(data.get("args"), ["data"])
-            self.assertEqual(data.get("returns"), "None")
+            if data is not None:
+                self.assertEqual(data.get("skill_name"), "ui.display_data")
+                self.assertEqual(data.get("description"), "Displays data in UI")
+                self.assertEqual(data.get("args"), ["data"])
+                self.assertEqual(data.get("returns"), "None")
             self.mock_model_router.generate.assert_awaited_once()
             # Check prompt includes evaluation info
             call_args, call_kwargs = self.mock_model_router.generate.await_args

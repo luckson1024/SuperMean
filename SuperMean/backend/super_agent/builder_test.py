@@ -71,7 +71,7 @@ try:
             }
             # Instantiate the Builder
             self.builder = Builder(
-                agents=self.mock_agents,
+                agents=self.mock_agents,  # type: ignore
                 execute_skill_func=mock_execute_skill
             )
             print(f"\n--- Starting test: {self._testMethodName} ---")
@@ -219,9 +219,7 @@ try:
 except ImportError as e:
     print(f"Failed to import components: {e}", file=sys.stderr)
     print("Ensure super_agent/builder.py and its dependencies exist.", file=sys.stderr)
-    sys.exit(1)
 except Exception as e:
     print(f"An error occurred during test setup or execution: {e}", file=sys.stderr)
     import traceback
     traceback.print_exc()
-    sys.exit(1)

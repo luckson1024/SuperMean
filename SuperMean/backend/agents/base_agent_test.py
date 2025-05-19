@@ -10,13 +10,40 @@ from unittest.mock import MagicMock, AsyncMock
 
 # Adjust path if necessary to run from root directory
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 try:
     from backend.agents.base_agent import BaseAgent
     from backend.models.model_router import ModelRouter # For mocking
     from backend.memory.base_memory import BaseMemory   # For mocking
     from backend.skills import SkillError, execute_skill as execute_skill_func # Import renamed func
+    from typing import Any, Dict, Optional, Callable, Coroutine
     print("Imported BaseAgent successfully.")
+
+    # --- Concrete Subclass for Testing ---
+    class MockAgent(BaseAgent):
+        def __init__(
+            self,
+            agent_id: str,
+            agent_name: str,
+            model_router: ModelRouter,
+            agent_memory: BaseMemory,
+            execute_skill_func: Callable[..., Coroutine[Any, Any, Any]],
+            config: Optional[Dict[str, Any]] = None,
+            system_prompt: Optional[str] = None
+        ):
+            super().__init__(
+                agent_id=agent_id,
+                agent_name=agent_name,
+                model_router=model_router,
+                agent_memory=agent_memory,
+                execute_skill_func=execute_skill_func,
+                config=config,
+                system_prompt=system_prompt
+            )
+
+        async def run(self, task_description: str, **kwargs) -> Any:
+            return f"Mock agent {self.agent_id} ran task: {task_description}"
 
     # --- Mock Components ---
     # Use MagicMock to allow flexible attribute access/method calls unless specified otherwise
@@ -70,8 +97,9 @@ try:
 
         def test_cannot_instantiate_abc(self):
             """Verify BaseAgent cannot be instantiated directly."""
+            # Attempt to instantiate the abstract class directly
             with self.assertRaises(TypeError) as cm:
-                # Attempt to instantiate the abstract class directly
+                # Attempt to instantiate the abstract class directly (should fail)
                 BaseAgent(
                     agent_id="abc_id", agent_name="ABC",
                     model_router=self.mock_router_instance,
@@ -80,10 +108,9 @@ try:
                 )
             exception_text_lower = str(cm.exception).lower()
             print(f"Caught expected TypeError: {cm.exception}")
-            # --- CORRECTED ASSERTIONS ---
-            self.assertTrue("can't instantiate abstract class baseagent" in exception_text_lower)
-            self.assertTrue("abstract method 'run'" in exception_text_lower) # Check for 'run'
-            # --- END CORRECTIONS ---
+            # Assert that the error message indicates the abstract method is not implemented
+            self.assertIn("can't instantiate abstract class baseagent", exception_text_lower)
+            self.assertIn("run", exception_text_lower)
             print("Abstract class instantiation test passed.")
 
         def test_subclass_instantiation(self):

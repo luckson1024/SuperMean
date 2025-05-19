@@ -20,6 +20,7 @@ class TestSecurityAgent(unittest.TestCase):
     def setUp(self):
         """Set up test environment."""
         # Initialize mocks
+        from backend.models.model_router import ModelRouter
         self.mock_router = Mock(spec=ModelRouter)
         self.mock_router.generate = AsyncMock()
         self.mock_router.generate.return_value = "Test LLM Response"
@@ -39,16 +40,14 @@ class TestSecurityAgent(unittest.TestCase):
         self.mock_memory = Mock(spec=BaseMemory)
         self.mock_skill_executor = Mock()
         self.agent = SecurityAgent(
-            name="test_security_agent",
-            description="Security monitoring agent",
+            agent_id="test_security_agent",
             model_router=self.mock_router,
             agent_memory=self.mock_memory,
             execute_skill_func=self.mock_skill_executor
         )
-        
         # Create temporary directory for file tests
         self.test_dir = tempfile.mkdtemp()
-        self.addCleanup(lambda: self.cleanup_test_dir())
+        self.addCleanup(lambda: shutil.rmtree(self.test_dir))
 
     def run_async(self, coro):
         """Helper to run async code in tests."""

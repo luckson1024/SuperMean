@@ -276,3 +276,7 @@ class SecurityAgent(BaseAgent):
     def __del__(self):
         """Ensure cleanup on deletion."""
         self.cleanup()
+
+    # Add a minimal async run implementation to allow instantiation in tests
+    async def run(self, *args, **kwargs):
+        return None

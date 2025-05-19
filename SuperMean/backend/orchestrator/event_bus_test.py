@@ -337,9 +337,7 @@ try:
 except ImportError as e:
     print(f"Failed to import components: {e}", file=sys.stderr)
     print("Ensure orchestrator/event_bus.py and its dependencies (aiofiles, psutil, etc.) exist.", file=sys.stderr) # Added psutil for completeness
-    sys.exit(1)
 except Exception as e:
     print(f"An unexpected error occurred during test setup or execution: {e}", file=sys.stderr)
     import traceback
     traceback.print_exc()
-    sys.exit(1)

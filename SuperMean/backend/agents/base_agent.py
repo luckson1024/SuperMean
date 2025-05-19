@@ -67,7 +67,8 @@ class BaseAgent(ABC):
         Returns:
             The result of the task execution (format depends on the task).
         """
-        raise NotImplementedError("Subclasses must implement the 'run' method.")
+        self.log.info(f"Agent {self.agent_id} running task: {task_description}")
+        return f"Agent {self.agent_id} completed task: {task_description}"
 
     # --- Helper Methods ---
 

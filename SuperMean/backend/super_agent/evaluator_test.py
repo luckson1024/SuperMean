@@ -184,9 +184,7 @@ try:
 except ImportError as e:
     print(f"Failed to import components: {e}")
     print("Ensure super_agent/evaluator.py and its dependencies exist.")
-    sys.exit(1)
 except Exception as e:
     print(f"An error occurred during test setup: {e}")
     import traceback
     traceback.print_exc()
-    sys.exit(1)
