@@ -78,3 +78,10 @@ aiofiles>=23.0.0,<24.0.0 # For async file operations in EventBus
 pytest-cov
 pytest-asyncio
 httpx
+
+# Security monitoring
+watchdog>=2.1.6
+bandit>=1.7.5
+safety>=2.3.5
+sqlparse>=0.4.4
+pytest-asyncio>=0.21.0

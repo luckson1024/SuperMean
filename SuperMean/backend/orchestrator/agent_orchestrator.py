@@ -5,8 +5,8 @@
 import asyncio
 import uuid
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
+import abc
 
-from backend.agents.base_agent import BaseAgent
 from backend.orchestrator.event_bus import EventBus
 from backend.memory.base_memory import BaseMemory
 from backend.memory.agent_memory import AgentMemory
@@ -18,10 +18,9 @@ log = setup_logger(name="agent_orchestrator")
 
 class OrchestrationError(SuperMeanException):
     """Custom exception for agent orchestration failures."""
-    def __init__(self, message="Agent orchestration operation failed", status_code=500, cause: Optional[Exception] = None):
+    def __init__(self, message="Agent orchestration operation failed", status_code=500, event_bus: Optional[EventBus] = None):
         super().__init__(message, status_code)
-        if cause:
-            self.__cause__ = cause
+        self.event_bus = event_bus
 
 class AgentOrchestrator:
     """
@@ -39,7 +38,7 @@ class AgentOrchestrator:
     
     def __init__(
         self,
-        agents: Dict[str, BaseAgent],
+        agents: Dict[str, "BaseAgent"],
         event_bus: EventBus,
         shared_memory: Optional[BaseMemory] = None,
         config: Optional[Dict[str, Any]] = None
@@ -65,8 +64,9 @@ class AgentOrchestrator:
         
         # Initialize agent capabilities map
         for agent_name, agent in self.agents.items():
-            if hasattr(agent, 'capabilities') and isinstance(agent.capabilities, (list, set)):
-                self.agent_capabilities[agent_name] = set(agent.capabilities)
+            capabilities = getattr(agent, 'capabilities', None)
+            if isinstance(capabilities, (list, set)):
+                self.agent_capabilities[agent_name] = set(capabilities)
             else:
                 self.agent_capabilities[agent_name] = set()
                 log.warning(f"Agent {agent_name} does not define capabilities")
@@ -129,8 +129,8 @@ class AgentOrchestrator:
             Task result dictionary
         """
         if agent_name not in self.agents:
-            raise OrchestrationError(f"Agent '{agent_name}' not found")
-            
+            raise OrchestrationError(f"Agent '{agent_name}' not found", event_bus=self.event_bus if self.event_bus else None)
+        
         task_id = task_id or str(uuid.uuid4())
         agent = self.agents[agent_name]
         
@@ -147,15 +147,16 @@ class AgentOrchestrator:
             result = await agent.execute_task(context)
             
             # Publish task completion event
-            await self.event_bus.publish(
-                "agent.task.completed",
-                {
-                    "task_id": task_id,
-                    "agent": agent_name,
-                    "status": "completed",
-                    "result": result
-                }
-            )
+            if self.event_bus:
+                await self.event_bus.publish(
+                    "agent.task.completed",
+                    {
+                        "task_id": task_id,
+                        "agent": agent_name,
+                        "status": "completed",
+                        "result": result
+                    }
+                )
             
             return {
                 "task_id": task_id,
@@ -168,17 +169,18 @@ class AgentOrchestrator:
             log.exception(f"Error executing task {task_id} with agent {agent_name}: {e}")
             
             # Publish task failure event
-            await self.event_bus.publish(
-                "agent.task.failed",
-                {
-                    "task_id": task_id,
-                    "agent": agent_name,
-                    "status": "failed",
-                    "error": str(e)
-                }
-            )
+            if self.event_bus:
+                await self.event_bus.publish(
+                    "agent.task.failed",
+                    {
+                        "task_id": task_id,
+                        "agent": agent_name,
+                        "status": "failed",
+                        "error": str(e)
+                    }
+                )
             
-            raise OrchestrationError(f"Task execution failed with agent {agent_name}", cause=e)
+            raise OrchestrationError(f"Task execution failed with agent {agent_name}", event_bus=self.event_bus if self.event_bus else None)
     
     async def execute_parallel_tasks(self, task_assignments: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """
@@ -256,7 +258,7 @@ class AgentOrchestrator:
             log.warning(f"Some agents not found for collaboration: {invalid_agents}")
         
         if not valid_agents:
-            raise OrchestrationError("No valid agents specified for collaboration")
+            raise OrchestrationError("No valid agents specified for collaboration", event_bus=self.event_bus if self.event_bus else None)
         
         # Create shared memory for collaboration
         if self.shared_memory:
@@ -274,14 +276,15 @@ class AgentOrchestrator:
             )
         
         # Publish collaboration creation event
-        await self.event_bus.publish(
-            "agent.collaboration.created",
-            {
-                "collaboration_id": collaboration_id,
-                "agents": valid_agents,
-                "context": shared_context
-            }
-        )
+        if self.event_bus:
+            await self.event_bus.publish(
+                "agent.collaboration.created",
+                {
+                    "collaboration_id": collaboration_id,
+                    "agents": valid_agents,
+                    "context": shared_context
+                }
+            )
         
         log.info(f"Created collaboration {collaboration_id} with agents {valid_agents}")
         return collaboration_id
@@ -294,7 +297,7 @@ class AgentOrchestrator:
             collaboration_id: Collaboration session ID
             sender: Name of the sending agent
             message: Message data
-            
+        
         Returns:
             True if message was sent successfully, False otherwise
         """
@@ -334,13 +337,14 @@ class AgentOrchestrator:
         await self.shared_memory.store(f"collaboration:{collaboration_id}:messages", message_index)
         
         # Publish message event
-        await self.event_bus.publish(
-            "agent.collaboration.message",
-            {
-                "collaboration_id": collaboration_id,
-                "message": message_data
-            }
-        )
+        if self.event_bus:
+            await self.event_bus.publish(
+                "agent.collaboration.message",
+                {
+                    "collaboration_id": collaboration_id,
+                    "message": message_data
+                }
+            )
         
         log.info(f"Sent message in collaboration {collaboration_id} from {sender}")
         return True
@@ -352,7 +356,7 @@ class AgentOrchestrator:
         Args:
             collaboration_id: Collaboration session ID
             limit: Maximum number of messages to retrieve
-            
+        
         Returns:
             List of message dictionaries
         """
@@ -381,7 +385,7 @@ class AgentOrchestrator:
         
         Args:
             collaboration_id: Collaboration session ID
-            
+        
         Returns:
             True if collaboration was closed successfully, False otherwise
         """
@@ -396,10 +400,11 @@ class AgentOrchestrator:
             return False
         
         # Publish collaboration closure event
-        await self.event_bus.publish(
-            "agent.collaboration.closed",
-            {"collaboration_id": collaboration_id}
-        )
+        if self.event_bus:
+            await self.event_bus.publish(
+                "agent.collaboration.closed",
+                {"collaboration_id": collaboration_id}
+            )
         
         log.info(f"Closed collaboration {collaboration_id}")
         return True
@@ -412,7 +417,7 @@ class AgentOrchestrator:
             agent_name: Name of the agent
             agent_type: Type of agent to create
             config: Optional configuration for the agent
-            
+        
         Returns:
             Initialization result
         """
@@ -444,8 +449,17 @@ class AgentOrchestrator:
                     "agent_type": agent_type
                 }
             else:
-                raise OrchestrationError(f"Failed to initialize agent {agent_name}: {result.get('error', 'Unknown error')}")
+                raise OrchestrationError(f"Failed to initialize agent {agent_name}: {result.get('error', 'Unknown error')}", event_bus=self.event_bus if self.event_bus else None)
                 
         except Exception as e:
             log.error(f"Error initializing agent {agent_name}: {e}")
-            raise OrchestrationError(f"Failed to initialize agent {agent_name}", cause=e)
+            raise OrchestrationError(f"Failed to initialize agent {agent_name}", event_bus=self.event_bus if self.event_bus else None)
+
+class BaseAgent(abc.ABC):
+    @abc.abstractmethod
+    async def execute_task(self, context: dict) -> dict:
+        """
+        Execute a task with the given context.
+        This method must be implemented by all agent subclasses.
+        """
+        pass

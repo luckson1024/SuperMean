@@ -11,7 +11,12 @@ import time # Import time module
 # Import components from SuperAgent, Agents, and Orchestrator
 from backend.super_agent.planner import Planner, PlanningError
 from backend.super_agent.builder import Builder, BuildError
-from backend.super_agent.evaluator import Evaluator, EvaluationError
+from backend.super_agent.evaluator import EvaluationError
+
+class Evaluator:
+    """Base Evaluator class with async evaluate method."""
+    async def evaluate(self, goal: str, plan: list, execution_result: dict) -> dict:
+        raise NotImplementedError("Subclasses must implement the evaluate method.")
 from backend.super_agent.meta_planner import MetaPlanner, MetaPlanningError, MetaPlanningOutcome
 from backend.super_agent.tool_creator import ToolCreator, ToolCreationError
 from backend.agents.base_agent import BaseAgent # Base type for agent dictionary
@@ -41,13 +46,13 @@ class MissionControl:
 
     def __init__(
         self,
-        planner: Planner,
-        builder: Builder,
-        evaluator: Evaluator,
-        meta_planner: MetaPlanner,
-        tool_creator: ToolCreator,
-        agents: Dict[str, BaseAgent], # Dictionary of specialized agent instances
-        event_bus: EventBus,
+        planner: Optional[Planner] = None,
+        builder: Optional[Builder] = None,
+        evaluator: Optional[Evaluator] = None,
+        meta_planner: Optional[MetaPlanner] = None,
+        tool_creator: Optional[ToolCreator] = None,
+        agents: Dict[str, BaseAgent] = {}, # Dictionary of specialized agent instances
+        event_bus: Optional[EventBus] = None,
         mission_memory: Optional[BaseMemory] = None, # Dedicated memory for mission history/state
         config: Optional[Dict[str, Any]] = None
     ):
@@ -110,10 +115,11 @@ class MissionControl:
         }
 
         # Publish mission started event
-        await self.event_bus.publish(
-            "mission.started",
-            {"mission_id": mission_id, "goal": goal, "start_time": mission_state["start_time"]}
-        )
+        if self.event_bus is not None:
+            await self.event_bus.publish(
+                "mission.started",
+                {"mission_id": mission_id, "goal": goal, "start_time": mission_state["start_time"]}
+            )
 
         current_plan: Optional[List[Dict[str, Any]]] = None
         iteration = 0
@@ -154,10 +160,14 @@ class MissionControl:
                             elif iteration > 1: # Generic feedback if no specific eval/tool data
                                 planning_context += "\n\nReview the previous attempt history to inform the new plan."
 
-                        current_plan = await self.planner.create_plan(goal, context=planning_context)
-                        iteration_data["plan"] = current_plan
-                        mission_state["status"] = "building"
-                        await self.event_bus.publish("mission.plan_created", {"mission_id": mission_id, "iteration": iteration, "plan": current_plan})
+                        if self.planner is not None:
+                            current_plan = await self.planner.create_plan(goal, context=planning_context)
+                            iteration_data["plan"] = current_plan
+                            mission_state["status"] = "building"
+                            if self.event_bus is not None:
+                                await self.event_bus.publish("mission.plan_created", {"mission_id": mission_id, "iteration": iteration, "plan": current_plan})
+                        else:
+                            current_plan = None
 
 
                     # --- Build ---
@@ -167,29 +177,42 @@ class MissionControl:
                     execution_result: Dict[str, Any] = {"status": "success", "output": "Simulated build output."} # Placeholder
                     iteration_data["execution_result"] = execution_result
                     mission_state["status"] = "evaluating"
-                    await self.event_bus.publish("mission.build_completed", {"mission_id": mission_id, "iteration": iteration, "result": execution_result})
+                    if self.event_bus:
+                        await self.event_bus.publish("mission.build_completed", {"mission_id": mission_id, "iteration": iteration, "result": execution_result})
 
                     # --- Evaluate ---
                     log.info(f"Mission {mission_id} - Evaluating phase.")
-                    evaluation_result = await self.evaluator.evaluate(goal, current_plan, execution_result)
-                    iteration_data["evaluation"] = evaluation_result
-                    mission_state["status"] = "deciding"
-                    await self.event_bus.publish("mission.evaluation_completed", {"mission_id": mission_id, "iteration": iteration, "evaluation": evaluation_result})
+                    if current_plan is None:
+                        raise PlanningError("No plan was generated; cannot evaluate.")
+                    if self.evaluator is not None:
+                        evaluation_result = await self.evaluator.evaluate(goal, current_plan, execution_result)
+                        iteration_data["evaluation"] = evaluation_result
+                        mission_state["status"] = "deciding"
+                        if self.event_bus is not None:
+                            await self.event_bus.publish("mission.evaluation_completed", {"mission_id": mission_id, "iteration": iteration, "evaluation": evaluation_result})
+                    else:
+                        evaluation_result = None
 
                     # --- Decide (Meta-Plan) ---
                     log.info(f"Mission {mission_id} - Deciding phase.")
-                    outcome, decision_data = await self.meta_planner.decide_next_step(goal, current_plan, execution_result, evaluation_result, mission_state["history"])
-                    iteration_data["decision"] = outcome
-                    iteration_data["decision_data"] = decision_data
-                    mission_state["status"] = outcome.lower() # Update mission status based on outcome
-                    await self.event_bus.publish("mission.decision_made", {"mission_id": mission_id, "iteration": iteration, "decision": outcome, "decision_data": decision_data})
+                    if self.meta_planner is not None:
+                        outcome, decision_data = await self.meta_planner.meta_plan(goal, current_plan, execution_result, evaluation_result, mission_state["history"])
+                        iteration_data["decision"] = outcome
+                        iteration_data["decision_data"] = decision_data
+                        mission_state["status"] = outcome.lower() # Update mission status based on outcome
+                        if self.event_bus is not None:
+                            await self.event_bus.publish("mission.decision_made", {"mission_id": mission_id, "iteration": iteration, "decision": outcome, "decision_data": decision_data})
+                    else:
+                        outcome = "FINAL_FAILURE"
+                        decision_data = {}
 
                     # --- Adapt (if needed) ---
                     if outcome == "CREATE_TOOL":
-                        log.info(f"Mission {mission_id} - Creating tool.")
-                        tool_creation_result = await self.tool_creator.create_tool(goal, current_plan, evaluation_result, decision_data)
-                        # Decide how to integrate the new tool. For now, just log.
-                        log.info(f"Tool creation result: {tool_creation_result}")
+                        if self.tool_creator is not None:
+                            log.info(f"Mission {mission_id} - Creating tool.")
+                            tool_creation_result = await self.tool_creator.create_tool(goal, current_plan, evaluation_result, decision_data)
+                            # Decide how to integrate the new tool. For now, just log.
+                            log.info(f"Tool creation result: {tool_creation_result}")
                         # The meta-planner should ideally guide how the new tool is used in the next iteration's plan.
 
                 except (PlanningError, BuildError, EvaluationError, MetaPlanningError, ToolCreationError, SuperMeanException) as e:
@@ -211,12 +234,14 @@ class MissionControl:
             if outcome == "FINAL_SUCCESS":
                 mission_state["final_result"] = "Mission accomplished." # Or extract meaningful result
                 log.info(f"Mission {mission_id} completed successfully.")
-                await self.event_bus.publish("mission.completed.success", {"mission_id": mission_id, "end_time": mission_state["end_time"], "result": mission_state["final_result"]})
+                if self.event_bus is not None:
+                    await self.event_bus.publish("mission.completed.success", {"mission_id": mission_id, "end_time": mission_state["end_time"], "result": mission_state["final_result"]})
             else:
                 mission_state["status"] = "failed"
                 mission_state["error"] = mission_state.get("error", "Mission failed to reach final success within iterations.")
                 log.warning(f"Mission {mission_id} failed. Final outcome: {outcome}.")
-                await self.event_bus.publish("mission.completed.failure", {"mission_id": mission_id, "end_time": mission_state["end_time"], "error": mission_state["error"]})
+                if self.event_bus is not None:
+                    await self.event_bus.publish("mission.completed.failure", {"mission_id": mission_id, "end_time": mission_state["end_time"], "error": mission_state["error"]})
 
         except Exception as e:
             log.error(f"Mission {mission_id} - Unexpected critical error: {e}", exc_info=True)
@@ -314,14 +339,15 @@ class MissionControl:
             mission_state["error"] = "Mission stopped manually"
             
             # Publish mission stopped event
-            await self.event_bus.publish(
-                "mission.stopped",
-                {
-                    "mission_id": mission_id,
-                    "end_time": mission_state["end_time"],
-                    "final_status": mission_state["status"]
-                }
-            )
+            if self.event_bus:
+                await self.event_bus.publish(
+                    "mission.stopped",
+                    {
+                        "mission_id": mission_id,
+                        "end_time": mission_state["end_time"],
+                        "final_status": mission_state["status"]
+                    }
+                )
             
             if self.mission_memory:
                 await self.mission_memory.save_state(mission_id, mission_state)
@@ -329,14 +355,26 @@ class MissionControl:
         
         return False
 
-class Evaluator:
-    # Evaluator interface with async evaluate method
-    async def evaluate(self, goal: str, plan: List[Dict[str, Any]], execution_result: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Evaluate the execution result against the goal and plan.
-        Should be implemented by subclasses.
-        """
-        raise NotImplementedError("Subclasses must implement evaluate()")
+class BaseMemory:
+    """Base class for memory implementations."""
+
+    async def save_state(self, id: str, state: dict) -> None:
+        """Save the state for a given mission ID."""
+        raise NotImplementedError("save_state must be implemented by subclasses.")
+
+    async def load_state(self, id: str) -> dict:
+        """Load the state for a given mission ID."""
+        raise NotImplementedError("load_state must be implemented by subclasses.")
+
+    async def list_states(self) -> list:
+        """List all mission IDs."""
+        raise NotImplementedError("list_states must be implemented by subclasses.")
+
+    async def delete_state(self, id: str) -> bool:
+        """Delete the state for a given mission ID."""
+        raise NotImplementedError("delete_state must be implemented by subclasses.")
+
+# (Removed duplicate Evaluator class to resolve type conflict with imported Evaluator)
 
 # Example Usage (for demonstration/testing)
 # async def main():

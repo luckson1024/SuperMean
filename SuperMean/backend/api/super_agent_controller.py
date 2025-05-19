@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from typing import List, Dict, Any, Optional
 import logging
+from pydantic import ValidationError
 
 # Import schemas
 from .schemas import BaseResponse, ErrorResponse
@@ -75,32 +76,82 @@ def get_global_memory():
     # In a real implementation, this would be properly initialized
     return GlobalMemory()
 
+# Custom exception for SuperAgent operations
+class SuperAgentOperationError(Exception):
+    """Custom exception for SuperAgent operations."""
+    def __init__(self, message: str, status_code: int = 500, details: Optional[dict] = None):
+        self.message = message
+        self.status_code = status_code
+        self.details = details
+        super().__init__(self.message)
+
+def validate_plan_request(request: Dict[str, Any]) -> None:
+    """Validate plan request data."""
+    required_fields = ["goal", "context"]
+    for field in required_fields:
+        if field not in request:
+            raise ValidationError(f"Missing required field: {field}")
+
+    if not isinstance(request["goal"], str) or not request["goal"].strip():
+        raise ValidationError("Goal must be a non-empty string")
+
 # API Endpoints
 @router.post("/plan", response_model=PlanResponse)
 async def create_plan(
     request: PlanRequest,
-    planner: Planner = Depends(get_planner)
+    planner: Planner = Depends(get_planner),
+    memory: GlobalMemory = Depends(get_global_memory)
 ):
-    """Create a plan for a given goal"""
+    """Create a plan using the SuperAgent planner with improved error handling."""
     try:
-        plan = await planner.create_plan(goal=request.goal, context=request.context)
-        
-        return PlanResponse(
-            success=True,
-            message="Plan created successfully",
-            plan=plan
-        )
-    except PlanningError as e:
-        logger.error(f"Planning error: {e}")
+        # Validate request
+        validate_plan_request(request.dict())
+
+        # Check memory for similar plans
+        existing_plan = await memory.find_similar_plan(request.goal)
+        if existing_plan:
+            logger.info(f"Found existing plan for goal: {request.goal}")
+            return PlanResponse(
+                plan=existing_plan["plan"],
+                metadata={"source": "memory", "original_created": existing_plan["created_at"]}
+            )
+
+        # Create new plan
+        try:
+            plan = await planner.create_plan(
+                goal=request.goal,
+                context=request.context,
+                constraints=request.constraints
+            )
+        except PlanningError as e:
+            logger.error(f"Planning error: {e}")
+            raise SuperAgentOperationError(
+                message="Failed to create plan",
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                details={"planning_error": str(e)}
+            )
+
+        # Store plan in memory
+        await memory.store_plan(request.goal, plan)
+
+        return PlanResponse(plan=plan, metadata={"source": "new"})
+
+    except ValidationError as e:
+        logger.error(f"Validation error: {e}")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Planning failed: {e}"
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except SuperAgentOperationError as e:
+        raise HTTPException(
+            status_code=e.status_code,
+            detail={"message": e.message, "details": e.details}
         )
     except Exception as e:
-        logger.error(f"Unexpected error in create_plan: {e}", exc_info=True)
+        logger.error(f"Unexpected error in create_plan: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An unexpected error occurred during planning"
+            detail="An unexpected error occurred while creating the plan"
         )
 
 @router.post("/evaluate", response_model=EvaluationResponse)
@@ -216,47 +267,45 @@ async def create_tool(
             detail="An unexpected error occurred during tool creation"
         )
 
-@router.post("/execute", response_model=Dict[str, Any])
+@router.post("/execute", response_model=ExecutionResponse)
 async def execute_plan(
-    request: Dict[str, Any],
-    background_tasks: BackgroundTasks,
+    request: ExecutionRequest,
     builder: Builder = Depends(get_builder)
 ):
-    """Execute a plan using the Builder component"""
+    """Execute a plan using the Builder component with improved error handling."""
     try:
-        plan = request.get("plan")
-        if not plan:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Plan is required"
+        # Validate execution request
+        if not request.plan:
+            raise ValidationError("Plan is required for execution")
+
+        try:
+            result = await builder.execute_plan(
+                plan=request.plan,
+                context=request.context or {}
             )
-            
-        # For long-running tasks, use background tasks
-        async_execution = request.get("async_execution", False)
-        if async_execution:
-            # Start execution in background
-            background_tasks.add_task(builder.execute_plan, plan)
-            return {
-                "success": True,
-                "message": "Plan execution started in background",
-                "status": "running"
-            }
-        else:
-            # Execute synchronously
-            result = await builder.execute_plan(plan)
-            return {
-                "success": True,
-                "message": "Plan executed successfully",
-                "result": result
-            }
-    except BuilderError as e:
-        logger.error(f"Builder error: {e}")
+        except Exception as e:
+            logger.error(f"Plan execution error: {e}")
+            raise SuperAgentOperationError(
+                message="Failed to execute plan",
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                details={"execution_error": str(e)}
+            )
+
+        return ExecutionResponse(result=result)
+
+    except ValidationError as e:
+        logger.error(f"Validation error: {e}")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Plan execution failed: {e}"
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except SuperAgentOperationError as e:
+        raise HTTPException(
+            status_code=e.status_code,
+            detail={"message": e.message, "details": e.details}
         )
     except Exception as e:
-        logger.error(f"Unexpected error in execute_plan: {e}", exc_info=True)
+        logger.error(f"Unexpected error in execute_plan: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred during plan execution"

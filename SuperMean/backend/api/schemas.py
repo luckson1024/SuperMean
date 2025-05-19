@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import List, Optional, Dict, Any, Union
 from pydantic import BaseModel, Field, EmailStr
+from enum import Enum
 
 # Base models for common patterns
 class BaseResponse(BaseModel):
@@ -48,27 +49,64 @@ class Token(BaseModel):
     expires_at: datetime
 
 # Agent models
+class AgentStatus(str, Enum):
+    """Enumeration of possible agent states."""
+    INITIALIZING = "initializing"
+    IDLE = "idle"
+    BUSY = "busy"
+    FAILED = "failed"
+    TERMINATED = "terminated"
+
 class AgentBase(BaseModel):
-    """Base agent information"""
+    """Base schema for Agent data."""
     name: str
     description: Optional[str] = None
     agent_type: str
-    capabilities: List[str] = []
-    config: Optional[Dict[str, Any]] = None
+    capabilities: Dict[str, Any] = Field(default_factory=dict)
+    config: Dict[str, Any] = Field(default_factory=dict)
+    status: AgentStatus = AgentStatus.INITIALIZING
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 class AgentCreate(AgentBase):
-    """Agent creation model"""
+    """Schema for creating a new agent."""
     pass
 
+class AgentUpdate(BaseModel):
+    """Schema for updating an agent."""
+    name: Optional[str] = None
+    description: Optional[str] = None
+    capabilities: Optional[Dict[str, Any]] = None
+    config: Optional[Dict[str, Any]] = None
+    status: Optional[AgentStatus] = None
+    metadata: Optional[Dict[str, Any]] = None
+
 class Agent(AgentBase):
-    """Agent model with ID"""
+    """Schema for agent responses."""
     id: str
     created_at: datetime
     updated_at: Optional[datetime] = None
-    status: str = "idle"
 
     class Config:
-        from_attributes = True
+        orm_mode = True
+
+class AgentTask(BaseModel):
+    """Schema for agent tasks."""
+    action: str
+    parameters: Optional[Dict[str, Any]] = None
+    priority: str = "normal"  # Priority level of the task
+    expected_duration: Optional[float] = None  # Expected duration in seconds
+    
+    class Config:
+        arbitrary_types_allowed = True
+
+class AgentTaskResponse(BaseModel):
+    """Schema for agent task responses."""
+    task_id: str 
+    status: str
+    result: Dict[str, Any] = {}  # Task execution result
+    
+    class Config:
+        arbitrary_types_allowed = True
 
 # Mission models
 class MissionBase(BaseModel):
