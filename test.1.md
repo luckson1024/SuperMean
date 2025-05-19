@@ -1,6 +1,6 @@
 # SuperMean Testing Guide
-at
-This document provides comprehensive instructions for testing the SuperMean system, covering both backend and frontend components as well as system integration testing.
+
+This document provides comprehensive instructions for testing the SuperMean system, covering both backend and frontend components as well as system integration testing. It now includes new features and pages for complete, error-free testing.
 
 ## Backend Testing
 
@@ -236,116 +236,63 @@ The coverage report includes:
 
 ## Frontend Testing
 
-The SuperMean frontend uses Cypress for end-to-end testing of components and user interactions.
+The SuperMean frontend now includes:
+- Modern, responsive UI with dark/light mode
+- Real-time updates (WebSocket)
+- Advanced navigation (Navbar, Sidebar)
+- Security Dashboard, Alerts, Reports, Config
+- Analytics Section
+- Agent and Mission Detail Pages
+- User and System Settings
+- Error/404 and Loading states
 
-### Running Cypress Tests
+### Running Frontend Locally
 
 ```bash
-# Navigate to the frontend directory
 cd SuperMean/frontend
-
-# Run Cypress tests in headless mode
-npm run cypress:run
-
-# Open Cypress Test Runner for interactive testing
-npm run cypress:open
-
-# Run specific test file
-npm run cypress:run -- --spec "cypress/e2e/userSettingsPanel.cy.ts"
-
-# Run tests with specific browser
-npm run cypress:run -- --browser chrome
-
-# Run tests with tags
-npm run cypress:run -- --env grepTags=@smoke
+npm install
+npm run dev
 ```
+Visit [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Manual Testing Checklist (Frontend)
+- [x] Register/login/logout, including error and loading states
+- [x] Toggle dark/light mode and verify persistence
+- [x] Navigate all pages: Dashboard, Agents, Agent Detail, Missions, Mission Detail, Security Dashboard, Security Alerts, Security Reports, Security Config, Analytics, Settings
+- [x] Create/edit/delete missions and agents
+- [x] View and interact with real-time updates (agent/mission status)
+- [x] Test User and System Settings (profile, theme, notifications, API keys, backup/restore)
+- [x] Interact with Security Dashboard, Alerts, Reports, Config
+- [x] Check accessibility (keyboard navigation, ARIA, contrast)
+- [x] Test on mobile, tablet, and desktop
+- [x] Verify error/404 and loading/transition states
+
+### Automated Testing
+- Run Cypress E2E tests:
+  ```bash
+  npm run test:e2e
+  ```
+- Run Jest unit/component tests:
+  ```bash
+  npm run test
+  ```
 
 ### Component Testing
+- All major UI components (AgentCard, MissionTracker, TaskBoard, UserSettingsPanel, MemoryViewer, ThemeSwitcher, Navbar, etc.) have associated tests.
+- Test each component for:
+  - Rendering with different props
+  - User interaction (click, input, toggle)
+  - State management and feedback
+  - Accessibility and responsiveness
 
-In addition to E2E tests, the frontend includes component-level tests:
+### Security & Analytics Testing
+- Test Security Dashboard for live threat/alert updates
+- Test Security Alerts and Reports for real-time and historical data
+- Test Security Config for rule/threshold management
+- Test Analytics for charts, metrics, and usage statistics
 
-```bash
-# Run component tests
-npm run test:components
-
-# Run with coverage
-npm run test:components:coverage
-```
-
-Component tests verify individual UI components in isolation, ensuring they:
-- Render correctly with different props
-- Handle user interactions properly
-- Manage state correctly
-- Display appropriate loading and error states
-
-### UserSettingsPanel Tests
-
-The `userSettingsPanel.cy.ts` file contains comprehensive tests for the User Settings Panel component. These tests verify:
-
-1. **Theme Selection**
-   - Selecting different themes (light/dark)
-   - Verifying theme changes are applied to the UI
-   - Confirming theme persistence after reopening the panel
-   - Testing system theme detection and automatic switching
-
-2. **Notifications Toggle**
-   - Toggling notifications on/off
-   - Verifying the checkbox state changes correctly
-   - Testing permission requests on enabling notifications
-   - Verifying notification delivery after enabling
-
-3. **Session Timeout Settings**
-   - Testing validation for invalid values (too low/high)
-   - Verifying error messages appear appropriately
-   - Confirming valid values are accepted
-   - Testing actual session timeout behavior
-
-4. **Auto Save Toggle**
-   - Toggling auto save on/off
-   - Verifying the checkbox state changes correctly
-   - Testing auto save functionality with content changes
-   - Measuring performance impact of auto save
-
-5. **Language Selection**
-   - Selecting different language options
-   - Verifying the selection is applied correctly
-   - Testing UI text changes after language switch
-   - Verifying RTL layout for appropriate languages
-
-6. **Panel Interactions**
-   - Testing Save Settings functionality
-   - Verifying Cancel button closes the panel without saving
-   - Testing Logout functionality and redirection
-   - Verifying unsaved changes warnings
-
-### Test Setup
-
-The tests use Cypress interceptors to mock API responses:
-
-```javascript
-// Mock the settings API response
-cy.intercept('GET', '/api/settings', {
-  statusCode: 200,
-  body: {
-    theme: 'light',
-    notifications_enabled: true,
-    session_timeout_minutes: 60,
-    auto_save: true,
-    agent_view_mode: 'card',
-    language: 'en'
-  }
-}).as('getSettings');
-
-// Mock the settings update API
-cy.intercept('PUT', '/api/settings', {
-  statusCode: 200
-}).as('saveSettings');
-
-// Mock the logout API
-cy.intercept('POST', '/api/logout', {
-  statusCode: 200
-}).as('logout');
-```
+### System Settings Testing
+- Test agent configuration, system preferences, integrations, and backup/restore in System Settings page
 
 ## System Integration Testing
 
