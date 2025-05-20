@@ -119,7 +119,7 @@ class AgentStateManager:
         try:
             # 1. State Validation - First Principles
             current_state = agent.status
-            if not AgentStateManager.validate_state_transition(current_state, new_state.value):
+            if not AgentStateManager.validate_state_transition(str(current_state), new_state.value):
                 raise ValueError(
                     f"Invalid state transition: {current_state} -> {new_state.value}"
                 )
@@ -137,11 +137,11 @@ class AgentStateManager:
                 "updated_at": datetime.utcnow()
             }
             
-            # Merge new metadata with existing
+            # Update all references to agent.metadata to agent.agent_metadata
             if state_metadata:
-                current_metadata = agent.metadata or {}
+                current_metadata = agent.agent_metadata or {}
                 current_metadata.update(state_metadata)
-                state_update["metadata"] = current_metadata
+                state_update["agent_metadata"] = current_metadata
 
             # Add transition reason if provided
             if reason:
@@ -206,7 +206,7 @@ async def create_agent(
             )
 
             result = await orchestrator.execute_agent_task(
-                agent_name=AgentStateManager.get_column_value(agent.name),
+                agent_name=AgentStateManager.get_column_value(str(agent.name)),
                 task_data=initialization_task.dict()
             )
 
@@ -216,7 +216,7 @@ async def create_agent(
                 db,
                 agent,
                 new_state,
-                metadata={
+                state_metadata={
                     "last_initialization": datetime.utcnow().isoformat(),
                     "initialization_result": result
                 }
@@ -230,7 +230,7 @@ async def create_agent(
                 db,
                 agent,
                 AgentStatus.FAILED,
-                metadata={"initialization_error": str(e)}
+                state_metadata={"initialization_error": str(e)}
             )
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -284,7 +284,13 @@ async def create_code_transformer_agent(
             agent_id = str(uuid.uuid4())
             agent_memory = AgentMemory(agent_id=agent_id)
             # Integration with skill execution system
-            execute_skill_func = orchestrator.get_skill_executor()
+            execute_skill_func = orchestrator.execute_agent_task  # Use the orchestrator's task execution method
+        except Exception as e:
+            logger.error(f"Error during resource initialization: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Resource initialization failed: {str(e)}"
+            )
 
         # ACTING PHASE
         # 1. Prepare initial metadata with observability
@@ -306,10 +312,10 @@ async def create_code_transformer_agent(
             name=agent_data.name,
             description=agent_data.description,
             agent_type="code_transformer",
-            capabilities=set(agent_data.capabilities + required_capabilities),  # Ensure required capabilities
+            capabilities=set(list(agent_data.capabilities) + required_capabilities),  # Ensure required capabilities
             config=agent_data.config,
             status=AgentStatus.INITIALIZING.value,  # Start in initializing state
-            metadata=initial_metadata
+            agent_metadata=initial_metadata  # Renamed from metadata
         )
         agent_model.agent_id = agent_id
 
@@ -331,12 +337,15 @@ async def create_code_transformer_agent(
             description=agent_data.description,
             model_router=model_router,
             agent_memory=agent_memory,
-            execute_skill_func=execute_skill_func
+            execute_skill_func=execute_skill_func,
+            agent_id=agent_id
         )
 
         # Initialize agent configuration
         agent.agent_id = agent_id
-        agent.capabilities = agent_data.capabilities
+        # Fix 1: Ensure capabilities is a set of strings
+        combined_capabilities = list(set(list(agent_data.capabilities) + required_capabilities))
+        # Do not assign capabilities to agent, as CodeTransformerAgent does not have this attribute
         agent.config = {
             **agent_data.config,
             "initialization_timestamp": datetime.utcnow().isoformat(),
@@ -350,34 +359,33 @@ async def create_code_transformer_agent(
 
         # 3. Initialize agent instance and validate configuration
         try:
+            # Fix 2: Use string value for agent name
+            agent_name_value = str(agent_model.name)
+
             # Initialize with extended configuration
             initialization_task = AgentTask(
                 action="initialize",
                 parameters={
                     "agent_type": agent_model.agent_type,
                     "config": {
-                        **agent_model.config,
+                        # Fix 4: Ensure config is a dict before unpacking
+                        **(agent_model.config if isinstance(agent_model.config, dict) else {}),
                         "required_capabilities": required_capabilities,
                         "initialization_context": {
                             "environment": "production",
-                            "timeout": 30,  # seconds
+                            "timeout": 30,
                             "retry_policy": {
                                 "max_attempts": 3,
                                 "backoff_factor": 1.5
                             }
                         }
                     }
-                },
-                metadata={
-                    "priority": "high",
-                    "timeout": 30,
-                    "created_by": current_user.id
                 }
             )
 
             # Execute initialization with timeout
             result = await orchestrator.execute_agent_task(
-                agent_name=AgentStateManager.get_column_value(agent_model.name),
+                agent_name=agent_name_value,
                 task_data=initialization_task.dict()
             )
 
@@ -387,7 +395,7 @@ async def create_code_transformer_agent(
                 db,
                 agent_model,
                 new_state,
-                metadata={
+                state_metadata={
                     "last_initialization": datetime.utcnow().isoformat(),
                     "initialization_result": result
                 }
@@ -401,7 +409,7 @@ async def create_code_transformer_agent(
                 db,
                 agent_model,
                 AgentStatus.FAILED,
-                metadata={"initialization_error": str(e)}
+                state_metadata={"initialization_error": str(e)}
             )
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

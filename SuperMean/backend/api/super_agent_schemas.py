@@ -7,7 +7,7 @@ class MemoryEntry(BaseModel):
     """Model for a single memory entry"""
     key: str = Field(..., description="The unique identifier for the memory entry")
     value: Any = Field(..., description="The stored data")
-    metadata: Optional[Dict[str, Any]] = Field(None, description="Metadata about the entry")
+    metadata: Optional[Dict[str, Any]] = Field(None, description="Metadata about the entry")  # Consider renaming to avoid SQLAlchemy reserved name conflict if used in ORM
 
 class MemoryResponse(BaseModel):
     """Response model for fetching memory entries"""

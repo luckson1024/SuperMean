@@ -43,6 +43,7 @@ class AgentModel(Base):
     status = Column(String, default="idle")
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, nullable=True, onupdate=datetime.utcnow)
+    agent_metadata = Column(JSON, nullable=True)  # Renamed from metadata to avoid SQLAlchemy reserved name conflict
     
     # Relationships
     missions = relationship("MissionModel", secondary=mission_agent, back_populates="agents")
@@ -75,7 +76,7 @@ class MemoryModel(Base):
     id = Column(String, primary_key=True, index=True, default=lambda: str(uuid.uuid4()))
     agent_id = Column(String, ForeignKey("agents.id"), nullable=True)
     content = Column(JSON)
-    metadata = Column(JSON, nullable=True)
+    memory_metadata = Column(JSON, nullable=True)  # Renamed from metadata
     memory_type = Column(String)
     importance = Column(Float, default=1.0)
     created_at = Column(DateTime, default=datetime.utcnow)

@@ -65,7 +65,7 @@ class AgentBase(BaseModel):
     capabilities: Dict[str, Any] = Field(default_factory=dict)
     config: Dict[str, Any] = Field(default_factory=dict)
     status: AgentStatus = AgentStatus.INITIALIZING
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    metadata: Dict[str, Any] = Field(default_factory=dict)  # Consider renaming if used in ORM models
 
 class AgentCreate(AgentBase):
     """Schema for creating a new agent."""
@@ -78,7 +78,7 @@ class AgentUpdate(BaseModel):
     capabilities: Optional[Dict[str, Any]] = None
     config: Optional[Dict[str, Any]] = None
     status: Optional[AgentStatus] = None
-    metadata: Optional[Dict[str, Any]] = None
+    metadata: Optional[Dict[str, Any]] = None  # Consider renaming if used in ORM models
 
 class Agent(AgentBase):
     """Schema for agent responses."""

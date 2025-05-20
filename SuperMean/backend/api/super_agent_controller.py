@@ -23,6 +23,10 @@ from backend.super_agent.evaluator import Evaluator, EvaluationError
 from backend.super_agent.meta_planner import MetaPlanner, MetaPlanningError
 from backend.super_agent.tool_creator import ToolCreator, ToolCreationError
 from backend.super_agent.builder import Builder, BuilderError
+from backend.super_agent.self_reflection_agent import SelfReflectionAgent
+from backend.super_agent.meta_agent import MetaAgent
+from backend.super_agent.self_improvement_logger import SelfImprovementLogger
+from backend.super_agent.model_context_protocol import ModelContextProtocol
 
 # Import model router for LLM access
 from backend.models.model_router import ModelRouter
@@ -94,6 +98,11 @@ def validate_plan_request(request: Dict[str, Any]) -> None:
 
     if not isinstance(request["goal"], str) or not request["goal"].strip():
         raise ValidationError("Goal must be a non-empty string")
+
+# Singleton instances for self-improvement agents
+self_reflection_agent = SelfReflectionAgent()
+meta_agent = MetaAgent()
+self_improvement_logger = SelfImprovementLogger()
 
 # API Endpoints
 @router.post("/plan", response_model=PlanResponse)
@@ -310,3 +319,37 @@ async def execute_plan(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred during plan execution"
         )
+
+@router.post("/self-reflect", response_model=Dict[str, Any])
+async def trigger_self_reflection():
+    """Trigger the self-reflection loop once (async)."""
+    health_ok, test_results = await self_reflection_agent.run_checks()
+    return {"health_ok": health_ok, "test_results": test_results}
+
+@router.post("/meta-agent/plan", response_model=Dict[str, Any])
+async def trigger_meta_agent(issues: Dict[str, Any]):
+    """Trigger the meta-agent to plan and execute improvements."""
+    actions = meta_agent.plan_improvement(issues.get('issues', []))
+    result = meta_agent.execute_plan(actions)
+    return {"actions": actions, "executed": result}
+
+@router.get("/introspect", response_model=Dict[str, Any])
+async def introspect_system():
+    """List all agents, tools, skills, and their status."""
+    # Placeholder: Replace with real discovery logic
+    agents = list(globals().keys())
+    tools = list(globals().keys())
+    skills = list(globals().keys())
+    return {"agents": agents, "tools": tools, "skills": skills}
+
+@router.get("/self-improvement-logs", response_model=List[str])
+async def get_self_improvement_logs():
+    """Get the self-improvement action logs."""
+    return self_improvement_logger.get_logs()
+
+@router.get("/mcp/{name}", response_model=Dict[str, Any])
+async def get_model_context_protocol(name: str):
+    """Get the MCP (Model Context Protocol) for a given agent/tool/skill."""
+    # Placeholder: Replace with real registry lookup
+    mcp = ModelContextProtocol(name, context={}, capabilities={}, requirements={})
+    return mcp.describe()
